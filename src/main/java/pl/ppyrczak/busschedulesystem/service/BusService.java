@@ -16,4 +16,12 @@ public class BusService {
     public List<Bus> getBuses() {
         return busRepository.findAll();
     }
+
+    public Bus addBus(Bus bus) {
+        return busRepository.save(bus);
+    }
+
+    public Bus getBus(Long id) {
+        return busRepository.findById(id).orElseThrow();
+    }
 }
