@@ -13,11 +13,11 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long busId;
     private String departureFrom;
     private String departureTo;
     private LocalDate departure;

@@ -5,15 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Bus {
     @Id
@@ -23,4 +19,7 @@ public class Bus {
     private String model;
     private int passengersLimit;
     private String equipment;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "busId", updatable = false, insertable = false)
+    private List<Schedule> scheduleList;
 }
