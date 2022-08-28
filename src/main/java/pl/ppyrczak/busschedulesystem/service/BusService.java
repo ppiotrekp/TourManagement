@@ -24,4 +24,20 @@ public class BusService {
     public Bus getBus(Long id) {
         return busRepository.findById(id).orElseThrow();
     }
+
+   public Bus editBus(Bus busToUpdate, Long id) {
+       return busRepository.findById(id)
+               .map(bus -> {
+                   bus.setPassengersLimit(busToUpdate.getPassengersLimit());
+                   bus.setEquipment(busToUpdate.getEquipment());
+                   return busRepository.save(bus);
+               })
+               .orElseGet(() -> {
+                   return busRepository.save(busToUpdate);
+               });
+   }
+
+    public void deleteBus(Long id) {
+        busRepository.deleteById(id);
+    }
 }

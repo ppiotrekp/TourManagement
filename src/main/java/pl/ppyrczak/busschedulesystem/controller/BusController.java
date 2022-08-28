@@ -1,7 +1,6 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.service.BusService;
@@ -18,7 +17,6 @@ public class BusController {
         return busService.getBus(id);
     }
 
-
     @GetMapping("/buses")
     public List<Bus> getBuses() {
         return busService.getBuses();
@@ -30,8 +28,12 @@ public class BusController {
     }
 
     @PutMapping("/edit/{id}")
-    public Bus editBus(@RequestBody Bus bus, Long id) {
-
+    public Bus editBus(@RequestBody Bus busToUpdate, @PathVariable Long id) {
+        return busService.editBus(busToUpdate, id);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteBus( @PathVariable Long id) {
+        busService.deleteBus(id);
+    }
 }
