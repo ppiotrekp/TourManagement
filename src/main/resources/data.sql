@@ -3,3 +3,9 @@ insert into bus (brand, model, passengers_limit, equipment) values ('Mercedes', 
 insert into bus (brand, model, passengers_limit, equipment) values ('Mercedes', 'Tourismo 2', 40, 'toilet');
 insert into bus (brand, model, passengers_limit, equipment) values ('Mercedes', 'Tourismo 3', 110, 'toilet');
 insert into bus (brand, model, passengers_limit, equipment) values ('Mercedes', 'Tourismo 4', 20, 'toilet');
+
+insert into schedule (bus_id, departure_from, departure_to, departure, arrival, ticket_price ) values
+                    (1, 'Krakow', 'Gdansk', '2022-01-01 00:00:01','2022-01-02 00:00:01',100);
+
+insert into schedule (bus_id, departure_from, departure_to, departure, arrival, ticket_price ) values
+    (1, 'Krakow', 'Gdansk', '2022-01-01 00:00:01','2022-01-01 02:00:01',100);
