@@ -11,12 +11,16 @@ create table schedule (
     bus_id bigint not null,
     departure_from varchar(50) not null,
     departure_to varchar(50) not null,
-    departure date not null,
-    arrival date not null,
+    departure datetime null,
+    arrival datetime null ,
     ticket_price varchar(50) null
 );
 
 alter table schedule
     add constraint schedule_bus_id
-    foreign key (bus_id) references bus(id)
+    foreign key (bus_id) references bus(id);
+
+alter table schedule
+    add constraint date_constraint
+    check (departure < arrival);
 
