@@ -3,7 +3,6 @@ package pl.ppyrczak.busschedulesystem.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
-import pl.ppyrczak.busschedulesystem.service.BusService;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
 import java.util.List;
@@ -32,5 +31,10 @@ public class ScheduleController {
     @PutMapping("/editschedule/{id}")
     public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
         return scheduleService.editSchedule(scheduleToUpdate, id);
+    }
+
+    @DeleteMapping("/deleteschedule/{id}")
+    public void deleteSchedule(@PathVariable Long id) {
+        scheduleService.deleteSchedule(id);
     }
 }

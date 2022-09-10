@@ -39,4 +39,8 @@ public class ScheduleService {
                     return scheduleRepository.save(scheduleToUpdate);
                 });
     }
+
+    public void deleteSchedule(Long id) {
+        scheduleRepository.deleteById(id);
+    }
 }
