@@ -1,5 +1,6 @@
 package pl.ppyrczak.busschedulesystem.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,9 @@ public class Schedule {
     private Long busId;
     private String departureFrom;
     private String departureTo;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departure;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrival;
     private String ticketPrice;
 
