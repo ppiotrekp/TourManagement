@@ -23,4 +23,20 @@ public class ScheduleService {
     public Schedule addSchedule(Schedule schedule) {
         return scheduleRepository.save(schedule);
     }
+
+    public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
+        return scheduleRepository.findById(id)
+                .map(schedule -> {
+                    schedule.setBusId(scheduleToUpdate.getBusId());
+                    schedule.setDepartureFrom(scheduleToUpdate.getDepartureFrom());
+                    schedule.setDepartureTo(scheduleToUpdate.getDepartureTo());
+                    schedule.setDeparture(scheduleToUpdate.getDeparture());
+                    schedule.setArrival(scheduleToUpdate.getArrival());
+                    schedule.setTicketPrice(scheduleToUpdate.getTicketPrice());
+                    return scheduleRepository.save(schedule);
+                })
+                .orElseGet(() -> {
+                    return scheduleRepository.save(scheduleToUpdate);
+                });
+    }
 }

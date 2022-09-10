@@ -28,4 +28,9 @@ public class ScheduleController {
     public Schedule addSchedule(@RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }
+
+    @PutMapping("/editschedule/{id}")
+    public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
+        return scheduleService.editSchedule(scheduleToUpdate, id);
+    }
 }
