@@ -1,8 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.BusService;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
@@ -18,5 +17,15 @@ public class ScheduleController {
     @GetMapping("/schedules")
     public List<Schedule> getSchedules() {
         return scheduleService.getSchedules();
+    }
+
+    @GetMapping("/schedule/{id}")
+    public Schedule getSchedule(@PathVariable Long id) {
+        return scheduleService.getSchedule(id);
+    }
+
+    @PostMapping("/addschedule")
+    public Schedule addSchedule(@RequestBody Schedule schedule) {
+        return scheduleService.addSchedule(schedule);
     }
 }

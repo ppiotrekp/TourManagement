@@ -15,4 +15,12 @@ public class ScheduleService {
     public List<Schedule> getSchedules() {
         return scheduleRepository.findAll();
     }
+
+    public Schedule getSchedule(Long id) {
+        return scheduleRepository.findById(id).orElseThrow();
+    }
+
+    public Schedule addSchedule(Schedule schedule) {
+        return scheduleRepository.save(schedule);
+    }
 }
