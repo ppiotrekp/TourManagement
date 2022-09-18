@@ -9,6 +9,7 @@ import pl.ppyrczak.busschedulesystem.model.Bus;
 import java.util.List;
 
 public interface BusRepository extends JpaRepository<Bus, Long> {
-    @Query("select b from Bus b")
+    @Query("select b from Bus b " +
+            "left join fetch b.scheduleList")
     List<Bus> findAllBuses(Pageable pageablepaging);
 }
