@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
@@ -14,7 +15,7 @@ public class BusService {
     private final BusRepository busRepository;
 
     public List<Bus> getBuses() {
-        return busRepository.findAll();
+        return busRepository.findAllBuses(PageRequest.of(0, 2));
     }
 
     public Bus addBus(Bus bus) {
