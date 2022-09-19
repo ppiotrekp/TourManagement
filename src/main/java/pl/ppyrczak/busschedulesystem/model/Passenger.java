@@ -6,8 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "schedule id is mandatory")
+    @NotNull(message = "schedule id is mandatory")
     private Long scheduleId;
     @NotBlank(message = "firstname is mandatory")
     private String firstName;
