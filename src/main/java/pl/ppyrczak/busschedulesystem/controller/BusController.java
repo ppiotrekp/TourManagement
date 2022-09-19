@@ -2,10 +2,13 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.ppyrczak.busschedulesystem.controller.dto.BusDto;
+import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.service.BusService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +21,8 @@ public class BusController {
     }
 
     @GetMapping("/buses")
-    public List<Bus> getBuses() {
-        return busService.getBuses();
+    public List<BusDto> getBuses() {
+        return BusDtoMapper.mapToBusDtos(busService.getBuses());
     }
 
     @PostMapping("/add")
