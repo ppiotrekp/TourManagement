@@ -2,6 +2,7 @@ package pl.ppyrczak.busschedulesystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
@@ -15,8 +16,10 @@ public class BusService {
     private static final int PAGE_SIZE = 3;
     private final BusRepository busRepository;
 
-    public List<Bus> getBuses(int page) {
-        return busRepository.findAllBuses(PageRequest.of(page, PAGE_SIZE));
+    public List<Bus> getBuses(int page, Sort.Direction sort) {
+        return busRepository.findAllBuses(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "brand")));
     }
 
     public Bus addBus(Bus bus) {
@@ -24,7 +27,8 @@ public class BusService {
     }
 
     public Bus getBus(Long id) {
-        return busRepository.findById(id).orElseThrow();
+        return busRepository.findById(id)
+                .orElseThrow();
     }
 
    public Bus editBus(Bus busToUpdate, Long id) {

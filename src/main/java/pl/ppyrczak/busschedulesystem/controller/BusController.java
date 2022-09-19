@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.controller.dto.BusDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
@@ -21,9 +22,9 @@ public class BusController {
     }
 
     @GetMapping("/buses")
-    public List<BusDto> getBuses(@RequestParam(required = false) int page) {
+    public List<BusDto> getBuses(@RequestParam(required = false) int page, Sort.Direction sort) {
         int pageNumber = page >= 0 ? page : 0;
-        return BusDtoMapper.mapToBusDtos(busService.getBuses(pageNumber));
+        return BusDtoMapper.mapToBusDtos(busService.getBuses(pageNumber, sort));
     }
 
     @PostMapping("/add")
