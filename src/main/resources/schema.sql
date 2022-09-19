@@ -16,6 +16,15 @@ create table schedule (
     ticket_price varchar(50) null
 );
 
+create table passenger (
+    id bigint auto_increment primary key,
+    schedule_id bigint not null,
+    first_name varchar(50) not null,
+    last_name varchar(50) not null,
+    email varchar(20) not null unique,
+    phone_number char(9) not null
+);
+
 alter table schedule
     add constraint schedule_bus_id
     foreign key (bus_id) references bus(id);
@@ -23,4 +32,10 @@ alter table schedule
 alter table schedule
     add constraint date_constraint
     check (departure < arrival);
+
+alter table passenger
+    add constraint passenger_schedule_id
+        foreign key (schedule_id) references schedule(id);
+
+
 
