@@ -2,8 +2,12 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
+import pl.ppyrczak.busschedulesystem.model.Schedule;
+import pl.ppyrczak.busschedulesystem.service.BusService;
 import pl.ppyrczak.busschedulesystem.service.PassengerService;
+import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
 import javax.validation.Valid;
 import java.util.List;

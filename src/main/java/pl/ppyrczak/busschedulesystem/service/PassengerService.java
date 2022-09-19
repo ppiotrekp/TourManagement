@@ -2,8 +2,12 @@ package pl.ppyrczak.busschedulesystem.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
+import pl.ppyrczak.busschedulesystem.model.Schedule;
+import pl.ppyrczak.busschedulesystem.repository.BusRepository;
 import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
+import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
 import java.util.List;
 
@@ -12,7 +16,10 @@ import java.util.List;
 public class PassengerService {
 
     private final PassengerRepository passengerRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final BusRepository busRepository;
     public List<Passenger> getPassengers() {
+        System.out.println(passengerRepository.takenSeatsById(1L));
         return passengerRepository.findAll();
     }
 
@@ -22,6 +29,12 @@ public class PassengerService {
     }
 
     public Passenger addPassenger(Passenger passenger) {
-        return passengerRepository.save(passenger);
+        Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).orElseThrow();
+        Bus bus = busRepository.findById(schedule.getBusId()).orElseThrow();
+        if (bus.getPassengersLimit() == passengerRepository.takenSeatsById(bus.getId())) {
+            throw new RuntimeException("All seats taken");
+        } else {
+            return passengerRepository.save(passenger);
+        }
     }
 }
