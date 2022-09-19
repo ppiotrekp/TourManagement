@@ -8,6 +8,7 @@ import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.service.BusService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,7 @@ public class BusController {
     }
 
     @PostMapping("/add")
-    public Bus addBus(@RequestBody Bus bus) {
+    public Bus addBus(@Valid @RequestBody Bus bus) {
         return busService.addBus(bus);
     }
 

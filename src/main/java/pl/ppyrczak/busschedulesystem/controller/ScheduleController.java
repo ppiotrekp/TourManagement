@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/addschedule")
-    public Schedule addSchedule(@RequestBody Schedule schedule) {
+    public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }
 
