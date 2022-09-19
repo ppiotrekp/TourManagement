@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,5 +31,8 @@ public class Schedule {
     private LocalDateTime arrival;
     @NotBlank(message = "price is mandatory")
     private String ticketPrice;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
+    private List<Passenger> passengers;
 
 }
