@@ -12,10 +12,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BusService {
 
+    private static final int PAGE_SIZE = 3;
     private final BusRepository busRepository;
 
-    public List<Bus> getBuses() {
-        return busRepository.findAllBuses(PageRequest.of(0, 2));
+    public List<Bus> getBuses(int page) {
+        return busRepository.findAllBuses(PageRequest.of(page, PAGE_SIZE));
     }
 
     public Bus addBus(Bus bus) {

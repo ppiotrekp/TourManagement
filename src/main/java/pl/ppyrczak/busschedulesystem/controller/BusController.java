@@ -16,13 +16,14 @@ public class BusController {
 
     private final BusService busService;
     @GetMapping("/bus/{id}")
-    public Bus getBus(@PathVariable Long id) {
-        return busService.getBus(id);
+    public BusDto getBus(@PathVariable Long id) {
+        return BusDtoMapper.mapToBusDto(busService.getBus(id));
     }
 
     @GetMapping("/buses")
-    public List<BusDto> getBuses() {
-        return BusDtoMapper.mapToBusDtos(busService.getBuses());
+    public List<BusDto> getBuses(@RequestParam(required = false) int page) {
+        int pageNumber = page >= 0 ? page : 0;
+        return BusDtoMapper.mapToBusDtos(busService.getBuses(pageNumber));
     }
 
     @PostMapping("/add")
