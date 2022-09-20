@@ -2,6 +2,7 @@ package pl.ppyrczak.busschedulesystem.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,8 +19,12 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "schedule id is mandatory")
+    private Long scheduleId;
+    @NotNull(message = "passenger id is mandatory")
+    private Long passengerId;
     @NotNull
-    @Size(max = 5, min = 1)
+    @Range(max = 5, min = 1)
     private int rating;
     @NotBlank(message = "review description must not be null")
     private String description;
