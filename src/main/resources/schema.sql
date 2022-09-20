@@ -25,6 +25,14 @@ create table passenger (
     phone_number char(9) not null
 );
 
+create table review (
+    id bigint auto_increment primary key,
+    schedule_id bigint not null,
+    passenger_id bigint not null,
+    rating int not null,
+    description varchar (100) not null
+);
+
 alter table schedule
     add constraint schedule_bus_id
     foreign key (bus_id) references bus(id);
@@ -36,6 +44,15 @@ alter table schedule
 alter table passenger
     add constraint passenger_schedule_id
         foreign key (schedule_id) references schedule(id);
+
+alter table review
+    add constraint review_schedule_id
+        foreign key (schedule_id) references schedule(id);
+
+alter table review
+    add constraint review_passenger_id
+        foreign key (passenger_id) references passenger(id);
+
 
 
 
