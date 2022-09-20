@@ -8,6 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,4 +34,7 @@ public class Passenger {
     @NotBlank(message = "phone number is mandatory")
     @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
     private String phoneNumber;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "passengerId", updatable = false, insertable = false)
+    private List<Review> reviews;
 }
