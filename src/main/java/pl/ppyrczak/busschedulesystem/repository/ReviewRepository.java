@@ -6,4 +6,5 @@ import pl.ppyrczak.busschedulesystem.model.Review;
 
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    boolean existsByPassengerId(Long id);
 }
