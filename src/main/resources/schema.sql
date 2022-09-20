@@ -21,7 +21,8 @@ create table passenger (
     schedule_id bigint not null,
     first_name varchar(50) not null,
     last_name varchar(50) not null,
-    email varchar(20) not null unique,
+    number_of_seats int not null,
+    email varchar(20) not null,
     phone_number char(9) not null
 );
 
