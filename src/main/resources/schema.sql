@@ -31,7 +31,8 @@ create table review (
     schedule_id bigint not null,
     passenger_id bigint not null,
     rating int not null,
-    description varchar (100) not null
+    description varchar (100) not null,
+    created datetime
 );
 
 alter table schedule

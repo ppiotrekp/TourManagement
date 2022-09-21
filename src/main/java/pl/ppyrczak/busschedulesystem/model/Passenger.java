@@ -36,7 +36,7 @@ public class Passenger {
     @NotBlank(message = "phone number is mandatory")
     @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
     private String phoneNumber;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    /*@OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id", updatable = false, insertable = false)
-    private Review review;
+    private Review review;*/
 }

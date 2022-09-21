@@ -21,11 +21,14 @@ public class ReviewService {
             //TODO wywalic wyjatek
         }
 
+        //else if ()
+
         else if (passenger.getScheduleId() != review.getScheduleId()) {
             throw new RuntimeException("Bad schedule id");
         }
 
         else {
+            review.setCreated();
             return reviewRepository.save(review);
         }
 

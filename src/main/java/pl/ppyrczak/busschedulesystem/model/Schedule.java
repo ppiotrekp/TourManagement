@@ -37,6 +37,4 @@ public class Schedule {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
     private List<Review> reviews;
-    @Transient
-    private int takenSeats;
 }
