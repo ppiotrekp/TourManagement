@@ -23,10 +23,10 @@ public class Schedule {
     private String departureFrom;
     @NotBlank(message = "destination is mandatory")
     private String departureTo;
-    @NotBlank(message = "departure is mandatory")
+    @NotNull(message = "departure is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departure;
-    @NotBlank(message = "arrival is mandatory")
+    @NotNull(message = "arrival is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrival;
     @NotBlank(message = "price is mandatory")
@@ -37,5 +37,6 @@ public class Schedule {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
     private List<Review> reviews;
-
+    @Transient
+    private int takenSeats;
 }
