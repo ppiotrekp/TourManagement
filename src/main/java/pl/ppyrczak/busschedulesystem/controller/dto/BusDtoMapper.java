@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 
 public class BusDtoMapper {
 
-    private BusDtoMapper() {
-    }
+    private BusDtoMapper() {}
 
     public static List<BusDto> mapToBusDtos(List<Bus> buses) {
         return buses.stream()
