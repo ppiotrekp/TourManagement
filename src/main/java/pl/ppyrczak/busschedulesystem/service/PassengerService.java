@@ -30,16 +30,13 @@ public class PassengerService {
     public Passenger addPassenger(Passenger passenger) {
         Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).orElseThrow();
         Bus bus = busRepository.findById(schedule.getBusId()).orElseThrow();
-        if (bus.getPassengersLimit() == passengerRepository.takenSeatsById(bus.getId())) {
-            throw new RuntimeException("All seats taken");
-            //TODO wywalic wyjatek
-        }
 
-        else if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(bus.getId()) > bus.getPassengersLimit()) {
+        if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(bus.getId()) > bus.getPassengersLimit()) {
             throw new RuntimeException("number of seats is not enough");
         }
 
         else {
+            System.out.println(passengerRepository.takenSeatsById(schedule.getBusId()));
             return passengerRepository.save(passenger);
         }
     }

@@ -24,7 +24,7 @@ public class Passenger {
     @NotBlank(message = "lastname is mandatory")
     private String lastName;
     @Range(min = 1)
-    private int numberOfSeats;
+    private Integer numberOfSeats;
     @NotBlank(message = "email is mandatory")
     @Email(message = "email is not valid", regexp = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\" +
             ".[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\" +

@@ -20,7 +20,7 @@ public class Bus {
     @NotBlank(message = "model is mandatory")
     private String model;
     @NotNull(message = "passengers limit is mandatory")
-    private int passengersLimit;
+    private Integer passengersLimit;
     @NotBlank(message = "equipment is mandatory")
     private String equipment;
     @OneToMany(cascade = CascadeType.REMOVE)
