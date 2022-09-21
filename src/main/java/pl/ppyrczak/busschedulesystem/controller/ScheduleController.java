@@ -2,6 +2,8 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
+import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
@@ -15,8 +17,13 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public List<Schedule> getSchedules() {
-        return scheduleService.getSchedules();
+    public List<ScheduleDto> getSchedules() {
+        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
+    }
+
+    @GetMapping("/schedules/passengers")
+    public List<Schedule> getSchedulesWithPassengersAndReviews() {
+        return scheduleService.getSchedulesWithPassengersAndReviews();
     }
 
     @GetMapping("/schedule/{id}")
