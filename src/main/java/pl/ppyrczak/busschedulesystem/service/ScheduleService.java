@@ -1,10 +1,13 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
+import pl.ppyrczak.busschedulesystem.repository.BusRepository;
 import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
@@ -12,12 +15,15 @@ import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final PassengerRepository passengerRepository;
     private final ReviewRepository reviewRepository;
+    private final BusRepository busRepository;
 
     public List<Schedule> getSchedules() {
         return scheduleRepository.findAll();
@@ -28,6 +34,15 @@ public class ScheduleService {
     }
 
     public Schedule addSchedule(Schedule schedule) {
+       /* List<Schedule> schedules = scheduleRepository.findAllByBusId(schedule.getBusId());
+        for (Schedule scheduleIterator : schedules) {
+            long daysDifference = 3;
+            if (scheduleRepository.existsByBusId(scheduleIterator.getBusId())
+                    && (DAYS.between(scheduleIterator.getArrival(), schedule.getDeparture()) < daysDifference ||
+                    DAYS.between(schedule.getArrival(), scheduleIterator.getDeparture()) < daysDifference)) {
+                        throw new RuntimeException("Too less time to prepare bus");
+            }
+        }*/
         return scheduleRepository.save(schedule);
     }
 
@@ -51,6 +66,7 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
+    @Cacheable(cacheNames = "SchedulesWithPassengersAndReviews")
     public List<Schedule> getSchedulesWithPassengersAndReviews() {
         List<Schedule> allSchedules = scheduleRepository.findAll();
         List<Long> ids = allSchedules.stream()
