@@ -7,4 +7,3 @@ It's my rest api application to handle bus schedules
 - Java
 - Spring Boot
 - H2 database
-# Application use cases
