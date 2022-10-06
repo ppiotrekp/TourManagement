@@ -12,12 +12,12 @@ import javax.validation.Valid;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @PostMapping("/addreview")
+    @PostMapping("/review")
     public Review addReview(@Valid @RequestBody Review review) {
         return reviewService.addReview(review);
     }
 
-    @DeleteMapping("/deletereview/{id}")
+    @DeleteMapping("/review/{id}")
     public void deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
     }

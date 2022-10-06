@@ -22,12 +22,12 @@ public class PassengerController {
         return passengerService.getPassengers();
     }
 
-    @GetMapping("/passenger/{id}")
+    @GetMapping("/passengers/{id}")
     public Passenger getPassenger(@PathVariable Long id) {
         return passengerService.getPassenger(id);
     }
 
-    @PostMapping("/addpassenger")
+    @PostMapping("/passenger")
     public Passenger addPassenger(@Valid @RequestBody Passenger passenger) {
         return passengerService.addPassenger(passenger);
     }

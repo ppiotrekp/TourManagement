@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
@@ -26,23 +27,24 @@ public class ScheduleController {
         return scheduleService.getSchedulesWithPassengersAndReviews();
     }
 
-    @GetMapping("/schedule/{id}")
+    @GetMapping("/schedules/{id}")
     public Schedule getSchedule(@PathVariable Long id) {
         return scheduleService.getSchedule(id);
     }
 
-    @PostMapping("/addschedule")
+    @PostMapping("/schedule")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }
 
-    @PutMapping("/editschedule/{id}")
+    @PutMapping("/schedule/{id}")
     public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
         return scheduleService.editSchedule(scheduleToUpdate, id);
     }
 
-    @DeleteMapping("/deleteschedule/{id}")
-    public void deleteSchedule(@PathVariable Long id) {
+    @DeleteMapping("/schedule/{id}")
+    public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteSchedule(id);
+        return ResponseEntity.noContent().build();
     }
 }
