@@ -28,7 +28,6 @@ create table passenger (
 
 create table review (
     id bigint auto_increment primary key,
-    schedule_id bigint not null,
     passenger_id bigint not null,
     rating int not null,
     description varchar (100) not null,
@@ -47,14 +46,10 @@ alter table passenger
     add constraint passenger_schedule_id
         foreign key (schedule_id) references schedule(id);
 
-alter table review
-    add constraint review_schedule_id
-        foreign key (schedule_id) references schedule(id);
 
 alter table review
     add constraint review_passenger_id
         foreign key (passenger_id) references passenger(id);
-
 
 
 

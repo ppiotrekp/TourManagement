@@ -55,9 +55,9 @@ insert into passenger (schedule_id, first_name, last_name, number_of_seats, emai
     (2, 'Piotr', 'Pyrczfrwak', 1, 'ppyrczak4@gmail.com', '888111222');
 
 
-insert into review (schedule_id, passenger_id, rating, description) values (
-    1, 1, 3, 'good');
-insert into review (schedule_id, passenger_id, rating, description) values (
-    1, 2, 4, 'very good');
+insert into review (passenger_id, rating, description) values (
+     1, 3, 'good');
+insert into review (passenger_id, rating, description) values (
+     2, 4, 'very good');
 
 

@@ -31,7 +31,7 @@ public class PassengerService {
         Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).orElseThrow();
         Bus bus = busRepository.findById(schedule.getBusId()).orElseThrow();
 
-        if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(bus.getId()) > bus.getPassengersLimit()) {
+        if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(schedule.getId()) > bus.getPassengersLimit()) {
             throw new RuntimeException("number of seats is not enough");
         }
 

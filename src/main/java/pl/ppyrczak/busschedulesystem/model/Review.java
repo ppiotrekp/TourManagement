@@ -21,8 +21,6 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull(message = "schedule id is mandatory")
-    private Long scheduleId;
     @NotNull(message = "passenger id is mandatory")
     private Long passengerId;
     @NotNull

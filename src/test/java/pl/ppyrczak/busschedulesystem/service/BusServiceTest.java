@@ -1,24 +1,26 @@
 package pl.ppyrczak.busschedulesystem.service;
 
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
 import pl.ppyrczak.busschedulesystem.model.Bus;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+
+@SpringBootTest
 class BusServiceTest {
 
     @Autowired
-    private final BusService busService;
-
-    BusServiceTest(BusService busService) {
-        this.busService = busService;
-    }
+    private BusService busService;
 
     @Test
-    void addBus() {
-        Bus bus = new Bus();
-        bus.setBrand("Opel");
-        bus.setModel("Vivaro");
-        bus.setPassengersLimit(10);
-        bus.setEquipment("tv");
+    void shouldGetBus() {
+        Bus bus = busService.getBus(1l);
+        assertThat(bus).isNotNull();
+        assertThat(bus.getId()).isEqualTo(1L);
     }
 }

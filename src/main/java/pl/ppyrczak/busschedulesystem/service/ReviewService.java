@@ -9,6 +9,10 @@ import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
@@ -17,29 +21,38 @@ public class ReviewService {
     private final ScheduleRepository scheduleRepository;
 
     public Review addReview(Review review) {
-        Passenger passenger = passengerRepository.findById(review.getPassengerId()).orElseThrow();
-        Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).orElseThrow();
         review.setCreated();
-        if (reviewRepository.existsByPassengerId(review.getPassengerId()) ) {
-            throw new RuntimeException("You have a review about this transit");
-            //TODO wywalic wyjatek
-        }
-
-        else if (review.getCreated().isBefore(schedule.getArrival())) {
-            throw new RuntimeException("You can not write a review before arrival");
-        }
-
-        else if (passenger.getScheduleId() != review.getScheduleId()) {
-            throw new RuntimeException("Bad schedule id");
-        }
-
-        else {
+        if (checkConstraintsForReview(review) == false) {
+            throw new RuntimeException("Error during adding review");
+        } else {
             return reviewRepository.save(review);
         }
-
     }
 
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
+    }
+
+    public List<Review> getReviewsForSpecificSchedule(Long id) {
+        List<Passenger> passengers = passengerRepository.findByScheduleId(id);
+        List<Review> allReviews = passengers.stream()
+                .map(passenger -> passenger.getReview())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return allReviews;
+    }
+
+    public boolean checkConstraintsForReview(Review review) {
+        Passenger passenger = passengerRepository.findById(review.getPassengerId()).
+                orElseThrow(() -> new RuntimeException("Passenger not found"));
+        Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).
+                orElseThrow(() -> new RuntimeException("Schedule not found"));
+
+        if (reviewRepository.existsByPassengerId(review.getPassengerId()) ||
+                review.getCreated().isBefore(schedule.getArrival()))
+            return false;
+        else
+            return true;
     }
 }

@@ -66,25 +66,32 @@ public class ScheduleService {
         scheduleRepository.deleteById(id);
     }
 
-    @Cacheable(cacheNames = "SchedulesWithPassengersAndReviews")
+    //@Cacheable(cacheNames = "SchedulesWithPassengersAndReviews")
     public List<Schedule> getSchedulesWithPassengersAndReviews() {
         List<Schedule> allSchedules = scheduleRepository.findAll();
         List<Long> ids = allSchedules.stream()
                 .map(schedule -> schedule.getId())
                 .collect(Collectors.toList());
         List<Passenger> passengers = passengerRepository.findAllByScheduleIdIn(ids);
-        List<Review> reviews = reviewRepository.findAllByScheduleIdIn(ids);
+
+        /*List<Review> allReviews = reviewRepository.findAllByPassengerIdIn(ids);
+        List<Long> schedulesId = allReviews.stream()
+                .map(review -> review.getPassengerId())
+                .collect(Collectors.toList());
+        */
+
+
         allSchedules.forEach(schedule -> schedule.setPassengers(extractPassengers(passengers, schedule.getId())));
-        allSchedules.forEach(schedule -> schedule.setReviews(extractReviews(reviews, schedule.getId())));
+       // allSchedules.forEach(schedule -> schedule.setReviews(extractReviews(allReviews, schedule.getId())));
         return allSchedules;
     }
 
-    private List<Review> extractReviews(List<Review> reviews, Long id) {
+    /*private List<Review> extractReviews(List<Review> reviews, Long id) {
         return reviews.stream()
                 .filter(review -> review.getScheduleId() == id)
                 .collect(Collectors.toList());
     }
-
+*/
     private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) {
         return passengers.stream()
                 .filter(passenger -> passenger.getScheduleId() == (id))

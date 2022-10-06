@@ -27,6 +27,11 @@ public class ScheduleController {
         return scheduleService.getSchedulesWithPassengersAndReviews();
     }
 
+    @GetMapping("/schedules/{id}/passengers")
+    public List<Schedule> getSchedulesWithPassengers() {
+        throw new RuntimeException("not implemented");
+    }
+
     @GetMapping("/schedules/{id}")
     public Schedule getSchedule(@PathVariable Long id) {
         return scheduleService.getSchedule(id);
