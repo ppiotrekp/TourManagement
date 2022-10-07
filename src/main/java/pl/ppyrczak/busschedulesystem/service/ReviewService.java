@@ -22,7 +22,7 @@ public class ReviewService {
 
     public Review addReview(Review review) {
         review.setCreated();
-        if (checkConstraintsForReview(review) == false) {
+        if (!checkConstraintsForReview(review)) {
             throw new RuntimeException("Error during adding review");
         } else {
             return reviewRepository.save(review);
@@ -43,7 +43,7 @@ public class ReviewService {
         return allReviews;
     }
 
-    public boolean checkConstraintsForReview(Review review) {
+    private boolean checkConstraintsForReview(Review review) {
         Passenger passenger = passengerRepository.findById(review.getPassengerId()).
                 orElseThrow(() -> new RuntimeException("Passenger not found"));
         Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).

@@ -18,6 +18,7 @@ public class PassengerService {
     private final PassengerRepository passengerRepository;
     private final ScheduleRepository scheduleRepository;
     private final BusRepository busRepository;
+
     public List<Passenger> getPassengers() {
         return passengerRepository.findAll();
     }
@@ -33,9 +34,7 @@ public class PassengerService {
 
         if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(schedule.getId()) > bus.getPassengersLimit()) {
             throw new RuntimeException("number of seats is not enough");
-        }
-
-        else {
+        } else {
             System.out.println(passengerRepository.takenSeatsById(schedule.getBusId()));
             return passengerRepository.save(passenger);
         }
