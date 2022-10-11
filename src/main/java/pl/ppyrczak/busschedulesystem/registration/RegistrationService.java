@@ -14,6 +14,7 @@ import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static pl.ppyrczak.busschedulesystem.security.UserRole.*;
@@ -34,7 +35,6 @@ public class RegistrationService {
             throw new IllegalStateException("email is not valid");
         }
 
-
         String token = userService.signUpUser(new ApplicationUser(
                 request.getFirstName(),
                 request.getLastName(),
@@ -42,6 +42,9 @@ public class RegistrationService {
                 request.getPassword(),
                 new ArrayList<>()
         ));
+
+        UserRole role = userService.saveRole(new UserRole("ROLE_USER"));
+        userService.addRoleToUser(request.getUsername(), role.getName());
 
 
 
