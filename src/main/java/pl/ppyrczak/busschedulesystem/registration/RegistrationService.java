@@ -43,7 +43,8 @@ public class RegistrationService {
                 new ArrayList<>()
         ));
 
-        UserRole role = userService.saveRole(new UserRole("ROLE_USER"));
+        UserRole role = roleRepository.findById(2L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
+        System.out.println(role.getName());
         userService.addRoleToUser(request.getUsername(), role.getName());
 
 
@@ -57,7 +58,7 @@ public class RegistrationService {
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public String confirmToken(String token) { //TODO zablokowac dostep bez potwierdzenia
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->

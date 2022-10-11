@@ -53,7 +53,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers("/login/**", "/api/token/refresh/**").permitAll()
                 .and().authorizeRequests().antMatchers(POST, "/role").permitAll()
                 .and().authorizeRequests().antMatchers(GET, "/users").permitAll()
-                .and().authorizeRequests().antMatchers(GET, "/schedules").hasAnyAuthority("ROLE_USER")
+                .and().authorizeRequests().antMatchers(GET, "/schedules").hasAnyAuthority("ROLE_ADMIN")
 //                .and()
 //                .authorizeRequests().antMatchers(GET, "/users").hasAnyAuthority("USER")
                 .and().authorizeRequests().anyRequest().authenticated()

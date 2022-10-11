@@ -19,7 +19,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<ScheduleDto> getSchedules() {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
     }
