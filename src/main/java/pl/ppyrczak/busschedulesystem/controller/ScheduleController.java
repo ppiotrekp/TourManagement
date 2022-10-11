@@ -2,6 +2,7 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
@@ -18,6 +19,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<ScheduleDto> getSchedules() {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
     }
@@ -28,6 +30,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedules/{id}/passengers")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<Schedule> getSchedulesWithPassengers() {
         throw new RuntimeException("not implemented");
     }
