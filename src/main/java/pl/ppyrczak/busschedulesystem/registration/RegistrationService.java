@@ -43,11 +43,9 @@ public class RegistrationService {
                 new ArrayList<>()
         ));
 
-        UserRole role = roleRepository.findById(2L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
+        UserRole role = roleRepository.findById(3L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
         System.out.println(role.getName());
         userService.addRoleToUser(request.getUsername(), role.getName());
-
-
 
         String link = "http://localhost:8080/registration/confirm?token=" + token;
         emailSender.send(

@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import pl.ppyrczak.busschedulesystem.auth.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -26,6 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class JwtTokenVerifier extends OncePerRequestFilter {
+
 
     public JwtTokenVerifier() {
 

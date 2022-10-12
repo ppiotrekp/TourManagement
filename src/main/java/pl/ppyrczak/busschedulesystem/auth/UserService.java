@@ -3,6 +3,7 @@ package pl.ppyrczak.busschedulesystem.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,8 @@ import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.springframework.http.ResponseEntity.*;
 
 @Service
 @AllArgsConstructor
@@ -88,11 +91,21 @@ public class UserService implements UserDetailsService, UserInterface {
     }
 
     public int enableAppUser(String username) {
+        permitUserToLogin(username);
         return userRepository.enableAppUser(username);
     }
 
     public List<ApplicationUser> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public ResponseEntity<?> blockLoginIfUserIsNotConfirmed(ApplicationUser user) {
+        if (!user.getEnabled()) {
+            return notFound().build();
+        } else {
+            return ok().build();
+        }
+
     }
 
     @Override
@@ -116,6 +129,20 @@ public class UserService implements UserDetailsService, UserInterface {
 
         UserRole role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
+    }
+
+    @Override
+    public void permitUserToLogin(String username) {
+        log.info("adding role to user");
+        ApplicationUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserRole roleToRemove = roleRepository.findById(3L).orElseThrow();
+
+        user.getRoles().remove(roleToRemove); //TODO MOZE TRZEBA PODAC NAZWE ROLI A NIE INDEKS
+        UserRole roleToAdd = roleRepository.findById(1L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
+        System.out.println(roleToAdd.getName());
+        addRoleToUser(user.getUsername(), roleToAdd.getName());
     }
 
     @Override
