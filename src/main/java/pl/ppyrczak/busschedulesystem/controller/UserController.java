@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
@@ -33,8 +33,32 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ApplicationUser getUsers(@PathVariable Long id) {
-        return userService.getUser(id);
+    public ApplicationUser getUsers(@PathVariable Long id, HttpServletRequest request, Authentication authentication) throws IllegalAccessException {
+        List<ApplicationUser> users = getUsers();
+
+        Long currentId = 0L;
+        Boolean isAdmin = false;
+
+        if (request.isUserInRole("ROLE_ADMIN"))
+            isAdmin = true;
+
+
+        for (ApplicationUser user : users) {
+            if (user.getUsername().equals(authentication.getName())) {
+                currentId = user.getId();
+            }
+        }
+
+        System.out.println(authentication.getAuthorities().toString());
+        System.out.println("currentID: " + currentId);
+        System.out.println(isAdmin);
+
+        if (currentId == id || isAdmin) {
+            return userService.getUser(id);
+        } else {
+            throw new IllegalAccessException("FORBIDDEN");
+        }
+
     }
 
     @PostMapping("/role")
