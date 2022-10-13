@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.registration;
 
 import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -10,6 +11,7 @@ public class RegistrationController {
 
     private final RegistrationService registrationService;
 
+    @Transactional
     @PostMapping
     public String register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
