@@ -32,6 +32,11 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping("/users/{id}")
+    public ApplicationUser getUsers(@PathVariable Long id) {
+        return userService.getUser(id);
+    }
+
     @PostMapping("/role")
     public UserRole saveRole(@RequestBody UserRole role) {
         return userService.saveRole(role);

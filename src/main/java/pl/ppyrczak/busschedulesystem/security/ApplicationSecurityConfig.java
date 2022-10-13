@@ -14,9 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.ppyrczak.busschedulesystem.jwt.JwtCredentialsAuthenticationFilter;
 import pl.ppyrczak.busschedulesystem.jwt.JwtTokenVerifier;
-
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 
 @Configuration
@@ -29,10 +27,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
+    private final UserRepository userRepository;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         JwtCredentialsAuthenticationFilter jwtCredentialsAuthenticationFilter =
-                new JwtCredentialsAuthenticationFilter(authenticationManagerBean());
+                new JwtCredentialsAuthenticationFilter(authenticationManagerBean(), userRepository);
         jwtCredentialsAuthenticationFilter.setFilterProcessesUrl("/api/login"); //override
 
         http
@@ -40,11 +40,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers("/registration/**").permitAll()
-                .and().authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").not().hasAuthority("ROLE_UNCONFIRMED")
-                //.and().authorizeRequests().antMatchers(POST, "/api/login").hasAnyAuthority("ROLE_ADMIN")
-                .and().authorizeRequests().antMatchers(POST, "/role").permitAll()
-                .and().authorizeRequests().antMatchers(GET, "/users").permitAll()
-                .and().authorizeRequests().antMatchers(GET, "/schedules").hasAnyAuthority("ROLE_ADMIN")
+                .and().authorizeRequests().antMatchers("/role/**").permitAll()
+                .and().authorizeRequests().antMatchers("/api/login/**").denyAll()// TODO: USER NIE DOSTAJE TOKENA JAK NIE MA ENABLED = 1
+//                .and().authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").not().hasAuthority("ROLE_UNCONFIRMED")
+//                //.and().authorizeRequests().antMatchers(POST, "/api/login").hasAnyAuthority("ROLE_ADMIN")
+//                .and().authorizeRequests().antMatchers(POST, "/role").permitAll()
+//                .and().authorizeRequests().antMatchers(GET, "/users").permitAll()
+//                .and().authorizeRequests().antMatchers(GET, "/schedules").permitAll()
+//                .and().authorizeRequests().antMatchers("/**").permitAll()
 //                .and()
 //                .authorizeRequests().antMatchers(GET, "/users").hasAnyAuthority("USER")
                 .and().authorizeRequests().anyRequest().authenticated()

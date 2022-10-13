@@ -1,6 +1,5 @@
 package pl.ppyrczak.busschedulesystem.auth;
 
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -72,9 +71,6 @@ public class UserService implements UserDetailsService, UserInterface {
         user.setPassword(encodedPassword);
         userRepository.save(user);
 
-        Optional<ApplicationUser> role = userRepository.findByUsername("ROLE_ADMIN");
-        addRoleToUser(user.getUsername(), role.toString());
-
         String token = UUID.randomUUID().toString();
 
         ConfirmationToken confirmationToken = new ConfirmationToken(
@@ -91,7 +87,6 @@ public class UserService implements UserDetailsService, UserInterface {
     }
 
     public int enableAppUser(String username) {
-        permitUserToLogin(username);
         return userRepository.enableAppUser(username);
     }
 
@@ -133,16 +128,7 @@ public class UserService implements UserDetailsService, UserInterface {
 
     @Override
     public void permitUserToLogin(String username) {
-        log.info("adding role to user");
-        ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        UserRole roleToRemove = roleRepository.findById(3L).orElseThrow();
-
-        user.getRoles().remove(roleToRemove); //TODO MOZE TRZEBA PODAC NAZWE ROLI A NIE INDEKS
-        UserRole roleToAdd = roleRepository.findById(1L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
-        System.out.println(roleToAdd.getName());
-        addRoleToUser(user.getUsername(), roleToAdd.getName());
     }
 
     @Override
@@ -154,5 +140,10 @@ public class UserService implements UserDetailsService, UserInterface {
     @Override
     public List<ApplicationUser> getUsers() {
         return userRepository.findAll();
+    }
+
+    public ApplicationUser getUser(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow();
     }
 }

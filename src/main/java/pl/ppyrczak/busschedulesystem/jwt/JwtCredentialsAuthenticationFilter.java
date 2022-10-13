@@ -12,6 +12,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -29,12 +31,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-//    private final JwtConfig jwtConfig;
-//    private final SecretKey secretKey;
+    private final UserRepository userRepository;
 
-    public JwtCredentialsAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtCredentialsAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
 
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -47,6 +49,12 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(username, password);
+
+        ApplicationUser user = userRepository.findByUsername(username)
+                .orElseThrow();
+        if (user.getEnabled() == false) {
+            throw new RuntimeException("UNENABLED!");
+        }
 
         return authenticationManager.authenticate(authenticationToken);
 

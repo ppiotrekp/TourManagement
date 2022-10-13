@@ -6,9 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,12 +31,17 @@ public class ApplicationUser implements UserDetails {
 
     private String password;
 
+    @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
+    private String phoneNumber;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<UserRole>  roles = new ArrayList<>();
     private Boolean locked = false;
     private Boolean enabled = false;
 
-    // konstruktor bez id
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "userId", updatable = false, insertable = false)
+    private List<Passenger> userSchedules;
 
 
     public ApplicationUser(String firstName,
