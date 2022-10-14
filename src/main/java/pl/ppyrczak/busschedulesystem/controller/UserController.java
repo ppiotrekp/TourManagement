@@ -28,11 +28,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<ApplicationUser> getUsers() {
+    public List<ApplicationUser> getUsers() {//TODO POZBYC SIE N+1 czyli wyekstraktowac jakos role
         return userService.getUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{id}") //TODO POZBYC SIE N+1
     public ApplicationUser getUsers(@PathVariable Long id, HttpServletRequest request, Authentication authentication) throws IllegalAccessException {
         List<ApplicationUser> users = getUsers();
 

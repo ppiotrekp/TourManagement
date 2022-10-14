@@ -2,8 +2,9 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import pl.ppyrczak.busschedulesystem.controller.dto.BusDto;
+import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.service.BusService;
 
@@ -21,14 +22,14 @@ public class BusController {
     }
 
     @GetMapping("/buses/{id}")
-    public Bus getBus(@PathVariable Long id) {
-        return busService.getBus(id);
+    public BusDto getBus(@PathVariable Long id) {
+        return BusDtoMapper.mapToBusDto(busService.getBus(id));
     }
 
     @GetMapping("/buses")
-    public List<Bus> getBuses(@RequestParam(required = false) int page, Sort.Direction sort) {
+    public List<BusDto> getBuses(@RequestParam(required = false) int page, Sort.Direction sort) {
         int pageNumber = page >= 0 ? page : 0;
-        return busService.getBuses(pageNumber, sort);
+        return BusDtoMapper.mapToBusDtos(busService.getBuses(pageNumber, sort)) ;
     }
 
     @PostMapping("/bus")
@@ -37,7 +38,7 @@ public class BusController {
     }
 
     @PutMapping("/bus/{id}")
-    public Bus editBus(@RequestBody Bus busToUpdate, @PathVariable Long id) {
+    public Bus editBus(@RequestBody Bus busToUpdate, @PathVariable Long id) { // TODO POZBYC SIE N+1
         return busService.editBus(busToUpdate, id);
     }
 

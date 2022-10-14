@@ -33,11 +33,16 @@ public class ScheduleController {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public List<Schedule> getSchedulesWithPassengers() {
         throw new RuntimeException("not implemented");
+    } //todo sprawdzic czy nie ma n+1
+
+    @GetMapping("/admin/schedules/{id}")
+    public Schedule getScheduleForAdmin(@PathVariable Long id) {
+        return scheduleService.getSchedule(id);
     }
 
     @GetMapping("/schedules/{id}")
-    public Schedule getSchedule(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
+    public ScheduleDto getSchedule(@PathVariable Long id) {
+        return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
     }
 
     @PostMapping("/schedule")
@@ -47,7 +52,7 @@ public class ScheduleController {
 
     @PutMapping("/schedule/{id}")
     public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
-        return scheduleService.editSchedule(scheduleToUpdate, id);
+        return scheduleService.editSchedule(scheduleToUpdate, id); //POZBYC SIE N+1
     }
 
     @DeleteMapping("/schedule/{id}")
