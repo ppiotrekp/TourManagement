@@ -19,9 +19,18 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public List<ScheduleDto> getSchedules() {
+    public List<ScheduleDto> getSchedulesForUsers() {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
+    }
+
+    @GetMapping("/schedules/{id}")
+    public ScheduleDto getScheduleForUsers(@PathVariable Long id) {
+        return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
+    }
+
+    @GetMapping("/admin/schedules/{id}")
+    public Schedule getScheduleForAdmin(@PathVariable Long id) {
+        return scheduleService.getSchedule(id);
     }
 
     @GetMapping("/schedules/passengers")
@@ -35,16 +44,6 @@ public class ScheduleController {
         throw new RuntimeException("not implemented");
     } //todo sprawdzic czy nie ma n+1
 
-    @GetMapping("/admin/schedules/{id}")
-    public Schedule getScheduleForAdmin(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
-    }
-
-    @GetMapping("/schedules/{id}")
-    public ScheduleDto getSchedule(@PathVariable Long id) {
-        return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
-    }
-
     @PostMapping("/schedule")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
@@ -52,7 +51,7 @@ public class ScheduleController {
 
     @PutMapping("/schedule/{id}")
     public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
-        return scheduleService.editSchedule(scheduleToUpdate, id); //POZBYC SIE N+1
+        return scheduleService.editSchedule(scheduleToUpdate, id); //TODO POZBYC SIE N+1
     }
 
     @DeleteMapping("/schedule/{id}")

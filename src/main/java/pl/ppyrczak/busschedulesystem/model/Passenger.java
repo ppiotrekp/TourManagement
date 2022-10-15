@@ -22,7 +22,7 @@ public class Passenger {
     private Long scheduleId;
     @Range(min = 1)
     private Integer numberOfSeats;
-    //TODO NAPRAWIC RELACJE MIEDZY PASAZEREM A OPINIA (NIE MA RELACJI)
+
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id", updatable = false, insertable = false)

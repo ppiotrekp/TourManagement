@@ -30,9 +30,9 @@ public class BusService {
         return busRepository.findById(id)
                 .orElseThrow();
     }
-
+// TODO SPR KOLIZJE BUSOW
    public Bus editBus(Bus busToUpdate, Long id) {
-       return busRepository.findById(id)
+       return  busRepository.findById(id)
                .map(bus -> {
                    bus.setPassengersLimit(busToUpdate.getPassengersLimit());
                    bus.setEquipment(busToUpdate.getEquipment());

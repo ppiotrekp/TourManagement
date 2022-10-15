@@ -10,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,13 +30,13 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public List<ApplicationUser> getUsers() {//TODO POZBYC SIE N+1 czyli wyekstraktowac jakos role
-        return userService.getUsers();
+    public List<UserDto> getUsers() {
+        return UserDtoMapper.mapToUserDtos(userService.getUsers());
     }
 
-    @GetMapping("/users/{id}") //TODO POZBYC SIE N+1
+    @GetMapping("/users/{id}")
     public ApplicationUser getUsers(@PathVariable Long id, HttpServletRequest request, Authentication authentication) throws IllegalAccessException {
-        List<ApplicationUser> users = getUsers();
+        List<ApplicationUser> users = userService.getAllUsersInfo();
 
         Long currentId = 0L;
         Boolean isAdmin = false;

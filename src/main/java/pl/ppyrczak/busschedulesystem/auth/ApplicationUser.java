@@ -34,7 +34,7 @@ public class ApplicationUser implements UserDetails {
     @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
     private String phoneNumber;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Collection<UserRole>  roles = new ArrayList<>();
     private Boolean locked = false;
     private Boolean enabled = false;

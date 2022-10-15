@@ -11,14 +11,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.ppyrczak.busschedulesystem.model.Passenger;
+import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
+import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -33,6 +37,7 @@ public class UserService implements UserDetailsService, UserInterface {
     private final ConfirmationTokenService confirmationTokenService;
 
     private final RoleRepository roleRepository;
+    private final PassengerRepository passengerRepository;
 
 
 
@@ -90,8 +95,24 @@ public class UserService implements UserDetailsService, UserInterface {
         return userRepository.enableAppUser(username);
     }
 
-    public List<ApplicationUser> getAllUsers() {
-        return userRepository.findAll();
+    public List<ApplicationUser> getAllUsersInfo() {
+        List<ApplicationUser> users = userRepository.findAll();
+        List<Long> ids = users.stream()
+                .map(ApplicationUser::getId)
+                .collect(Collectors.toList());
+
+        List<Passenger> passengers = passengerRepository.
+                findAllByUserIdIn(ids);
+
+        users.forEach(user -> user.setUserSchedules(extractPassengers(passengers, user.getId())));
+
+        return users;
+    }
+
+    private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) { //TODO JEDNA WSPOLNA METODA I DOSTOWOSUJE TYPY
+        return passengers.stream()
+                .filter(passenger -> Objects.equals(passenger.getScheduleId(), id))
+                .collect(Collectors.toList());
     }
 
     public ResponseEntity<?> blockLoginIfUserIsNotConfirmed(ApplicationUser user) {

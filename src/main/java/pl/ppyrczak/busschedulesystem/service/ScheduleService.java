@@ -1,6 +1,8 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
+import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
@@ -34,11 +36,12 @@ public class ScheduleService {
     }
 
     public Schedule addSchedule(Schedule schedule) {
-        if (constraint.checkConstraintsForSchedule(schedule)) {
-            return scheduleRepository.save(schedule);
-        } else {
-            throw new RuntimeException("Constraints not passed");
-        }
+//        if (constraint.checkConstraintsForSchedule(schedule)) {
+//            return scheduleRepository.save(schedule);
+//        } else {
+//            throw new RuntimeException("Constraints not passed");
+//        }
+        return scheduleRepository.save(schedule);
     }
 
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
@@ -56,6 +59,8 @@ public class ScheduleService {
                     return scheduleRepository.save(scheduleToUpdate);
                 });
     }
+
+
 
     public void deleteSchedule(Long id) {
         scheduleRepository.deleteById(id);

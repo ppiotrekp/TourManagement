@@ -37,13 +37,7 @@ public class BusController {
         return busService.addBus(bus);
     }
 
-    @PutMapping("/bus/{id}")
-    public Bus editBus(@RequestBody Bus busToUpdate, @PathVariable Long id) { // TODO POZBYC SIE N+1
-        return busService.editBus(busToUpdate, id);
-    }
-
-
-    @DeleteMapping("/bus/{id}")
+    @DeleteMapping("/bus/{id}") // TODO DEZAKTYWACJA
     public ResponseEntity<?> deleteBus(@PathVariable Long id) {
         busService.deleteBus(id);
         return ResponseEntity.noContent().build();
