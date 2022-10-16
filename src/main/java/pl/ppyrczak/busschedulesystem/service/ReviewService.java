@@ -21,14 +21,8 @@ public class ReviewService {
     private final ScheduleRepository scheduleRepository;
 
     public Review addReview(Review review) {
-        review.setCreated();
-        if (!checkConstraintsForReview(review)) {
-            throw new RuntimeException("Error during adding review");
-        } else {
-            System.out.println("PASSENGER ID:" + review.getPassengerId());
-            return reviewRepository.save(review);
-        }
-
+//
+        return reviewRepository.save(review);
     }
 
     public void deleteReview(Long id) {
@@ -46,14 +40,15 @@ public class ReviewService {
         return allReviews;
     }
 
-    private boolean checkConstraintsForReview(Review review) {
+    private boolean checkConstraintsForReview(Review review) { //TODO OPINIA JEST DODAWANA NA 1 LEPSZE MIEJSCE A NIE KONKRETNE
         Passenger passenger = passengerRepository.findById(review.getPassengerId()).
                 orElseThrow(() -> new RuntimeException("Passenger not found"));
+
         Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).
                 orElseThrow(() -> new RuntimeException("Schedule not found"));
 
 
-        if (reviewRepository.existsByPassengerId(review.getPassengerId()) ||
+        if (
                 review.getCreated().isBefore(schedule.getArrival()))
             return false;
         else

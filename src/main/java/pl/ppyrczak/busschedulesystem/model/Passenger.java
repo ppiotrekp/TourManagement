@@ -1,6 +1,8 @@
 package pl.ppyrczak.busschedulesystem.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Range;
 
@@ -12,6 +14,8 @@ import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Passenger {
     @Id
