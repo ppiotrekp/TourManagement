@@ -21,8 +21,15 @@ public class ReviewService {
     private final ScheduleRepository scheduleRepository;
 
     public Review addReview(Review review) {
-//
-        return reviewRepository.save(review);
+        review.setCreated();
+        if (!checkIfReviewIsNotBeforeArrival(review)) {
+            throw new RuntimeException("You can not add review before arrival");
+        } /*else if (!checkIfScheduleHasPassenger(review)) {
+            throw new RuntimeException("passenger does not exist");
+        }*/ else {
+            return reviewRepository.save(review);
+        }
+
     }
 
     public void deleteReview(Long id) {
@@ -31,27 +38,36 @@ public class ReviewService {
 
 
     public List<Review> getReviewsForSpecificSchedule(Long id) { //TODO N+1
-        List<Passenger> passengers = passengerRepository.findByScheduleId(id);
+        /*List<Passenger> passengers = passengerRepository.findByScheduleId(id);
         List<Review> allReviews = passengers.stream()
                 .map(passenger -> passenger.getReview())
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
-        return allReviews;
+        return allReviews;*/
+        return null;
     }
 
-    private boolean checkConstraintsForReview(Review review) { //TODO OPINIA JEST DODAWANA NA 1 LEPSZE MIEJSCE A NIE KONKRETNE
-        Passenger passenger = passengerRepository.findById(review.getPassengerId()).
-                orElseThrow(() -> new RuntimeException("Passenger not found"));
+    private boolean checkIfReviewIsNotBeforeArrival(Review review) { //chyba dziala
+        boolean returnStat = true;
+        Long scheduleId = review.getScheduleId();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+        if (review.getCreated().isBefore(schedule.getArrival())) {
+            returnStat = false;
+        }
 
-        Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).
-                orElseThrow(() -> new RuntimeException("Schedule not found"));
+        return returnStat;
+    }
 
+    private boolean checkIfScheduleHasPassenger(Review review) {
+        boolean returnStat = false;
+        /*Long scheduleId = review.getScheduleId();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+        Passenger passenger = passengerRepository.findByScheduleId(scheduleId);
+        if (scheduleRepository.existsScheduleByPassengers(passenger.getId())) {
+            returnStat = true;
+        }*/
 
-        if (
-                review.getCreated().isBefore(schedule.getArrival()))
-            return false;
-        else
-            return true;
+        return returnStat;
     }
 }
