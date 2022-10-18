@@ -24,9 +24,9 @@ public class ReviewService {
         review.setCreated();
         if (!checkIfReviewIsNotBeforeArrival(review)) {
             throw new RuntimeException("You can not add review before arrival");
-        } /*else if (!checkIfScheduleHasPassenger(review)) {
+        } else if (!checkIfScheduleHasPassenger(review)) {
             throw new RuntimeException("passenger does not exist");
-        }*/ else {
+        } else {
             return reviewRepository.save(review);
         }
 
@@ -61,12 +61,15 @@ public class ReviewService {
 
     private boolean checkIfScheduleHasPassenger(Review review) {
         boolean returnStat = false;
-        /*Long scheduleId = review.getScheduleId();
+
+        Long scheduleId = review.getScheduleId();
+        Long passengerId = review.getPassengerId();
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
-        Passenger passenger = passengerRepository.findByScheduleId(scheduleId);
-        if (scheduleRepository.existsScheduleByPassengers(passenger.getId())) {
+        Passenger passenger = passengerRepository.findById(passengerId).orElseThrow();
+
+        if (schedule.getPassengers().contains(passenger)) {
             returnStat = true;
-        }*/
+        }
 
         return returnStat;
     }
