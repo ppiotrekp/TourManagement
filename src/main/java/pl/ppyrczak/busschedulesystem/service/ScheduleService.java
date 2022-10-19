@@ -9,6 +9,7 @@ import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,7 +45,22 @@ public class ScheduleService {
     }
 
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
-        return scheduleRepository.findById(id)
+        Schedule originalSchedule = scheduleRepository.findById(id)
+                .orElseThrow();
+
+        if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("You can not change finished schedule");
+        }
+
+        if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("You can not set arrival in the past");
+        }
+
+        if (scheduleToUpdate.getArrival().isBefore(scheduleToUpdate.getDeparture())) {
+            throw new RuntimeException("Arrival can not be before departure");
+        }
+
+        return scheduleRepository.findById(id) //TODO ograniczenia nowe typu nie mozna zmienic na date przeszla
                 .map(schedule -> {
                     schedule.setBusId(scheduleToUpdate.getBusId());
                     schedule.setDepartureFrom(scheduleToUpdate.getDepartureFrom());

@@ -38,12 +38,6 @@ public class ScheduleController {
         return scheduleService.getSchedulesWithPassengersAndReviews();
     }
 
-    @GetMapping("/schedules/{id}/passengers")
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public List<Schedule> getSchedulesWithPassengers() {
-        throw new RuntimeException("not implemented");
-    } //todo sprawdzic czy nie ma n+1
-
     @PostMapping("/schedule")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
