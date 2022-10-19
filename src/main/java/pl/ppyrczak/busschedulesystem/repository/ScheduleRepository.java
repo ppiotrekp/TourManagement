@@ -11,4 +11,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findAllByBusIdIn(List<Long> ids);
     List<Schedule> findAllByBusId(Long id);
     boolean existsByBusId(Long id );
+
+    boolean existsByPassengers(Long id);
+
 }

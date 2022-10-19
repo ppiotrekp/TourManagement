@@ -38,5 +38,25 @@ public class Schedule {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
     private List<Passenger> passengers;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
+    private List<Review> reviews;
 
+    public Schedule(Long busId,
+                    String departureFrom,
+                    String departureTo,
+                    LocalDateTime departure,
+                    LocalDateTime arrival,
+                    String ticketPrice,
+                    List<Passenger> passengers,
+                    List<Review> reviews) {
+        this.busId = busId;
+        this.departureFrom = departureFrom;
+        this.departureTo = departureTo;
+        this.departure = departure;
+        this.arrival = arrival;
+        this.ticketPrice = ticketPrice;
+        this.passengers = passengers;
+        this.reviews = reviews;
+    }
 }
