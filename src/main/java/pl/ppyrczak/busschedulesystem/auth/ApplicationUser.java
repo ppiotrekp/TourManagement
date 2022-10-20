@@ -38,6 +38,7 @@ public class ApplicationUser implements UserDetails {
     private Collection<UserRole>  roles = new ArrayList<>();
     private Boolean locked = false;
     private Boolean enabled = false;
+    private Boolean subscribed = true;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "userId", updatable = false, insertable = false)

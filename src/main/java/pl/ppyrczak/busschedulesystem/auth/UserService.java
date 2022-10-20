@@ -104,7 +104,8 @@ public class UserService implements UserDetailsService, UserInterface {
         List<Passenger> passengers = passengerRepository.
                 findAllByUserIdIn(ids);
 
-        users.forEach(user -> user.setUserSchedules(extractPassengers(passengers, user.getId())));
+
+        users.forEach(user -> user.setUserSchedules((passengers)));
 
         return users;
     }
@@ -112,7 +113,7 @@ public class UserService implements UserDetailsService, UserInterface {
     private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) { //TODO JEDNA WSPOLNA METODA I DOSTOWOSUJE TYPY
         return passengers.stream()
                 .filter(passenger -> Objects.equals(passenger.getScheduleId(), id))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()); //TODO NIE DZIALA
     }
 
     public ResponseEntity<?> blockLoginIfUserIsNotConfirmed(ApplicationUser user) {
@@ -166,5 +167,13 @@ public class UserService implements UserDetailsService, UserInterface {
     public ApplicationUser getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow();
+    }
+
+    public void subscribe(ApplicationUser user) {
+        user.setSubscribed(true);
+    }
+
+    public void unsubscribe(ApplicationUser user) {
+        user.setSubscribed(false);
     }
 }
