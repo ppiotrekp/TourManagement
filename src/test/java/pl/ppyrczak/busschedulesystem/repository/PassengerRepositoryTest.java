@@ -1,36 +1,17 @@
 package pl.ppyrczak.busschedulesystem.repository;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
 
-import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
-import static org.hamcrest.number.OrderingComparison.lessThan;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.assertj.core.api.Assertions;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.test.context.junit4.SpringRunner;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
-import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,33 +113,30 @@ class PassengerRepositoryTest {
     @Test
     void findAllByUserIdIn() {
 
-        ApplicationUser user = new ApplicationUser("Piotr",
-                "Pyrczak",
-                "piotr@gmail.com",
-                "piotr",
-                null);
-        user.setId(1L);
-
-        ApplicationUser user1 = new ApplicationUser("Piotr",
-                "Pyrczak",
-                "piotr@gmail.com",
-                "piotr",
-                null);
-        user1.setId(2L);
-
-        userRepository.save(user);
-        userRepository.save(user1);
-
         Passenger passenger = new Passenger(1L, 1L, 1L, 1);
         Passenger passenger1 = new Passenger(2L, 1L, 2L, 1);
 
         passengerRepository.save(passenger);
         passengerRepository.save(passenger1);
 
-        List<Long> ids = Arrays.asList(user.getId());
+        List<Long> ids = Arrays.asList(1L);
 
         List<Passenger> passengers = passengerRepository.findAllByUserIdIn(ids);
         System.out.println(passengers.toString());
+        Assert.assertEquals(passengers.size(), 2);
+    }
+
+    @Test
+    void findByScheduleId() {
+        Passenger passenger = new Passenger(1L, 1L, 1L, 2);
+        Passenger passenger1 = new Passenger(2L, 2L, 1L, 2);
+        Passenger passenger2 = new Passenger(3L, 3L, 2L, 1);
+
+        passengerRepository.save(passenger);
+        passengerRepository.save(passenger1);
+        passengerRepository.save(passenger2);
+
+        List<Passenger> passengers = passengerRepository.findByScheduleId(1L);
         Assert.assertEquals(passengers.size(), 2);
     }
 }
