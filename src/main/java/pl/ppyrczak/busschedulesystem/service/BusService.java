@@ -3,9 +3,12 @@ package pl.ppyrczak.busschedulesystem.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.quartz.SchedulerContextAware;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.model.Bus;
+import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
+import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
 import java.util.List;
 
@@ -15,6 +18,7 @@ public class BusService {
 
     private static final int PAGE_SIZE = 3;
     private final BusRepository busRepository;
+    private final ScheduleRepository scheduleRepository;
 
     public List<Bus> getBuses(int page, Sort.Direction sort) {
         return busRepository.findAllBuses(
@@ -31,19 +35,10 @@ public class BusService {
                 .orElseThrow();
     }
 // TODO SPR KOLIZJE BUSOW
-   public Bus editBus(Bus busToUpdate, Long id) {
-       return  busRepository.findById(id)
-               .map(bus -> {
-                   bus.setPassengersLimit(busToUpdate.getPassengersLimit());
-                   bus.setEquipment(busToUpdate.getEquipment());
-                   return busRepository.save(bus);
-               })
-               .orElseGet(() -> {
-                   return busRepository.save(busToUpdate);
-               });
-   }
 
     public void deleteBus(Long id) {
         busRepository.deleteById(id);
     }
+
+
 }
