@@ -1,6 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -10,15 +10,19 @@ import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PassengerRepository passengerRepository;
     private final ScheduleRepository scheduleRepository;
+
+    @Autowired
+    public ReviewService(ReviewRepository reviewRepository, PassengerRepository passengerRepository, ScheduleRepository scheduleRepository) {
+        this.reviewRepository = reviewRepository;
+        this.passengerRepository = passengerRepository;
+        this.scheduleRepository = scheduleRepository;
+    }
 
     public Review addReview(Review review) {
         review.setCreated();
@@ -37,15 +41,10 @@ public class ReviewService {
     }
 
 
-    public List<Review> getReviewsForSpecificSchedule(Long id) { //TODO N+1
-        /*List<Passenger> passengers = passengerRepository.findByScheduleId(id);
-        List<Review> allReviews = passengers.stream()
-                .map(passenger -> passenger.getReview())
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return allReviews;*/
-        return null;
+    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id) {
+        List<Review> reviews = reviewRepository.
+                findAllByScheduleId(id);
+        return reviews;
     }
 
     private boolean checkIfReviewIsNotBeforeArrival(Review review) { //chyba dziala
