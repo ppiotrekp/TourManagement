@@ -48,7 +48,6 @@ class ScheduleRepositoryTest {
         schedule1.setId(2L);
         schedule2.setId(3L);
 
-
         scheduleRepository.save(schedule);
         scheduleRepository.save(schedule1);
         scheduleRepository.save(schedule2);
@@ -56,6 +55,5 @@ class ScheduleRepositoryTest {
         List<Schedule> schedules = scheduleRepository.findAllByBusId(1L);
 
         Assertions.assertEquals(schedules.size(), 3);
-
     }
 }

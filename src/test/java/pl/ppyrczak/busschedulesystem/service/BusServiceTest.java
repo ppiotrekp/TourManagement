@@ -68,7 +68,7 @@ class BusServiceTest {
     }
 
     @Test
-    void deleteBus() {
+    void shouldDeleteBus() {
         Bus bus = new Bus(1L,
                 "Merdeces",
                 "Vivaro",

@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.repository;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,21 @@ class ReviewRepositoryTest {
     @Autowired
     private ReviewRepository reviewRepository;
 
+    @BeforeEach
+    void setUp() {
+        reviewRepository.deleteAll();
+    }
+
     @Test
-    void findAllByScheduleIdIn() {
+    void shouldFindAllByScheduleIdIn() {
         Review review = new Review(1L, 1L, 1L, 4, "Good", LocalDateTime.now());
-        Review review1 = new Review(2L, 1L, 1L, 4, "Good", LocalDateTime.now());
-        Review review2 = new Review(3L, 1L, 2L, 4, "Good", LocalDateTime.now());
+        Review review1 = new Review(2L, 2L, 2L, 4, "ok", LocalDateTime.now());
 
         reviewRepository.save(review);
         reviewRepository.save(review1);
-        reviewRepository.save(review2);
-
 
         List<Review> reviews = reviewRepository.findAllByScheduleIdIn(Arrays.asList(1L, 2L));
-        Assertions.assertEquals(reviews.size(), 3);
+        Assertions.assertEquals(reviews.size(), 2);
     }
 
     @Test

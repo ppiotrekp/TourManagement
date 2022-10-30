@@ -16,7 +16,7 @@ class RoleRepositoryTest {
     private RoleRepository roleRepository = Mockito.mock(RoleRepository.class);
 
     @Test
-    void IfItProperlyfindsByName() {
+    void shouldFindByName() {
         UserRole role = new UserRole("ROLE_ADMIN");
         UserRole role1 = new UserRole("ROLE_USER");
 

@@ -2,6 +2,9 @@ package pl.ppyrczak.busschedulesystem.repository;
 
 
 import org.junit.Assert;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +23,23 @@ import java.util.stream.Collectors;
 //@RunWith(SpringRunner.class)
 class PassengerRepositoryTest {
     @Autowired
-    private PassengerRepository passengerRepository = Mockito.mock(PassengerRepository.class);
+    private PassengerRepository passengerRepository;
     private UserRepository userRepository = Mockito.mock(UserRepository.class);
     private BusRepository busRepository = Mockito.mock(BusRepository.class);
     private ScheduleRepository scheduleRepository = Mockito.mock(ScheduleRepository.class);
 
+    @BeforeEach
+    void setUp() {
+        passengerRepository.deleteAll();
+    }
+
+    @AfterEach
+    void tearDown() {
+        passengerRepository.deleteAll();
+    }
+
     @Test
-    void takenSeatsById() {
+    void shouldReturnTakenSeatsById() {
         Bus bus = new Bus(1L,
                 "Merdeces",
                 "Vivaro",
@@ -65,7 +78,7 @@ class PassengerRepositoryTest {
     }
 
     @Test
-    void checkIffindAllByScheduleIdInWorks() {
+    void shouldFindAllByScheduleIdInWorks() {
         Bus bus = new Bus(1L,
                 "Merdeces",
                 "Vivaro",
@@ -107,11 +120,10 @@ class PassengerRepositoryTest {
 
         List<Passenger> result = passengerRepository.findAllByScheduleIdIn(ids);
         Assert.assertEquals(result.size(), passengers.size());
-
     }
 
     @Test
-    void findAllByUserIdIn() {
+    void shouldFindAllByUserIdIn() {
 
         Passenger passenger = new Passenger(1L, 1L, 1L, 1);
         Passenger passenger1 = new Passenger(2L, 1L, 2L, 1);
@@ -127,7 +139,7 @@ class PassengerRepositoryTest {
     }
 
     @Test
-    void findByScheduleId() {
+    void shouldFindByScheduleId() {
         Passenger passenger = new Passenger(1L, 1L, 1L, 2);
         Passenger passenger1 = new Passenger(2L, 2L, 1L, 2);
         Passenger passenger2 = new Passenger(3L, 3L, 2L, 1);
@@ -136,7 +148,7 @@ class PassengerRepositoryTest {
         passengerRepository.save(passenger1);
         passengerRepository.save(passenger2);
 
-        List<Passenger> passengers = passengerRepository.findByScheduleId(1L);
-        Assert.assertEquals(passengers.size(), 2);
+        List<Passenger> passengersList = passengerRepository.findByScheduleId(2L);
+        Assertions.assertEquals(passengersList.size(), 1);
     }
 }
