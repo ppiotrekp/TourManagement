@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
@@ -29,21 +30,23 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UserController {
     private final UserService userService;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
     public List<UserDto> getUsers() {
         return UserDtoMapper.mapToUserDtos(userService.getUsers());
     }
 
     @GetMapping("/users/{id}")
-    public ApplicationUser getUsers(@PathVariable Long id, HttpServletRequest request, Authentication authentication) throws IllegalAccessException {
-        List<ApplicationUser> users = userService.getAllUsersInfo();
+    public ApplicationUser getUsers(@PathVariable Long id,
+                                    HttpServletRequest request,
+                                    Authentication authentication) throws IllegalAccessException {
 
+        List<ApplicationUser> users = userService.getAllUsersInfo();
         Long currentId = 0L;
         Boolean isAdmin = false;
 
         if (request.isUserInRole("ROLE_ADMIN"))
             isAdmin = true;
-
 
         for (ApplicationUser user : users) {
             if (user.getUsername().equals(authentication.getName())) {

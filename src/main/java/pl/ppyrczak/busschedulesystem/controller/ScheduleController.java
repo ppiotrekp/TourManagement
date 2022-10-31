@@ -28,26 +28,31 @@ public class ScheduleController {
         return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/schedules/{id}")
     public Schedule getScheduleForAdmin(@PathVariable Long id) {
         return scheduleService.getSchedule(id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/schedules/passengers")
     public List<Schedule> getSchedulesWithPassengersAndReviews() {
         return scheduleService.getSchedulesWithPassengersAndReviews();
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/schedule")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/schedule/{id}")
     public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
-        return scheduleService.editSchedule(scheduleToUpdate, id); //TODO POZBYC SIE N+1
+        return scheduleService.editSchedule(scheduleToUpdate, id);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/schedule/{id}")
     public ResponseEntity<?> deleteSchedule(@PathVariable Long id) {
         scheduleService.deleteSchedule(id);

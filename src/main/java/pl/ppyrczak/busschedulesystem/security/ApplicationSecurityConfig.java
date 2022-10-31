@@ -16,6 +16,9 @@ import pl.ppyrczak.busschedulesystem.jwt.JwtCredentialsAuthenticationFilter;
 import pl.ppyrczak.busschedulesystem.jwt.JwtTokenVerifier;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
+
 
 @Configuration
 @EnableWebSecurity
@@ -41,12 +44,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests().antMatchers("/registration/**").permitAll()
                 .and().authorizeRequests().antMatchers("/role/**").permitAll()
-                .and().authorizeRequests().antMatchers("/api/login/**").denyAll()// TODO: USER NIE DOSTAJE TOKENA JAK NIE MA ENABLED = 1
-//                .and().authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").not().hasAuthority("ROLE_UNCONFIRMED")
-//                //.and().authorizeRequests().antMatchers(POST, "/api/login").hasAnyAuthority("ROLE_ADMIN")
-//                .and().authorizeRequests().antMatchers(POST, "/role").permitAll()
+                .and().authorizeRequests().antMatchers("/**").permitAll()
+                .and().authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll()
+//                .and().authorizeRequests().antMatchers(POST, "/bus").hasAnyAuthority("ADMIN")
 //                .and().authorizeRequests().antMatchers(GET, "/users").permitAll()
-//                .and().authorizeRequests().antMatchers(GET, "/schedules").permitAll()
+//                .and().authorizeRequests().antMatchers(GET, "/buses").hasAnyRole("ROLE_ADMIN")
 //                .and().authorizeRequests().antMatchers("/**").permitAll()
 //                .and()
 //                .authorizeRequests().antMatchers(GET, "/users").hasAnyAuthority("USER")
