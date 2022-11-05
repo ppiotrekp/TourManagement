@@ -23,4 +23,26 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException, notFound);
     }
+
+    @ExceptionHandler(value = {IllegalDateException.class})
+    public ResponseEntity<Object> handleIllegalDateException(IllegalDateException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = {IllegalPassengerException.class})
+    public ResponseEntity<Object> handleIllegalPassengerException(IllegalPassengerException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 }
