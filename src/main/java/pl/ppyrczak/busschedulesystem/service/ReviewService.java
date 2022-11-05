@@ -1,6 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -10,49 +10,66 @@ import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PassengerRepository passengerRepository;
     private final ScheduleRepository scheduleRepository;
 
+    @Autowired
+    public ReviewService(ReviewRepository reviewRepository, PassengerRepository passengerRepository, ScheduleRepository scheduleRepository) {
+        this.reviewRepository = reviewRepository;
+        this.passengerRepository = passengerRepository;
+        this.scheduleRepository = scheduleRepository;
+    }
+
     public Review addReview(Review review) {
         review.setCreated();
-        if (!checkConstraintsForReview(review)) {
-            throw new RuntimeException("Error during adding review");
+        if (!checkIfReviewIsNotBeforeArrival(review)) {
+            throw new RuntimeException("You can not add review before arrival");
+        } else if (!checkIfScheduleHasPassenger(review)) {
+            throw new RuntimeException("passenger does not exist");
         } else {
             return reviewRepository.save(review);
         }
+
     }
 
     public void deleteReview(Long id) {
         reviewRepository.deleteById(id);
     }
 
-    public List<Review> getReviewsForSpecificSchedule(Long id) {
-        List<Passenger> passengers = passengerRepository.findByScheduleId(id);
-        List<Review> allReviews = passengers.stream()
-                .map(passenger -> passenger.getReview())
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
 
-        return allReviews;
+    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id) {
+        List<Review> reviews = reviewRepository.
+                findAllByScheduleId(id);
+        return reviews;
     }
 
-    private boolean checkConstraintsForReview(Review review) {
-        Passenger passenger = passengerRepository.findById(review.getPassengerId()).
-                orElseThrow(() -> new RuntimeException("Passenger not found"));
-        Schedule schedule = scheduleRepository.findById(passenger.getScheduleId()).
-                orElseThrow(() -> new RuntimeException("Schedule not found"));
+    private boolean checkIfReviewIsNotBeforeArrival(Review review) { //chyba dziala
+        boolean returnStat = true;
+        Long scheduleId = review.getScheduleId();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+        if (review.getCreated().isBefore(schedule.getArrival())) {
+            returnStat = false;
+        }
 
-        if (reviewRepository.existsByPassengerId(review.getPassengerId()) ||
-                review.getCreated().isBefore(schedule.getArrival()))
-            return false;
-        else
-            return true;
+        return returnStat;
+    }
+
+    private boolean checkIfScheduleHasPassenger(Review review) {
+        boolean returnStat = false;
+
+        Long scheduleId = review.getScheduleId();
+        Long passengerId = review.getPassengerId();
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();
+        Passenger passenger = passengerRepository.findById(passengerId).orElseThrow();
+
+        if (schedule.getPassengers().contains(passenger)) {
+            returnStat = true;
+        }
+
+        return returnStat;
     }
 }

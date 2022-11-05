@@ -46,7 +46,7 @@ public class Constraint {
         return allArrivals;
     }
 
-    public boolean checkConstraintsForSchedule(Schedule schedule) {
+    public boolean checkConstraintsForSchedule(Schedule schedule) { //TODO NAPRAWIC TO
         List<LocalDateTime> allDepartures = extractAllDeparturesWithTheSameBus(schedule);
         List<LocalDateTime> allArrivals = extractAllArrivalsWithTheSameBus(schedule);
 
