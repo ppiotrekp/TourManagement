@@ -2,6 +2,7 @@ package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -48,7 +49,8 @@ public class ScheduleService implements Subscriber {
 
     public Schedule getSchedule(Long id) {
         return scheduleRepository.findById(id).
-                orElseThrow();
+                orElseThrow(() -> new ApiRequestException(
+                        "Schedule with id " + id + " does not exist"));
     }
 
     public Schedule addSchedule(Schedule schedule) {
@@ -60,7 +62,6 @@ public class ScheduleService implements Subscriber {
         List<ApplicationUser> subscribers = users.stream()
                 .filter(user -> user.getSubscribed() == true)
                 .collect(Collectors.toList());
-
 
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
@@ -98,6 +99,9 @@ public class ScheduleService implements Subscriber {
     }
 
     public void deleteSchedule(Long id) {
+        if (!scheduleRepository.findById(id).isPresent()) {
+            throw new ApiRequestException("Schedule with id " + id + " does not exist");
+        }
         scheduleRepository.deleteById(id);
     }
 
@@ -139,8 +143,7 @@ public class ScheduleService implements Subscriber {
                             buildEmail(user.getFirstName(), schedule));
         }
     }
-
-
+    
     private String buildEmail(String name,  Schedule schedule) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +

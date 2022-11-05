@@ -2,6 +2,7 @@ package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -37,9 +38,11 @@ public class ReviewService {
     }
 
     public void deleteReview(Long id) {
+        if (!reviewRepository.findById(id).isPresent()) {
+            throw new ApiRequestException("Review with id " + id + " does not exist");
+        }
         reviewRepository.deleteById(id);
     }
-
 
     public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id) {
         List<Review> reviews = reviewRepository.
@@ -47,7 +50,7 @@ public class ReviewService {
         return reviews;
     }
 
-    private boolean checkIfReviewIsNotBeforeArrival(Review review) { //chyba dziala
+    private boolean checkIfReviewIsNotBeforeArrival(Review review) {
         boolean returnStat = true;
         Long scheduleId = review.getScheduleId();
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow();

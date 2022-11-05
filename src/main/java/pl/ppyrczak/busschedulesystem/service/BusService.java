@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.quartz.SchedulerContextAware;
 import org.springframework.stereotype.Service;
+import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
@@ -31,14 +32,15 @@ public class BusService {
     }
 
     public Bus getBus(Long id) {
-        return busRepository.findById(id)
-                .orElseThrow();
+        return busRepository.findById(id).
+                orElseThrow(() -> new ApiRequestException(
+                        "Bus with id " + id + " does not exist"));
     }
-// TODO SPR KOLIZJE BUSOW
 
     public void deleteBus(Long id) {
+        if (!busRepository.findById(id).isPresent()) {
+            throw new ApiRequestException("Bus with id " + id + " does not exist");
+        }
         busRepository.deleteById(id);
     }
-
-
 }
