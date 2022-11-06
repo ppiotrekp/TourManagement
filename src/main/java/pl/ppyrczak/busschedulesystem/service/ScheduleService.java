@@ -1,5 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
@@ -53,6 +54,17 @@ public class ScheduleService implements Subscriber {
                         "Schedule with id " + id + " does not exist"));
     }
 
+    public List<Schedule> getSchedules(Schedule schedule) {
+        Schedule scheduleToFind = Schedule.builder()
+                .departureFrom(schedule.getDepartureFrom())
+                .departureTo(schedule.getDepartureTo())
+                .departure(schedule.getDeparture())
+                .arrival(schedule.getArrival())
+                .build();
+
+        return scheduleRepository.findAll(Example.of(scheduleToFind));
+    }
+
     public Schedule addSchedule(Schedule schedule) {
         if (!constraint.isBusAvaliable(schedule)) {
             throw new RuntimeException("Bus is not available");
@@ -68,11 +80,12 @@ public class ScheduleService implements Subscriber {
     }
 
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
-        Schedule originalSchedule = scheduleRepository.findById(id)
-                .orElseThrow();
 
-        if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("You can not change finished schedule");
+        if (scheduleRepository.findById(id).isPresent()) {
+            Schedule originalSchedule = scheduleRepository.getById(id);
+            if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("You can not change finished schedule");
+            }
         }
 
         if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {

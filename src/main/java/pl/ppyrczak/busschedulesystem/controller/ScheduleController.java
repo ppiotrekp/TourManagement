@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,20 @@ public class ScheduleController {
     @GetMapping("/schedules")
     public List<ScheduleDto> getSchedulesForUsers() {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
+    }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @GetMapping("/schedulesFilter")
+//    public List<Schedule> getSchedules(@RequestParam(required = false) String departureFrom,
+//                                       @RequestParam(required = false) String departureTo,
+//                                       @RequestParam(required = false) LocalDateTime departure,
+//                                       @RequestParam(required = false) LocalDateTime arrival) {
+//        return scheduleService.getSchedules(departureFrom, departureTo, departure, arrival);
+//    }
+
+    @PostMapping("/schedulesFilter")
+    public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
+        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
     }
 
     @GetMapping("/schedules/{id}")
