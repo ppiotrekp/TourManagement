@@ -66,4 +66,26 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException, badRequest);
     }
+
+    @ExceptionHandler(value = {EmailConfirmedException.class})
+    public ResponseEntity<Object> handleEmailConfirmedException(EmailConfirmedException e) {
+        HttpStatus badRequest = BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = {TokenExpiredException.class})
+    public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException e) {
+        HttpStatus badRequest = BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 }

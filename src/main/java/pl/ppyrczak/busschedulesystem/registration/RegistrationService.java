@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
+import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
+import pl.ppyrczak.busschedulesystem.exception.EmailConfirmedException;
+import pl.ppyrczak.busschedulesystem.exception.TokenExpiredException;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
@@ -32,7 +35,7 @@ public class RegistrationService {
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getUsername());
         if (!isValidEmail) {
-            throw new IllegalStateException("email is not valid");
+            throw new IllegalStateException("email is not valid"); //todo wyjatek obsluzyc
         }
 
         String token = userService.signUpUser(new ApplicationUser(
@@ -60,16 +63,16 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new ApiRequestException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            throw new EmailConfirmedException();
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            throw new TokenExpiredException();
         }
 
         confirmationTokenService.setConfirmedAt(token);
