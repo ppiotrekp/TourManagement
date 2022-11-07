@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.ppyrczak.busschedulesystem.exception.ApiException;
 import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,4 +29,14 @@ public class ValidationExceptionHandler {
         });
         return errorMap;
     }
+//
+//    @ResponseStatus(BAD_REQUEST)
+//    @ExceptionHandler(value = {ConstraintViolationException.class})
+//    public Map<String, String> handleConstraintViolation(ConstraintViolationException e) {
+//        Map<String, String> errorMap = new HashMap<>();
+//        e.getConstraintViolations().forEach(error -> {
+//            errorMap.put((String) error.getInvalidValue(), error.getMessage());
+//        });
+//        return errorMap;
+//    } TODO nie dziala
 }

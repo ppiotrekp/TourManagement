@@ -21,14 +21,10 @@ public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "user id is mandatory")
     private Long userId;
     @NotNull(message = "schedule id is mandatory")
     private Long scheduleId;
     @Range(min = 1)
     private Integer numberOfSeats;
-
-
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id", updatable = false, insertable = false)
-    private Review review;
 }

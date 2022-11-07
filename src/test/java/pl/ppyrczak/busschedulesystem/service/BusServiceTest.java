@@ -80,7 +80,7 @@ class BusServiceTest {
         busList.add(bus);
         doNothing().when(busRepository).deleteById(bus.getId());
         //when
-        busService.deleteBus(bus.getId());
+        busService.deleteBus(1L);
         //then
         verify(busRepository).deleteById(bus.getId());
     }

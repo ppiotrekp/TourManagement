@@ -30,4 +30,16 @@ public class Bus {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "busId", updatable = false, insertable = false)
     private List<Schedule> scheduleList;
+
+    public Bus(String brand,
+               String model,
+               Integer passengersLimit,
+               String equipment,
+               List<Schedule> scheduleList) {
+        this.brand = brand;
+        this.model = model;
+        this.passengersLimit = passengersLimit;
+        this.equipment = equipment;
+        this.scheduleList = scheduleList;
+    }
 }

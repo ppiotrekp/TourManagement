@@ -24,9 +24,13 @@ import java.util.stream.Collectors;
 class PassengerRepositoryTest {
     @Autowired
     private PassengerRepository passengerRepository;
-    private UserRepository userRepository = Mockito.mock(UserRepository.class);
-    private BusRepository busRepository = Mockito.mock(BusRepository.class);
-    private ScheduleRepository scheduleRepository = Mockito.mock(ScheduleRepository.class);
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BusRepository busRepository;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
 
     @BeforeEach
     void setUp() {

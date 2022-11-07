@@ -28,9 +28,9 @@ import static org.springframework.http.ResponseEntity.*;
 
 @Service
 @AllArgsConstructor
-@Transactional//
+@Transactional
 @Slf4j
-public class UserService implements UserDetailsService, UserInterface {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -59,9 +59,6 @@ public class UserService implements UserDetailsService, UserInterface {
                         authorities);
     } //zmiana na maila
 
-    public ApplicationUser addUser(ApplicationUser user) {
-        return userRepository.save(user);
-    }
 
     public String signUpUser(ApplicationUser user) {
         boolean userExists = userRepository.findByUsername(user.getUsername())
@@ -101,12 +98,6 @@ public class UserService implements UserDetailsService, UserInterface {
                 .map(ApplicationUser::getId)
                 .collect(Collectors.toList());
 
-        List<Passenger> passengers = passengerRepository.
-                findAllByUserIdIn(ids);
-
-
-        users.forEach(user -> user.setUserSchedules((passengers)));
-
         return users;
     }
 
@@ -116,29 +107,11 @@ public class UserService implements UserDetailsService, UserInterface {
                 .collect(Collectors.toList()); //TODO NIE DZIALA
     }
 
-    public ResponseEntity<?> blockLoginIfUserIsNotConfirmed(ApplicationUser user) {
-        if (!user.getEnabled()) {
-            return notFound().build();
-        } else {
-            return ok().build();
-        }
-
-    }
-
-    @Override
-    public ApplicationUser saveUser(ApplicationUser user) {
-        log.info("saving {} user", user.getFirstName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
-
-    @Override
     public UserRole saveRole(UserRole role) {
         log.info("saving {} role", role.getName());
         return roleRepository.save(role);
     }
 
-    @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("adding role to user");
         ApplicationUser user = userRepository.findByUsername(username)
@@ -148,18 +121,11 @@ public class UserService implements UserDetailsService, UserInterface {
         user.getRoles().add(role);
     }
 
-    @Override
-    public void permitUserToLogin(String username) {
-
-    }
-
-    @Override
     public ApplicationUser getUser(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    @Override
     public List<ApplicationUser> getUsers() {
         return userRepository.findAll();
     }
