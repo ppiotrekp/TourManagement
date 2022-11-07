@@ -107,7 +107,7 @@ public class ScheduleService implements Subscriber {
                     return scheduleRepository.save(schedule);
                 })
                 .orElseGet(() -> {
-                    return scheduleRepository.save(scheduleToUpdate);
+                    return addSchedule(scheduleToUpdate);
                 });
     }
 
