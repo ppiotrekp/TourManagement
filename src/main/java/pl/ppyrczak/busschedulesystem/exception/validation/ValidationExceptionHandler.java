@@ -5,22 +5,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.ppyrczak.busschedulesystem.exception.ApiException;
 import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
-@ControllerAdvice
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+@RestControllerAdvice
 public class ValidationExceptionHandler {
 
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException e) {
-        HttpStatus notFound = HttpStatus.NOT_FOUND;
-        ApiException apiException = new ApiException(
-                e.getMessage(),
-                notFound,
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(apiException, notFound);
+    public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException e) {
+        Map<String, String> errorMap = new HashMap<>();
+        e.getBindingResult().getFieldErrors().forEach(error -> {
+            errorMap.put(error.getField(), error.getDefaultMessage());
+        });
+        return errorMap;
     }
 }
