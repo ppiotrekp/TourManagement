@@ -64,7 +64,7 @@ public class ScheduleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/schedule/{id}")
-    public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
+    public Schedule editSchedule(@Valid @RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
         return scheduleService.editSchedule(scheduleToUpdate, id);
     }
 
