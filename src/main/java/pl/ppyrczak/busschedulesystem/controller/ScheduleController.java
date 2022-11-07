@@ -25,15 +25,6 @@ public class ScheduleController {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
-//    @GetMapping("/schedulesFilter")
-//    public List<Schedule> getSchedules(@RequestParam(required = false) String departureFrom,
-//                                       @RequestParam(required = false) String departureTo,
-//                                       @RequestParam(required = false) LocalDateTime departure,
-//                                       @RequestParam(required = false) LocalDateTime arrival) {
-//        return scheduleService.getSchedules(departureFrom, departureTo, departure, arrival);
-//    }
-
     @PostMapping("/schedulesFilter")
     public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
