@@ -117,7 +117,7 @@ public class UserService implements UserDetailsService {
     public void addRoleToUser(String username, String roleName) {
         log.info("adding role to user");
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
 
         UserRole role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
@@ -125,7 +125,7 @@ public class UserService implements UserDetailsService {
 
     public ApplicationUser getUser(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
     }
 
     public List<ApplicationUser> getUsers() {

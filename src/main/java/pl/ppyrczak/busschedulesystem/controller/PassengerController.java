@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
+import pl.ppyrczak.busschedulesystem.exception.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -37,7 +38,7 @@ public class PassengerController {
 
     @PostMapping("/passenger")
     public Passenger addPassenger(@Valid @RequestBody Passenger passenger,
-                                  Authentication authentication) throws IllegalAccessException {
+                                  Authentication authentication) throws UserNotAuthorizedException {
         List<ApplicationUser> users = userService.getAllUsersInfo();
         Long currentId = 0L;
 
@@ -50,7 +51,7 @@ public class PassengerController {
         if (currentId == passenger.getUserId()) {
             return passengerService.addPassenger(passenger);
         } else {
-            throw new IllegalAccessException("FORBIDDEN");
+            throw new UserNotAuthorizedException();
         }
     }
 

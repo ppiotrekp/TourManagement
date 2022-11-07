@@ -44,4 +44,26 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException, badRequest);
     }
+// todo polaczyc wszystko w 1 metode
+    @ExceptionHandler(value = {EmailTakenException.class})
+    public ResponseEntity<Object> handleEmailTakenException(EmailTakenException e) {
+        HttpStatus badRequest = BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
+
+    @ExceptionHandler(value = {UserNotAuthorizedException.class})
+    public ResponseEntity<Object> handleUserNotAuthorizedException(UserNotAuthorizedException e) {
+        HttpStatus badRequest = BAD_REQUEST;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                LocalDateTime.now()
+        );
+        return new ResponseEntity<>(apiException, badRequest);
+    }
 }

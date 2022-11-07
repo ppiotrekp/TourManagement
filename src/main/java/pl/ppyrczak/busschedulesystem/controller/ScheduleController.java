@@ -1,7 +1,6 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,6 @@ import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
