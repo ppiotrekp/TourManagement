@@ -18,7 +18,7 @@ public class RegistrationController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<String> register(@Valid @RequestBody RegistrationRequest request) {
+    public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         return new ResponseEntity<>(registrationService.register(request), HttpStatus.CREATED);
     }
 

@@ -94,7 +94,7 @@ public class ScheduleService implements Subscriber {
 
         if (scheduleToUpdate.getArrival().isBefore(scheduleToUpdate.getDeparture())) {
             throw new RuntimeException("Arrival can not be before departure");
-        }
+        } //todo obsluzyc wyjatki
 
         return scheduleRepository.findById(id)
                 .map(schedule -> {

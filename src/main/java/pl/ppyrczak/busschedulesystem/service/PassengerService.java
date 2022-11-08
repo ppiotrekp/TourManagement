@@ -43,7 +43,7 @@ public class PassengerService {
         Bus bus = busRepository.findById(schedule.getBusId()).orElseThrow();
 
         if (passenger.getNumberOfSeats() + passengerRepository.takenSeatsById(schedule.getId()) > bus.getPassengersLimit()) {
-            throw new RuntimeException("number of seats is not enough");
+            throw new RuntimeException("number of seats is not enough"); //todo obsluzyc wyjatek
         } else {
             System.out.println(passengerRepository.takenSeatsById(schedule.getBusId()));
             return passengerRepository.save(passenger);

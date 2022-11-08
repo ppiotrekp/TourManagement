@@ -36,7 +36,7 @@ public class ApplicationUser implements UserDetails {
     private String password;
 
 //    @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
-//    @NotBlank(message = "You have to pass your phone number")
+    @NotBlank(message = "You have to pass your phone number")
     private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)
