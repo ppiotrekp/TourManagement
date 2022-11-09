@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.exception;
+package pl.ppyrczak.busschedulesystem.exception.illegalaccess;
 
 public class UserNotAuthorizedException extends IllegalAccessException{
     public UserNotAuthorizedException() {

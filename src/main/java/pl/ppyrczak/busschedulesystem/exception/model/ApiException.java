@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.exception;
+package pl.ppyrczak.busschedulesystem.exception.model;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
