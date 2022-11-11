@@ -8,8 +8,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import pl.ppyrczak.busschedulesystem.model.Bus;
+import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
+import pl.ppyrczak.busschedulesystem.repository.BusRepository;
 import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
@@ -33,6 +36,8 @@ class ReviewServiceTest {
     private PassengerRepository passengerRepository;
     @Mock
     private ScheduleRepository scheduleRepository;
+    @Mock
+    private BusRepository busRepository;
     private ReviewService underTest;
     private AutoCloseable autoCloseable;
 
@@ -49,28 +54,39 @@ class ReviewServiceTest {
         autoCloseable.close();
     }
 
-//    @Test
-//    void shouldAddReview() {
-//        //given
-//        Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
-//        given(reviewRepository.save(review)).willReturn(review);
-//        //when
-//        underTest.addReview(review);
-//        //then
-//        verify(reviewRepository).save(eq(review)); //TODO NPE
-//    }
-
     @Test
-    void shouldDeleteReview() {
+    void shouldAddReview() {
         //given
-        Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
-        List<Review> reviewList = new ArrayList<>();
-        reviewList.add(review);
-        doNothing().when(reviewRepository).deleteById(review.getId());
+        Bus bus = new Bus(1L,
+                "Merdeces",
+                "Vivaro",
+                10,
+                "toilet",
+                null);
+        when(busRepository.findById(bus.getId())).thenReturn(Optional.of(bus));
+
+        Schedule schedule = new Schedule(1L,bus.getId(),
+                "Krakow",
+                "Malaga",
+                LocalDateTime.of(2022, 10, 10, 10, 10),
+                LocalDateTime.of(2022, 10, 10, 12, 10),
+                "100",
+                null, null);
+        when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
+
+        Passenger passenger = new Passenger(1L, 1L, 1L, 1);
+        when(passengerRepository.findById(passenger.getId())).thenReturn(Optional.of(passenger));
+
+        List<Passenger> passengerList = new ArrayList<>();
+        passengerList.add(passenger);
+        schedule.setPassengers(passengerList);
+
+        Review review = new Review(1L, passenger.getId(), schedule.getId(), 4, "ok", LocalDateTime.now());
+        given(reviewRepository.save(review)).willReturn(review);
         //when
-        underTest.deleteReview(review.getId());
+        underTest.addReview(review);
         //then
-        verify(reviewRepository).deleteById(review.getId());
+        verify(reviewRepository).save(eq(review));
     }
 
     @Test
@@ -88,5 +104,13 @@ class ReviewServiceTest {
         List<Review> reviews = underTest.getReviewsWithDetailsForSpecificSchedule(1L);
         //then
         Assertions.assertEquals(reviews.size(), 2);
+    }
+
+    @Test
+    void shouldDeleteReview(){
+        Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
+        when(reviewRepository.findById(review.getId())).thenReturn(Optional.of(review));
+        underTest.deleteReview(review.getId());
+        verify(reviewRepository).deleteById(review.getId());
     }
 }
