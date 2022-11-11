@@ -3,7 +3,7 @@ package pl.ppyrczak.busschedulesystem.service;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -50,7 +50,7 @@ public class ScheduleService implements Subscriber {
 
     public Schedule getSchedule(Long id) {
         return scheduleRepository.findById(id).
-                orElseThrow(() -> new ApiRequestException(
+                orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + id + " does not exist"));
     }
 
@@ -113,7 +113,7 @@ public class ScheduleService implements Subscriber {
 
     public void deleteSchedule(Long id) {
         if (!scheduleRepository.findById(id).isPresent()) {
-            throw new ApiRequestException("Schedule with id " + id + " does not exist");
+            throw new ResourceNotFoundException("Schedule with id " + id + " does not exist");
         }
         scheduleRepository.deleteById(id);
     }
@@ -135,7 +135,7 @@ public class ScheduleService implements Subscriber {
                 setReviews(extractReviews(reviews, schedule.getId())));
 
         return allSchedules;
-    }
+    } //todo przeniesc to do passenger service bo to wyswietla pasazerow a nie przejazdy
 
     private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) {
         return passengers.stream()
@@ -156,7 +156,7 @@ public class ScheduleService implements Subscriber {
                             buildEmail(user.getFirstName(), schedule));
         }
     }
-    
+
     private String buildEmail(String name,  Schedule schedule) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
