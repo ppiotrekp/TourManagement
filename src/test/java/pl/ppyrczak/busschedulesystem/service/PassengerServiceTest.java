@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
@@ -48,7 +49,6 @@ class PassengerServiceTest {
         autoCloseable.close();
     }
 
-
     @Test
     void shouldGetPassengers() {
         Passenger passenger = new Passenger(1L, 1L, 1L, 1);
@@ -75,28 +75,55 @@ class PassengerServiceTest {
         assertThat(passengerToFind).isNotNull();
     }
 
-//    @Test
-//    void shouldAddPassenger() {
-//        Schedule schedule = new Schedule(1L,1L,
-//                "Krakow",
-//                "Malaga",
-//                LocalDateTime.of(2022, 10, 10, 10, 10),
-//                LocalDateTime.of(2022, 10, 10, 12, 10),
-//                "100",
-//                null, null);
-//        scheduleRepository.save(schedule);
-//
-//        Passenger passenger = new Passenger(1L, 1L, 1L, 1);
-//        given(passengerRepository.save(passenger)).willReturn(passenger);
-//        underTest.addPassenger(passenger);
-//        verify(passengerRepository).save(passenger); //TODO
-//    }
+    @Test
+    void shouldAddPassenger() {
+        Bus bus = new Bus(1L,
+                "Merdeces",
+                "Vivaro",
+                10,
+                "toilet",
+                null);
+        when(busRepository.findById(bus.getId())).thenReturn(Optional.of(bus));
+
+        Schedule schedule = new Schedule(1L,bus.getId(),
+                "Krakow",
+                "Malaga",
+                LocalDateTime.of(2022, 10, 10, 10, 10),
+                LocalDateTime.of(2022, 10, 10, 12, 10),
+                "100",
+                null, null);
+        when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
+
+        Passenger passenger = new Passenger(1L, 1L, 1L, 1);
+        given(passengerRepository.save(passenger)).willReturn(passenger);
+        underTest.addPassenger(passenger);
+        verify(passengerRepository).save(passenger);
+    }
 
     @Test
     void shouldGetPassengersForSpecificSchedule() {
-        Passenger passenger = new Passenger(1L, 1L, 1L, 1);
-        Passenger passenger2 = new Passenger(3L, 1L, 1L, 1);
-        Passenger passenger1 = new Passenger(2L, 2L, 1L, 1);
+
+        Bus bus = new Bus(1L,
+                "Merdeces",
+                "Vivaro",
+                10,
+                "toilet",
+                null);
+        when(busRepository.findById(bus.getId())).thenReturn(Optional.of(bus));
+
+        Schedule schedule = new Schedule(1L,
+                1L,
+                "Krakow",
+                "Malaga",
+                LocalDateTime.of(2022, 10, 10, 10, 10),
+                LocalDateTime.of(2022, 10, 10, 12, 10),
+                "100",
+                null, null);
+        when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
+
+        Passenger passenger = new Passenger(1L, 1L, schedule.getId(), 1);
+        Passenger passenger2 = new Passenger(3L, 1L, schedule.getId(), 1);
+        Passenger passenger1 = new Passenger(2L, 2L, schedule.getId(), 1);
 
         List<Passenger> passengerList = new ArrayList<>();
         passengerList.add(passenger);
