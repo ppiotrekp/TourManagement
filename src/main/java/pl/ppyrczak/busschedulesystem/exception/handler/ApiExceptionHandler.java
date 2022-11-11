@@ -37,12 +37,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, badRequest);
     }
 
-
     @ExceptionHandler(value = {ResourceNotFoundException.class,
             TokenExpiredException.class,
             IllegalPassengerException.class,
             IllegalDateException.class,
-            EmailTakenException.class})
+            EmailTakenException.class,
+            AllSeatsTakenException.class})
 
     public ResponseEntity<Object> handleApiRequestRuntimeException(RuntimeException e) {
         HttpStatus httpStatus;
