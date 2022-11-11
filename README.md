@@ -8,3 +8,4 @@ It's my rest api application to handle bus schedules
 - Spring Boot
 - Hibernate
 - MySQL
+- JUnit 5
