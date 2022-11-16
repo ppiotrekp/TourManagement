@@ -1,7 +1,9 @@
 package pl.ppyrczak.busschedulesystem.service;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -48,7 +50,19 @@ public class ScheduleService implements Subscriber {
 
     public Schedule getSchedule(Long id) {
         return scheduleRepository.findById(id).
-                orElseThrow();
+                orElseThrow(() -> new ResourceNotFoundException(
+                        "Schedule with id " + id + " does not exist"));
+    }
+
+    public List<Schedule> getSchedules(Schedule schedule) {
+        Schedule scheduleToFind = Schedule.builder()
+                .departureFrom(schedule.getDepartureFrom())
+                .departureTo(schedule.getDepartureTo())
+                .departure(schedule.getDeparture())
+                .arrival(schedule.getArrival())
+                .build();
+
+        return scheduleRepository.findAll(Example.of(scheduleToFind));
     }
 
     public Schedule addSchedule(Schedule schedule) {
@@ -61,17 +75,17 @@ public class ScheduleService implements Subscriber {
                 .filter(user -> user.getSubscribed() == true)
                 .collect(Collectors.toList());
 
-
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
     }
 
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
-        Schedule originalSchedule = scheduleRepository.findById(id)
-                .orElseThrow();
 
-        if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("You can not change finished schedule");
+        if (scheduleRepository.findById(id).isPresent()) {
+            Schedule originalSchedule = scheduleRepository.getById(id);
+            if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("You can not change finished schedule");
+            }
         }
 
         if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {
@@ -80,7 +94,7 @@ public class ScheduleService implements Subscriber {
 
         if (scheduleToUpdate.getArrival().isBefore(scheduleToUpdate.getDeparture())) {
             throw new RuntimeException("Arrival can not be before departure");
-        }
+        } //todo obsluzyc wyjatki
 
         return scheduleRepository.findById(id)
                 .map(schedule -> {
@@ -93,11 +107,14 @@ public class ScheduleService implements Subscriber {
                     return scheduleRepository.save(schedule);
                 })
                 .orElseGet(() -> {
-                    return scheduleRepository.save(scheduleToUpdate);
+                    return addSchedule(scheduleToUpdate);
                 });
     }
 
     public void deleteSchedule(Long id) {
+        if (!scheduleRepository.findById(id).isPresent()) {
+            throw new ResourceNotFoundException("Schedule with id " + id + " does not exist");
+        }
         scheduleRepository.deleteById(id);
     }
 
@@ -118,7 +135,7 @@ public class ScheduleService implements Subscriber {
                 setReviews(extractReviews(reviews, schedule.getId())));
 
         return allSchedules;
-    }
+    } //todo przeniesc to do passenger service bo to wyswietla pasazerow a nie przejazdy
 
     private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) {
         return passengers.stream()
@@ -139,7 +156,6 @@ public class ScheduleService implements Subscriber {
                             buildEmail(user.getFirstName(), schedule));
         }
     }
-
 
     private String buildEmail(String name,  Schedule schedule) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +

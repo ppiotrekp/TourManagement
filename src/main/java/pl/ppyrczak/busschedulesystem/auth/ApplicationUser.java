@@ -10,6 +10,7 @@ import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,13 +26,17 @@ public class ApplicationUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "You have to pass your first name")
     private String firstName;
+    @NotBlank(message = "You have to pass your last name")
     private String lastName;
+    @NotBlank(message = "You have to pass your email")
     private String username;
-
+    @NotBlank(message = "You have to pass your password")
     private String password;
 
-    @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
+//    @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
+    @NotBlank(message = "You have to pass your phone number")
     private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)

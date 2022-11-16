@@ -11,4 +11,5 @@ import java.util.List;
 public interface BusRepository extends JpaRepository<Bus, Long> {
     @Query("select b from Bus b")
     List<Bus> findAllBuses(Pageable pageable);
+
 }

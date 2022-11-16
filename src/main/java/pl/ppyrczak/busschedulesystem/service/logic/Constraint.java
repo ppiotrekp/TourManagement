@@ -1,14 +1,17 @@
 package pl.ppyrczak.busschedulesystem.service.logic;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
-import java.time.LocalDateTime;
+import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.SECONDS;
+
 import java.util.List;
-import java.util.Objects;
 
 @Component
+@Slf4j
 public class Constraint {
 
     private final ScheduleRepository scheduleRepository;
@@ -20,41 +23,21 @@ public class Constraint {
     private List<Schedule> getSchedules() {
         return scheduleRepository.findAll();
     }
-    public List<LocalDateTime> extractAllDeparturesWithTheSameBus(Schedule schedule) {
-        List<Schedule> schedules = getSchedules();
-        System.out.println(schedules.toString());
 
-        List<LocalDateTime> allDepartures =
-                schedules.stream()
-                        .filter(s -> Objects.equals(s.getBusId(), schedule.getBusId()))
-                        .map(Schedule::getDeparture)
-                        .toList();
-        System.out.println(allDepartures);
-        return allDepartures;
+    public boolean isBusAvaliable(Schedule schedule) {
+        List<Schedule> schedules = scheduleRepository.findAllByBusId(schedule.getBusId());
+        boolean returnStat = true;
+
+        log.info("schedules: " + schedules.size());
+        for (Schedule scheduleIterator : schedules) {
+            if ((scheduleIterator.getArrival().isBefore(schedule.getDeparture()) &&
+                    HOURS.between(scheduleIterator.getArrival(), schedule.getDeparture()) < 24L ) ||
+
+                    (schedule.getArrival().isBefore(scheduleIterator.getDeparture()) &&
+                            HOURS.between(schedule.getArrival(), scheduleIterator.getDeparture()) < 24L )) {
+                returnStat = false;
+            }
+        }
+        return returnStat;
     }
-
-    public List<LocalDateTime> extractAllArrivalsWithTheSameBus(Schedule schedule) {
-        List<Schedule> schedules = getSchedules();
-        System.out.println(schedules.toString());
-
-        List<LocalDateTime> allArrivals =
-                schedules.stream()
-                        .filter(s -> Objects.equals(s.getBusId(), schedule.getBusId()))
-                        .map(Schedule::getArrival)
-                        .toList();
-        System.out.println(allArrivals);
-        return allArrivals;
-    }
-
-    public boolean checkConstraintsForSchedule(Schedule schedule) { //TODO NAPRAWIC TO
-        List<LocalDateTime> allDepartures = extractAllDeparturesWithTheSameBus(schedule);
-        List<LocalDateTime> allArrivals = extractAllArrivalsWithTheSameBus(schedule);
-
-        return allArrivals.stream() // czy inny przyjazd byl na 3 dni przed kolejnym odjazdem
-                .noneMatch(s -> s.plusDays(2L).isAfter(schedule.getDeparture())) &&
-
-                allDepartures.stream()
-                        .noneMatch(s -> s.minusDays(2L).isAfter(schedule.getArrival()));
-    }
-
 }

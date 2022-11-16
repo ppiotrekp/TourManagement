@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -14,6 +15,8 @@ import pl.ppyrczak.busschedulesystem.service.BusService;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 
@@ -40,8 +43,9 @@ public class BusController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/bus")
-    public Bus addBus(@Valid @RequestBody Bus bus) {
-        return busService.addBus(bus);
+    public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus bus) {
+//        return busService.addBus(bus);
+        return new ResponseEntity<>(busService.addBus(bus), CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

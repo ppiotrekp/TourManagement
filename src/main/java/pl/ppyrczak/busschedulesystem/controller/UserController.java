@@ -13,6 +13,7 @@ import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
+import pl.ppyrczak.busschedulesystem.exception.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ApplicationUser getUsers(@PathVariable Long id,
                                     HttpServletRequest request,
-                                    Authentication authentication) throws IllegalAccessException {
+                                    Authentication authentication) throws UserNotAuthorizedException {
 
         List<ApplicationUser> users = userService.getAllUsersInfo();
         Long currentId = 0L;
@@ -61,7 +62,7 @@ public class UserController {
         if (currentId == id || isAdmin) {
             return userService.getUser(id);
         } else {
-            throw new IllegalAccessException("FORBIDDEN");
+            throw new UserNotAuthorizedException();
         }
 
     }

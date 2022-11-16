@@ -33,9 +33,9 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
 
-    public JwtCredentialsAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtCredentialsAuthenticationFilter(AuthenticationManager authenticationManager,
+                                              UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
-
         this.userRepository = userRepository;
     }
 
@@ -57,7 +57,6 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
         }
 
         return authenticationManager.authenticate(authenticationToken);
-
     }
 
     @Override
@@ -83,8 +82,6 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-//        response.setHeader("accessToken", accessToken);
-//        response.setHeader("refreshToken", refreshToken);
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
         tokens.put("refreshToken", refreshToken);

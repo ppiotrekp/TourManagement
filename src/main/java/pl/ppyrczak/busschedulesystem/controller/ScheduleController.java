@@ -23,6 +23,11 @@ public class ScheduleController {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
     }
 
+    @PostMapping("/schedulesFilter")
+    public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
+        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
+    }
+
     @GetMapping("/schedules/{id}")
     public ScheduleDto getScheduleForUsers(@PathVariable Long id) {
         return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
@@ -48,7 +53,7 @@ public class ScheduleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/schedule/{id}")
-    public Schedule editSchedule(@RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
+    public Schedule editSchedule(@Valid @RequestBody Schedule scheduleToUpdate, @PathVariable Long id) {
         return scheduleService.editSchedule(scheduleToUpdate, id);
     }
 

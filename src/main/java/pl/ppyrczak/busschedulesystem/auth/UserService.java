@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
+import pl.ppyrczak.busschedulesystem.exception.EmailTakenException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
@@ -28,9 +30,9 @@ import static org.springframework.http.ResponseEntity.*;
 
 @Service
 @AllArgsConstructor
-@Transactional//
+@Transactional
 @Slf4j
-public class UserService implements UserDetailsService, UserInterface {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -44,7 +46,7 @@ public class UserService implements UserDetailsService, UserInterface {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
         if (user == null) {
             log.error("User not found");
         } else {
@@ -59,16 +61,13 @@ public class UserService implements UserDetailsService, UserInterface {
                         authorities);
     } //zmiana na maila
 
-    public ApplicationUser addUser(ApplicationUser user) {
-        return userRepository.save(user);
-    }
 
     public String signUpUser(ApplicationUser user) {
         boolean userExists = userRepository.findByUsername(user.getUsername())
                 .isPresent();
 
         if (userExists) {
-            throw new IllegalStateException("email already taken");
+            throw new EmailTakenException();
         }
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -101,12 +100,6 @@ public class UserService implements UserDetailsService, UserInterface {
                 .map(ApplicationUser::getId)
                 .collect(Collectors.toList());
 
-        List<Passenger> passengers = passengerRepository.
-                findAllByUserIdIn(ids);
-
-
-        users.forEach(user -> user.setUserSchedules((passengers)));
-
         return users;
     }
 
@@ -116,50 +109,25 @@ public class UserService implements UserDetailsService, UserInterface {
                 .collect(Collectors.toList()); //TODO NIE DZIALA
     }
 
-    public ResponseEntity<?> blockLoginIfUserIsNotConfirmed(ApplicationUser user) {
-        if (!user.getEnabled()) {
-            return notFound().build();
-        } else {
-            return ok().build();
-        }
-
-    }
-
-    @Override
-    public ApplicationUser saveUser(ApplicationUser user) {
-        log.info("saving {} user", user.getFirstName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
-    }
-
-    @Override
     public UserRole saveRole(UserRole role) {
         log.info("saving {} role", role.getName());
         return roleRepository.save(role);
     }
 
-    @Override
     public void addRoleToUser(String username, String roleName) {
         log.info("adding role to user");
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
 
         UserRole role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
     }
 
-    @Override
-    public void permitUserToLogin(String username) {
-
-    }
-
-    @Override
     public ApplicationUser getUser(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiRequestException("User not found"));
     }
 
-    @Override
     public List<ApplicationUser> getUsers() {
         return userRepository.findAll();
     }
