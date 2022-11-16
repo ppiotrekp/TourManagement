@@ -1,6 +1,5 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -8,14 +7,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -37,8 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-class PassengerControllerTest {
-
+public class PassengerControllerUserTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -95,44 +90,26 @@ class PassengerControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetPassengers() throws Exception {
+    @WithMockUser(username = "ppyrczak@gmail.com")
+    void shouldAddPassenger() throws Exception {
         Passenger passenger = createPassenger();
-        Passenger passenger1 = createPassenger();
-
-        mockMvc.perform(get("/passengers"))
+        mockMvc.perform(post("/passenger")
+                        .content(objectMapper.writeValueAsString(passenger))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
-        Assertions.assertThat(passengerRepository.findAll().size()).isEqualTo(2);
+                .andExpect(status().isCreated());
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetPassenger() throws Exception {
+    @WithMockUser(username = "ppyrczak1@gmail.com")
+    void shouldNotAddPassenger() throws Exception {
         Passenger passenger = createPassenger();
-        mockMvc.perform(get("/passengers/" + passenger.getId()))
+        mockMvc.perform(post("/passenger")
+                        .content(objectMapper.writeValueAsString(passenger))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-//    @Test
-//    void shouldAddPassenger() throws Exception {
-//        Passenger passenger = createPassenger();
-//        Authentication authentication;
-//        mockMvc.perform(post("/passenger")
-//                .content(objectMapper.writeValueAsString(passenger))
-//                .contentType(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isCreated()); //todo ustawic uprawnienia
-//    }
-
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetRidesWithPassengers() throws Exception {
-        Passenger passenger = createPassenger();
-        mockMvc.perform(get("/schedules/" + passenger.getScheduleId() +"/passengers"))
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isForbidden());
     }
 }
