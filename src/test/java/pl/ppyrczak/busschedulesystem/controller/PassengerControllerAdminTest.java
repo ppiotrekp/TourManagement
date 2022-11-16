@@ -46,6 +46,8 @@ class PassengerControllerAdminTest {
     private PassengerRepository passengerRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private Bus createBus() {
         Bus bus = new Bus();
@@ -114,5 +116,16 @@ class PassengerControllerAdminTest {
         mockMvc.perform(get("/schedules/" + passenger.getScheduleId() +"/passengers"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldNotAddPassenger() throws Exception {
+        Passenger passenger = createPassenger();
+        mockMvc.perform(post("/passenger")
+                        .content(objectMapper.writeValueAsString(passenger))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 }
