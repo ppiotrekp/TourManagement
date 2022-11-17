@@ -18,17 +18,8 @@ class RoleRepositoryTest {
     @Test
     void shouldFindByName() {
         UserRole role = new UserRole("ROLE_ADMIN");
-        UserRole role1 = new UserRole("ROLE_USER");
-
-        role.setId(1L);
-        role1.setId(2L);
-
         roleRepository.save(role);
-        roleRepository.save(role1);
-
-        UserRole role2 = roleRepository.findById(1L).orElseThrow();
-
-        UserRole expectedRole = roleRepository.findByName(role2.getName());
-        Assert.assertNotNull(expectedRole);
+        UserRole expectedRole = roleRepository.findByName(role.getName());
+        assertNotNull(expectedRole);
     }
 }
