@@ -9,3 +9,4 @@ It's my rest api application to handle bus schedules
 - Hibernate
 - MySQL
 - JUnit 5
+- Mockito
