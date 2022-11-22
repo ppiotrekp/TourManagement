@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.controller;
+package pl.ppyrczak.busschedulesystem.controller.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +42,20 @@ class BusControllerAdminTest {
     @AfterEach
     public void tearDown() {
         busRepository.deleteAll();
+    }
+
+    @Test
+    void shouldGetBuses() throws Exception {
+        Bus newBus = new Bus();
+        newBus.setBrand("Mercedes");
+        newBus.setModel("V200");
+        newBus.setEquipment("kitchen");
+        newBus.setPassengersLimit(20);
+        busRepository.save(newBus);
+
+        mockMvc.perform(get("/buses?page=1&sort=DESC"))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test

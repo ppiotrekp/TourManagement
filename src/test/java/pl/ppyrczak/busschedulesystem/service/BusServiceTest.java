@@ -9,11 +9,16 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.data.domain.Sort.by;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Bus;
@@ -74,6 +79,25 @@ class BusServiceTest {
     }
 
     @Test
+    void shouldGetBuses() {
+        Bus bus = new Bus(1L,
+                "Merdeces",
+                "Vivaro",
+                10,
+                "toilet",
+                null);
+        List<Bus> buses = new ArrayList<>();
+        buses.add(bus);
+
+        Pageable pageable = PageRequest.of(0, 3, by("brand"));
+
+        when(busRepository.findAllBuses(Pageable.ofSize(3))).thenReturn(new ArrayList<>());
+        underTest.getBuses(0, Sort.Direction.ASC
+        );
+        verify(busRepository).findAllBuses(pageable);
+    }
+
+    @Test
     void shouldDeleteBus() {
         Bus bus = new Bus(1L,
                 "Merdeces",
@@ -94,8 +118,22 @@ class BusServiceTest {
 //                10,
 //                "toilet",
 //                null);
-//        given(busRepository.findById(anyLong())).willReturn(Optional.ofNullable(null));
-//        underTest.deleteBus(bus.getId());
-//        org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException.class, ()-> {});
+//
+////        assertThrows(ResourceNotFoundException.class, ()-> {
+////            underTest.deleteBus(bus.getId());});
+//
+//        given(busRepository.findById(bus.getId())).willReturn(Optional.of(bus));
+//        willThrow(new ResourceNotFoundException("Bus with id " + bus.getId() + " does not exist"))
+//                .given(busRepository)
+//                .deleteById(bus.getId());
+//
+//        try {
+//            underTest.deleteBus(bus.getId());
+//        } catch (ResourceNotFoundException e) {}
+//
+//        then(busRepository)
+//                .should(never());
+//                //.deleteById(bus.getId());
+//
 //    }
 }
