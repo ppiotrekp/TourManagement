@@ -1,5 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -12,10 +13,7 @@ import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
-import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
-import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
-import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
-import pl.ppyrczak.busschedulesystem.repository.UserRepository;
+import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 import pl.ppyrczak.busschedulesystem.service.subscription.Subscriber;
 
@@ -27,26 +25,15 @@ import java.util.stream.Collectors;
 import static pl.ppyrczak.busschedulesystem.service.util.EmailBuilder.buildEmail;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleService implements Subscriber {
+    private final BusRepository busRepository;
     private final ScheduleRepository scheduleRepository;
     private final PassengerRepository passengerRepository;
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final EmailSender emailSender;
     private final Constraint constraint;
-
-    public ScheduleService(ScheduleRepository scheduleRepository,
-                           PassengerRepository passengerRepository,
-                           ReviewRepository reviewRepository,
-                           UserRepository userRepository, EmailSender emailSender,
-                           Constraint constraint) {
-        this.scheduleRepository = scheduleRepository;
-        this.passengerRepository = passengerRepository;
-        this.reviewRepository = reviewRepository;
-        this.userRepository = userRepository;
-        this.emailSender = emailSender;
-        this.constraint = constraint;
-    }
 
     public List<Schedule> getSchedules() {
         return scheduleRepository.findAll();
@@ -80,6 +67,9 @@ public class ScheduleService implements Subscriber {
                 .filter(ApplicationUser::getSubscribed)
                 .collect(Collectors.toList());
 
+        if (busRepository.findById(schedule.getBusId()).isEmpty()) {
+            throw new ResourceNotFoundException("Bus with id " + schedule.getBusId() + "does not exist");
+        }
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
     }
