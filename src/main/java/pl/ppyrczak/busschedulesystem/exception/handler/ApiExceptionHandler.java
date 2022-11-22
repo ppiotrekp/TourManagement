@@ -43,7 +43,10 @@ public class ApiExceptionHandler {
             IllegalDateException.class,
             EmailTakenException.class,
             AllSeatsTakenException.class,
-            BusNotAvailableException.class})
+            BusNotAvailableException.class,
+            ArrivalBeforeDepartureException.class,
+            ArrivalInPastException.class,
+            FinishedTripException.class})
 
     public ResponseEntity<Object> handleApiRequestRuntimeException(RuntimeException e) {
         HttpStatus httpStatus;

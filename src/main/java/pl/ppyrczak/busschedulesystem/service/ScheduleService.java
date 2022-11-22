@@ -7,8 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.exception.runtime.BusNotAvailableException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.*;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -68,29 +67,27 @@ public class ScheduleService implements Subscriber {
                 .collect(Collectors.toList());
 
         if (busRepository.findById(schedule.getBusId()).isEmpty()) {
-            throw new ResourceNotFoundException("Bus with id " + schedule.getBusId() + "does not exist");
+            throw new ResourceNotFoundException("Bus with id " + schedule.getBusId() + " does not exist");
         }
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
     }
 
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
-
         if (scheduleRepository.findById(id).isPresent()) {
             Schedule originalSchedule = scheduleRepository.getById(id);
             if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
-                throw new RuntimeException("You can not change finished schedule");
+                throw new FinishedTripException();
             }
         }
 
         if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("You can not set arrival in the past");
+            throw new ArrivalInPastException();
         }
 
         if (scheduleToUpdate.getArrival().isBefore(scheduleToUpdate.getDeparture())) {
-            throw new RuntimeException("Arrival can not be before departure");
-        } //todo obsluzyc wyjatki
-
+            throw new ArrivalBeforeDepartureException();
+        }
         return scheduleRepository.findById(id)
                 .map(schedule -> {
                     schedule.setBusId(scheduleToUpdate.getBusId());
