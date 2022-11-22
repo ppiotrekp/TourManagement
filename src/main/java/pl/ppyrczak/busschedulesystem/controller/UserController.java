@@ -13,7 +13,8 @@ import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
-import pl.ppyrczak.busschedulesystem.exception.UserNotAuthorizedException;
+import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
+import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -30,6 +32,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserPermission userPermission;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
@@ -41,36 +44,17 @@ public class UserController {
     public ApplicationUser getUsers(@PathVariable Long id,
                                     HttpServletRequest request,
                                     Authentication authentication) throws UserNotAuthorizedException {
-
-        List<ApplicationUser> users = userService.getAllUsersInfo();
-        Long currentId = 0L;
-        Boolean isAdmin = false;
-
-        if (request.isUserInRole("ROLE_ADMIN"))
-            isAdmin = true;
-
-        for (ApplicationUser user : users) {
-            if (user.getUsername().equals(authentication.getName())) {
-                currentId = user.getId();
-            }
-        }
-
-        System.out.println(authentication.getAuthorities().toString());
-        System.out.println("currentID: " + currentId);
-        System.out.println(isAdmin);
-
-        if (currentId == id || isAdmin) {
-            return userService.getUser(id);
-        } else {
+        if (!userPermission.hasPermissionToRetrieveUser(id, request, authentication)) {
             throw new UserNotAuthorizedException();
         }
-
+        return userService.getUser(id);
     }
 
+    @ResponseStatus(CREATED)
     @PostMapping("/role")
     public UserRole saveRole(@RequestBody UserRole role) {
         return userService.saveRole(role);
-    }
+    } //todo stworzyc roleservice
 
     @GetMapping("/api/token/refresh")
     public void refreshToken(HttpServletRequest request,
@@ -110,7 +94,7 @@ public class UserController {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
-
+// todo przeniesc do service
         } else {
             throw new RuntimeException("Refresh token is missing");
         }

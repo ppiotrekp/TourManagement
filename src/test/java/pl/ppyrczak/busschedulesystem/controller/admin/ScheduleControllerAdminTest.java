@@ -1,21 +1,18 @@
-package pl.ppyrczak.busschedulesystem.controller;
+package pl.ppyrczak.busschedulesystem.controller.admin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -27,9 +24,11 @@ import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -37,7 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-class PassengerControllerTest {
+@WithMockUser(roles = {"ADMIN"})
+class ScheduleControllerAdminTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,6 +51,11 @@ class PassengerControllerTest {
     private UserRepository userRepository;
     @Autowired
     private ObjectMapper objectMapper;
+
+    @AfterEach
+    public void tearDown() {
+        scheduleRepository.deleteAll();
+    }
 
     private Bus createBus() {
         Bus bus = new Bus();
@@ -96,42 +101,57 @@ class PassengerControllerTest {
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
-    void shouldGetPassengers() throws Exception {
-        Passenger passenger = createPassenger();
-        Passenger passenger1 = createPassenger();
+    void shouldGetScheduleForAdmin() throws Exception {
+        Schedule schedule = createSchedule();
 
-        mockMvc.perform(get("/passengers"))
+        mockMvc.perform(get("/admin/schedules/" + schedule.getId()))
                 .andDo(print())
-                .andExpect(status().isOk());
-        Assertions.assertThat(passengerRepository.findAll().size()).isEqualTo(2);
+                .andExpect(status().isOk())
+                .andReturn(); //todo dodac pasazerow
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetPassenger() throws Exception {
-        Passenger passenger = createPassenger();
-        mockMvc.perform(get("/passengers/" + passenger.getId()))
+    void shouldAddSchedule() throws Exception {
+        Schedule schedule = createSchedule();
+
+        mockMvc.perform(post("/schedule")
+                        .content(objectMapper.writeValueAsString(schedule))
+                        .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists());
+    }
+
+    @Test
+    void shouldEditSchedule() throws Exception {
+        Schedule schedule = createSchedule();
+
+        mockMvc.perform(put("/schedules/" + schedule.getId())
+                        .content(objectMapper.writeValueAsString(schedule))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    void shouldAddPassenger() throws Exception {
-//        Passenger passenger = createPassenger();
-//        Authentication authentication;
-//        mockMvc.perform(post("/passenger")
-//                .content(objectMapper.writeValueAsString(passenger))
-//                .contentType(APPLICATION_JSON)
-//                .accept(APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isCreated()); //todo ustawic uprawnienia
-//    }
+    @Test
+    void shouldDeleteSchedule() throws Exception {
+        Schedule schedule = createSchedule();
+
+        mockMvc.perform(delete("/schedules/" + schedule.getId()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertEquals(scheduleRepository.findAll().size(), 0);
+    }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
     void shouldGetRidesWithPassengers() throws Exception {
+        Schedule schedule = createSchedule();
+        ApplicationUser user = createUser();
         Passenger passenger = createPassenger();
-        mockMvc.perform(get("/schedules/" + passenger.getScheduleId() +"/passengers"))
+
+        mockMvc.perform(get("/schedules/passengers"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

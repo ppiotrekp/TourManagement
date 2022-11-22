@@ -4,25 +4,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
-import pl.ppyrczak.busschedulesystem.exception.UserNotAuthorizedException;
-import pl.ppyrczak.busschedulesystem.model.Bus;
+import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
+import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
-import pl.ppyrczak.busschedulesystem.model.Schedule;
-import pl.ppyrczak.busschedulesystem.service.BusService;
 import pl.ppyrczak.busschedulesystem.service.PassengerService;
-import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
 public class PassengerController {
     private final PassengerService passengerService;
     private final UserService userService;
+    private final UserPermission userPermission;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/passengers")
@@ -36,23 +34,15 @@ public class PassengerController {
         return passengerService.getPassenger(id);
     }
 
+    @ResponseStatus(CREATED)
     @PostMapping("/passenger")
     public Passenger addPassenger(@Valid @RequestBody Passenger passenger,
                                   Authentication authentication) throws UserNotAuthorizedException {
-        List<ApplicationUser> users = userService.getAllUsersInfo();
-        Long currentId = 0L;
 
-        for (ApplicationUser user : users) {
-            if (user.getUsername().equals(authentication.getName())) {
-                currentId = user.getId();
-            }
-        }
-
-        if (currentId == passenger.getUserId()) {
-            return passengerService.addPassenger(passenger);
-        } else {
+        if (!userPermission.hasPermissionToAddPassenger(passenger, authentication)) {
             throw new UserNotAuthorizedException();
         }
+        return passengerService.addPassenger(passenger);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
