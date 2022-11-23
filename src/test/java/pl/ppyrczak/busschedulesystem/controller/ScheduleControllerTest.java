@@ -124,7 +124,7 @@ class ScheduleControllerTest {
         Schedule schedule1 = createSchedule();
         Schedule schedule2 = createSchedule();
 
-        mockMvc.perform(get("/schedules"))
+        mockMvc.perform(get("/schedules?page=0&sort=ASC"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();

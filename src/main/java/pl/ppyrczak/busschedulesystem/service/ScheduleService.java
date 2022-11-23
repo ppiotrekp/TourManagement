@@ -26,6 +26,7 @@ import static pl.ppyrczak.busschedulesystem.service.util.EmailBuilder.buildEmail
 @Service
 @RequiredArgsConstructor
 public class ScheduleService implements Subscriber {
+    private static final int PAGE_SIZE = 10;
     private final BusRepository busRepository;
     private final ScheduleRepository scheduleRepository;
     private final PassengerRepository passengerRepository;
@@ -34,8 +35,10 @@ public class ScheduleService implements Subscriber {
     private final EmailSender emailSender;
     private final Constraint constraint;
 
-    public List<Schedule> getSchedules() {
-        return scheduleRepository.findAll();
+    public List<Schedule> getSchedules(int page, Sort.Direction sort) {
+        return scheduleRepository.findAllSchedules(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "departure")));
     }
 
     public Schedule getSchedule(Long id) {
