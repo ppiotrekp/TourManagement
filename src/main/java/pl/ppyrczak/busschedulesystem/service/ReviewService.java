@@ -2,9 +2,9 @@ package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
-import pl.ppyrczak.busschedulesystem.exception.IllegalDateException;
-import pl.ppyrczak.busschedulesystem.exception.IllegalPassengerException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalDateException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalPassengerException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -30,7 +30,7 @@ public class ReviewService {
     public Review addReview(Review review) {
         review.setCreated();
         Schedule schedule = scheduleRepository.findById(review.getScheduleId())
-                .orElseThrow(() -> new ApiRequestException(
+                .orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + review.getScheduleId() + " does not exist"
                 ));
         if (!reviewIsNotBeforeArrival(review)) {
@@ -44,7 +44,7 @@ public class ReviewService {
 
     public void deleteReview(Long id) {
         if (!reviewRepository.findById(id).isPresent()) {
-            throw new ApiRequestException("Review with id " + id + " does not exist");
+            throw new ResourceNotFoundException("Review with id " + id + " does not exist");
         }
         reviewRepository.deleteById(id);
     }

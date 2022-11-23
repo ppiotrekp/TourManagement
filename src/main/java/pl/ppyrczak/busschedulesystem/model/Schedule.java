@@ -31,8 +31,8 @@ public class Schedule {
     @NotNull(message = "arrival is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime arrival;
-    @NotBlank(message = "price is mandatory")
-    private String ticketPrice;
+    @NotNull(message = "price is mandatory")
+    private int ticketPrice;
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "scheduleId", updatable = false, insertable = false)
     private List<Passenger> passengers;
@@ -45,7 +45,7 @@ public class Schedule {
                     String departureTo,
                     LocalDateTime departure,
                     LocalDateTime arrival,
-                    String ticketPrice,
+                    int ticketPrice,
                     List<Passenger> passengers,
                     List<Review> reviews) {
         this.busId = busId;

@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
-import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
-import pl.ppyrczak.busschedulesystem.exception.EmailConfirmedException;
-import pl.ppyrczak.busschedulesystem.exception.TokenExpiredException;
+import pl.ppyrczak.busschedulesystem.exception.illegalstate.EmailConfirmedException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.TokenExpiredException;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
@@ -17,10 +17,6 @@ import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static pl.ppyrczak.busschedulesystem.security.UserRole.*;
 
 @Service
 @AllArgsConstructor
@@ -63,7 +59,7 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new ApiRequestException("token not found"));
+                        new ResourceNotFoundException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
             throw new EmailConfirmedException();

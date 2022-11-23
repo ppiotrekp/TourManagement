@@ -148,9 +148,5 @@ public class ScheduleService implements Subscriber {
                             buildEmail(user.getFirstName(), schedule));
         }
     }
-    public List<Schedule> getAllSchedules(int page, Sort.Direction sort) {
-        return scheduleRepository.findAllSchedules(
-                PageRequest.of(page, 3,
-                        Sort.by(sort, "busId")));
-    }
+
 }

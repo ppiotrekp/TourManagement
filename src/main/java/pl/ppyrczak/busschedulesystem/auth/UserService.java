@@ -2,7 +2,6 @@ package pl.ppyrczak.busschedulesystem.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,10 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.exception.ApiRequestException;
-import pl.ppyrczak.busschedulesystem.exception.EmailTakenException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.EmailTakenException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
-import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
 import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
@@ -25,8 +23,6 @@ import pl.ppyrczak.busschedulesystem.security.UserRole;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.ResponseEntity.*;
 
 @Service
 @AllArgsConstructor
@@ -46,7 +42,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (user == null) {
             log.error("User not found");
         } else {
@@ -117,7 +113,7 @@ public class UserService implements UserDetailsService {
     public void addRoleToUser(String username, String roleName) {
         log.info("adding role to user");
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         UserRole role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
@@ -125,7 +121,7 @@ public class UserService implements UserDetailsService {
 
     public ApplicationUser getUser(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new ApiRequestException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public List<ApplicationUser> getUsers() {

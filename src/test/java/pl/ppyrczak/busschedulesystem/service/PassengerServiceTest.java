@@ -90,7 +90,7 @@ class PassengerServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
         when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
 
@@ -117,7 +117,7 @@ class PassengerServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
         when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
 

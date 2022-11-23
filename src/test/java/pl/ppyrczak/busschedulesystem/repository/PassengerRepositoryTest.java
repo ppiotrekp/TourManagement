@@ -44,7 +44,7 @@ class PassengerRepositoryTest {
         schedule.setDepartureTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2023, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2023, 10, 10, 12, 10));
-        schedule.setTicketPrice("100");
+        schedule.setTicketPrice(100);
         scheduleRepository.save(schedule);
         return schedule;
     }
@@ -126,7 +126,7 @@ class PassengerRepositoryTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
         scheduleRepository.save(schedule);
 
@@ -136,7 +136,7 @@ class PassengerRepositoryTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
         scheduleRepository.save(schedule1);
 

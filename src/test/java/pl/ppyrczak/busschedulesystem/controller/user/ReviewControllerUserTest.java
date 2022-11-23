@@ -75,7 +75,7 @@ class ReviewControllerUserTest {
         schedule.setDepartureTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2022, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2022, 10, 10, 12, 10));
-        schedule.setTicketPrice("100");
+        schedule.setTicketPrice(100);
         scheduleRepository.save(schedule);
 
         ApplicationUser user = new ApplicationUser();
@@ -122,7 +122,7 @@ class ReviewControllerUserTest {
         schedule.setDepartureTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2022, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2022, 10, 10, 12, 10));
-        schedule.setTicketPrice("100");
+        schedule.setTicketPrice(100);
         scheduleRepository.save(schedule);
 
         ApplicationUser user = new ApplicationUser();

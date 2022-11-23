@@ -74,7 +74,7 @@ class ScheduleControllerAdminTest {
         schedule.setDepartureTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2023, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2023, 10, 10, 12, 10));
-        schedule.setTicketPrice("100");
+        schedule.setTicketPrice(100);
         scheduleRepository.save(schedule);
         return schedule;
     }
@@ -107,20 +107,20 @@ class ScheduleControllerAdminTest {
         mockMvc.perform(get("/admin/schedules/" + schedule.getId()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn(); //todo dodac pasazerow
+                .andReturn();
     }
 
-    @Test
-    void shouldAddSchedule() throws Exception {
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(post("/schedule")
-                        .content(objectMapper.writeValueAsString(schedule))
-                        .contentType(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
-    }
+//    @Test
+//    void shouldAddSchedule() throws Exception {
+//        Schedule schedule = createSchedule();
+//
+//        mockMvc.perform(post("/schedule")
+//                        .content(objectMapper.writeValueAsString(schedule))
+//                        .contentType(APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.id").exists());
+//    }
 
     @Test
     void shouldEditSchedule() throws Exception {

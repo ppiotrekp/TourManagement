@@ -72,11 +72,5 @@ public class ScheduleController {
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ResponseStatus(OK)
-    @GetMapping("/scheduless")
-    public List<ScheduleDto> getSchedules(@RequestParam(required = false) int page, Sort.Direction sort) {
-        int pageNumber = page >= 0 ? page : 0;
-        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getAllSchedules(pageNumber, sort));
-    }
+
 }
