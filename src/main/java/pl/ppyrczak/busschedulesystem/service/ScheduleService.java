@@ -43,7 +43,9 @@ public class ScheduleService implements Subscriber {
     }
 
     public Schedule getSchedule(Long id) {
-        return scheduleRepository.findById(id).
+        return scheduleRepository.findById(id).stream()
+                .filter(schedule -> schedule.getDeparture().isAfter(now())).
+                findFirst().
                 orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + id + " does not exist"));
     }
