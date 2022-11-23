@@ -1,6 +1,7 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -27,8 +28,11 @@ public class ReviewController {
     private final UserPermission userPermission;
 
     @GetMapping("/schedules/{id}/reviews")
-    public List<Review> getReviewsWithDetailsForSpecificSchedule(@PathVariable Long id) {
-        return reviewService.getReviewsWithDetailsForSpecificSchedule(id);
+    public List<Review> getReviewsWithDetailsForSpecificSchedule(@PathVariable Long id,
+                                                                 @RequestParam(required = false) int page,
+                                                                 Sort.Direction sort) {
+        int pageNumber = page >= 0 ? page : 0;
+        return reviewService.getReviewsWithDetailsForSpecificSchedule(id, pageNumber, sort);
     }
 
     @ResponseStatus(CREATED)

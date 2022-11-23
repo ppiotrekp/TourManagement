@@ -169,7 +169,7 @@ class ReviewControllerTest {
         review1.setRating(4);
         review1.setCreated(now());
 
-        mockMvc.perform(get("/schedules/" + schedule.getId() + "/reviews"))
+        mockMvc.perform(get("/schedules/" + schedule.getId() + "/reviews?page=0&sort=ASC"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

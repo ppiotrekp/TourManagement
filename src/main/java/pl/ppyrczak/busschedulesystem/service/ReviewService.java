@@ -1,6 +1,8 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalDateException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalPassengerException;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Service
 public class ReviewService {
+    private static final int PAGE_SIZE = 5;
     private final ReviewRepository reviewRepository;
     private final PassengerRepository passengerRepository;
     private final ScheduleRepository scheduleRepository;
@@ -49,9 +52,12 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id) {
+    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id,
+                                                                 int page,
+                                                                 Sort.Direction sort) {
         List<Review> reviews = reviewRepository.
-                findAllByScheduleId(id);
+                findAllByScheduleId(id,  PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "created")));
         return reviews;
     }
 
