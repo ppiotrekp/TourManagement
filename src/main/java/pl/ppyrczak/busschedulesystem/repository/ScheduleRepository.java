@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findAllByBusId(Long id);
-    @Query("select s from Schedule s")
+    @Query(value = "select s.* from schedule s where date (s.departure) >= now() ", nativeQuery = true)
     List<Schedule> findAllSchedules(Pageable pageable);
 }
