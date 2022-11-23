@@ -27,4 +27,10 @@ public class Passenger {
     private Long scheduleId;
     @Range(min = 1)
     private Integer numberOfSeats;
+
+    public Passenger(Long userId, Long scheduleId, Integer numberOfSeats) {
+        this.userId = userId;
+        this.scheduleId = scheduleId;
+        this.numberOfSeats = numberOfSeats;
+    }
 }

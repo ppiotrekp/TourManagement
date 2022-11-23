@@ -38,4 +38,15 @@ public class Review {
         this.created = LocalDateTime.now();
     }
 
+    public Review(Long passengerId,
+                  Long scheduleId,
+                  int rating,
+                  String description,
+                  LocalDateTime created) {
+        this.passengerId = passengerId;
+        this.scheduleId = scheduleId;
+        this.rating = rating;
+        this.description = description;
+        this.created = created;
+    }
 }

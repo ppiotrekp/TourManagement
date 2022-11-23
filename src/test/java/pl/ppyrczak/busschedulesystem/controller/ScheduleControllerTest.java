@@ -82,7 +82,7 @@ class ScheduleControllerTest {
         schedule.setDepartureTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2023, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2023, 10, 10, 12, 10));
-        schedule.setTicketPrice("100");
+        schedule.setTicketPrice(100);
         scheduleRepository.save(schedule);
         return schedule;
     }
@@ -130,29 +130,18 @@ class ScheduleControllerTest {
                 .andReturn();
     }
 
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetScheduleForAdmin() throws Exception {
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(get("/admin/schedules/" + schedule.getId()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn(); //todo dodac pasazerow
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void shouldAddSchedule() throws Exception {
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(post("/schedule")
-                .content(objectMapper.writeValueAsString(schedule))
-                .contentType(APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
-    }
+//    @Test
+//    @WithMockUser(roles = "ADMIN")
+//    void shouldAddSchedule() throws Exception {
+//        Schedule schedule = createSchedule();
+//
+//        mockMvc.perform(post("/schedule")
+//                .content(objectMapper.writeValueAsString(schedule))
+//                .contentType(APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.id").exists());
+//    }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})

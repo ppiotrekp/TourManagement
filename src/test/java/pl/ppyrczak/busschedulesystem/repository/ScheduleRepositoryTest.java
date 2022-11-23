@@ -31,7 +31,7 @@ class ScheduleRepositoryTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
         scheduleRepository.save(schedule);
 

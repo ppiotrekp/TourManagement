@@ -10,10 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
-import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
-import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
-import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
-import pl.ppyrczak.busschedulesystem.repository.UserRepository;
+import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 
 import java.time.LocalDateTime;
@@ -41,12 +38,14 @@ class ScheduleServiceTest {
     @Mock
     private Constraint constraint;
     private AutoCloseable autoCloseable;
+    private BusRepository busRepository;
     private ScheduleService underTest;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ScheduleService(scheduleRepository,
+        underTest = new ScheduleService(busRepository,
+                scheduleRepository,
                 passengerRepository,
                 reviewRepository,
                 userRepository,
@@ -66,7 +65,7 @@ class ScheduleServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
 
         Schedule schedule1 = new Schedule(1L,
@@ -74,7 +73,7 @@ class ScheduleServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 7, 10, 10, 10),
                 LocalDateTime.of(2022, 7, 10, 12, 10),
-                "100",
+                100,
                 null, null);
 
         List<Schedule> scheduleList = new ArrayList<>();
@@ -96,7 +95,7 @@ class ScheduleServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
 
 
@@ -155,16 +154,11 @@ class ScheduleServiceTest {
                 "Malaga",
                 LocalDateTime.of(2022, 10, 10, 10, 10),
                 LocalDateTime.of(2022, 10, 10, 12, 10),
-                "100",
+                100,
                 null, null);
 
-        List<Schedule> scheduleList = new ArrayList<>();
-        scheduleList.add(schedule);
-
-        doNothing().when(scheduleRepository).deleteById(schedule.getId());
-
+        when(scheduleRepository.findById(schedule.getId())).thenReturn(Optional.of(schedule));
         underTest.deleteSchedule(schedule.getId());
-
         verify(scheduleRepository).deleteById(schedule.getId());
     }
 

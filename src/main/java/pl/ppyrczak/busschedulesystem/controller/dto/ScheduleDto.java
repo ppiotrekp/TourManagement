@@ -16,5 +16,5 @@ public class ScheduleDto {
     private String departureTo;
     private LocalDateTime departure;
     private LocalDateTime arrival;
-    private String ticketPrice;
+    private int ticketPrice;
 }
