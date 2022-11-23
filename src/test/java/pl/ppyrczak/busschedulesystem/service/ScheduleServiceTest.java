@@ -86,7 +86,7 @@ class ScheduleServiceTest {
 
         Pageable pageable = PageRequest.of(0, 10, by("departure"));
 
-        when(scheduleRepository.findAllSchedules(Pageable.ofSize(10))).thenReturn(new ArrayList<>());
+        when(scheduleRepository.findAllSchedules(Pageable.ofSize(10))).thenReturn(scheduleList);
 
         underTest.getSchedules(0, Sort.Direction.ASC);
 

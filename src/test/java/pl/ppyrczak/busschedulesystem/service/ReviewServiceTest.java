@@ -93,23 +93,23 @@ class ReviewServiceTest {
         verify(reviewRepository).save(eq(review));
     }
 
-//    @Test
-//    void shouldGetReviewsWithDetailsForSpecificSchedule() {
-//        //given
-//        Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
-//        Review review1 = new Review(2L, 2L, 1L, 4, "ok", LocalDateTime.now());
-//        List<Review> reviewList = new ArrayList<>();
-//        reviewList.add(review);
-//        reviewList.add(review1);
-//
-//        Pageable pageable = PageRequest.of(0, 5, by("created"));
-//
-//        when(reviewRepository.findAllByScheduleId(review.getScheduleId(), Pageable.ofSize(5))).thenReturn(new ArrayList<>());
-//        //when
-//        underTest.getReviewsWithDetailsForSpecificSchedule(1L,0, Sort.Direction.ASC);
-//        //then
-//        verify(scheduleRepository).findAllSchedules(pageable);
-//    } // todo naprawic to
+    @Test
+    void shouldGetReviewsWithDetailsForSpecificSchedule() {
+        //given
+        Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
+        Review review1 = new Review(2L, 2L, 1L, 4, "ok", LocalDateTime.now());
+        List<Review> reviewList = new ArrayList<>();
+        reviewList.add(review);
+        reviewList.add(review1);
+
+        Pageable pageable = PageRequest.of(0, 5, by("created"));
+
+        when(reviewRepository.findAllByScheduleId(review.getScheduleId(), Pageable.ofSize(5))).thenReturn(new ArrayList<>());
+        //when
+        underTest.getReviewsWithDetailsForSpecificSchedule(review.getScheduleId(),0, Sort.Direction.ASC);
+        //then
+        verify(reviewRepository).findAllByScheduleId(review.getScheduleId(), pageable);
+    }
 
     @Test
     void shouldDeleteReview(){
