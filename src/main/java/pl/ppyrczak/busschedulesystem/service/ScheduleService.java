@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static java.time.LocalDateTime.*;
 import static pl.ppyrczak.busschedulesystem.service.util.EmailBuilder.buildEmail;
 
 @Service
@@ -55,8 +56,11 @@ public class ScheduleService implements Subscriber {
                 .arrival(schedule.getArrival())
                 .build();
 
-        return scheduleRepository.findAll(Example.of(scheduleToFind));
-    }
+        return scheduleRepository.findAll(Example.of(scheduleToFind))
+                .stream()
+                .filter(schedule1 -> schedule1.getDeparture().isAfter(now()))
+                .collect(Collectors.toList());
+    } // todo nie dziaala
 
     @Transactional
     public Schedule addSchedule(Schedule schedule) {
@@ -79,12 +83,12 @@ public class ScheduleService implements Subscriber {
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
         if (scheduleRepository.findById(id).isPresent()) {
             Schedule originalSchedule = scheduleRepository.getById(id);
-            if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
+            if (originalSchedule.getArrival().isBefore(now())) {
                 throw new FinishedTripException();
             }
         }
 
-        if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {
+        if (scheduleToUpdate.getArrival().isBefore(now())) {
             throw new ArrivalInPastException();
         }
 
