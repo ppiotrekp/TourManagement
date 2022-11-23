@@ -99,8 +99,8 @@ class ScheduleServiceTest {
                 1L,
                 "Krakow",
                 "Malaga",
-                LocalDateTime.of(2022, 10, 10, 10, 10),
-                LocalDateTime.of(2022, 10, 10, 12, 10),
+                LocalDateTime.of(2024, 10, 10, 10, 10),
+                LocalDateTime.of(2024, 10, 10, 12, 10),
                 100,
                 null, null);
 
