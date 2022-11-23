@@ -55,10 +55,9 @@ public class ReviewService {
     public List<Review> getReviewsForSpecificSchedule(Long id,
                                                       int page,
                                                       Sort.Direction sort) {
-        List<Review> reviews = reviewRepository.
+        return reviewRepository.
                 findAllByScheduleId(id,  PageRequest.of(page, PAGE_SIZE,
                         Sort.by(sort, "created")));
-        return reviews;
     }
 
     private boolean reviewIsNotBeforeArrival(Review review) {
