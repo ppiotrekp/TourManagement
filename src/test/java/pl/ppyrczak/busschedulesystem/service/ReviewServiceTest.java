@@ -1,7 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -20,15 +19,12 @@ import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.data.domain.Sort.by;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -94,7 +90,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void shouldGetReviewsWithDetailsForSpecificSchedule() {
+    void shouldGetReviewsForSpecificSchedule() {
         //given
         Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
         Review review1 = new Review(2L, 2L, 1L, 4, "ok", LocalDateTime.now());
@@ -106,7 +102,7 @@ class ReviewServiceTest {
 
         when(reviewRepository.findAllByScheduleId(review.getScheduleId(), Pageable.ofSize(5))).thenReturn(new ArrayList<>());
         //when
-        underTest.getReviewsWithDetailsForSpecificSchedule(review.getScheduleId(),0, Sort.Direction.ASC);
+        underTest.getReviewsForSpecificSchedule(review.getScheduleId(),0, Sort.Direction.ASC);
         //then
         verify(reviewRepository).findAllByScheduleId(review.getScheduleId(), pageable);
     }

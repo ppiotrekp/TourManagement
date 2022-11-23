@@ -52,9 +52,9 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id,
-                                                                 int page,
-                                                                 Sort.Direction sort) {
+    public List<Review> getReviewsForSpecificSchedule(Long id,
+                                                      int page,
+                                                      Sort.Direction sort) {
         List<Review> reviews = reviewRepository.
                 findAllByScheduleId(id,  PageRequest.of(page, PAGE_SIZE,
                         Sort.by(sort, "created")));

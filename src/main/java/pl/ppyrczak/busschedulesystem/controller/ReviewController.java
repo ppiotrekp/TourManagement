@@ -2,11 +2,9 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
@@ -28,11 +26,11 @@ public class ReviewController {
     private final UserPermission userPermission;
 
     @GetMapping("/schedules/{id}/reviews")
-    public List<Review> getReviewsWithDetailsForSpecificSchedule(@PathVariable Long id,
+    public List<Review> getReviewsForSpecificSchedule(@PathVariable Long id,
                                                                  @RequestParam(required = false) int page,
                                                                  Sort.Direction sort) {
         int pageNumber = page >= 0 ? page : 0;
-        return reviewService.getReviewsWithDetailsForSpecificSchedule(id, pageNumber, sort);
+        return reviewService.getReviewsForSpecificSchedule(id, pageNumber, sort);
     }
 
     @ResponseStatus(CREATED)
