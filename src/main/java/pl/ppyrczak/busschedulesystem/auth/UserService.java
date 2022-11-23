@@ -2,6 +2,8 @@ package pl.ppyrczak.busschedulesystem.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService implements UserDetailsService {
 
+    private static final int PAGE_SIZE =5;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
@@ -126,6 +129,13 @@ public class UserService implements UserDetailsService {
 
     public List<ApplicationUser> getUsers() {
         return userRepository.findAll();
+    }
+
+    public List<ApplicationUser> getUsers(int page, Sort.Direction sort) {
+        return userRepository.findAllUsers(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "id")));
+
     }
 
     public ApplicationUser getUser(Long id) {

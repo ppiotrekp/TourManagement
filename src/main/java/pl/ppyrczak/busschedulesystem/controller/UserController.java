@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +37,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return UserDtoMapper.mapToUserDtos(userService.getUsers());
+    public List<UserDto> getUsers(@RequestParam(required = false) int page, Sort.Direction sort) {
+        int pageNumber = page >= 0 ? page : 0;
+        return UserDtoMapper.mapToUserDtos(userService.getUsers(pageNumber, sort));
     }
 
     @GetMapping("/users/{id}")
