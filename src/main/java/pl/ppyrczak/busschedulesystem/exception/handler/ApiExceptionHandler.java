@@ -46,7 +46,8 @@ public class ApiExceptionHandler {
             BusNotAvailableException.class,
             ArrivalBeforeDepartureException.class,
             ArrivalInPastException.class,
-            FinishedTripException.class})
+            FinishedTripException.class,
+            ReviewExistsException.class})
 
     public ResponseEntity<Object> handleApiRequestRuntimeException(RuntimeException e) {
         HttpStatus httpStatus;
