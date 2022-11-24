@@ -41,14 +41,9 @@ public class ScheduleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/schedules/{id}")
     public Schedule getScheduleForAdmin(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
+        return scheduleService.getScheduleWithPassengersAndReviews(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/schedules/passengers")
-    public List<Schedule> getSchedulesWithPassengersAndReviews() {
-        return scheduleService.getSchedulesWithPassengersAndReviews();
-    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = CREATED)

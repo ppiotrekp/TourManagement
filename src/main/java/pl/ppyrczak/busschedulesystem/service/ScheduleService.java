@@ -50,6 +50,12 @@ public class ScheduleService implements Subscriber {
                         "Schedule with id " + id + " does not exist"));
     }
 
+    public Schedule getScheduleWithPassengersAndReviews(Long id) {
+        return scheduleRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException(
+                        "Schedule with id " + id + " does not exist"));
+    }
+
     public List<Schedule> getSchedules(Schedule schedule) {
         Schedule scheduleToFind = Schedule.builder()
                 .departureFrom(schedule.getDepartureFrom())
