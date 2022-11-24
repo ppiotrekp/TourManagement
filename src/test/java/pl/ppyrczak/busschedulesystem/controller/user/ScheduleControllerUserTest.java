@@ -132,15 +132,4 @@ class ScheduleControllerUserTest {
 
         assertEquals(scheduleRepository.findAll().size(), 1);
     }
-
-    @Test
-    void shouldNotGetRidesWithPassengers() throws Exception {
-        Schedule schedule = createSchedule();
-        ApplicationUser user = createUser();
-        Passenger passenger = createPassenger();
-
-        mockMvc.perform(get("/schedules/passengers"))
-                .andDo(print())
-                .andExpect(status().isForbidden());
-    }
 }
