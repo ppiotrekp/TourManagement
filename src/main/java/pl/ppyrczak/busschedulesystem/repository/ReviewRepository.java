@@ -12,8 +12,7 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findAllByScheduleIdIn(List<Long> ids);
-
-
     List<Review> findAllByScheduleId(Long id, Pageable pageable);
     List<Review> findAllByScheduleId(Long id);
+    boolean existsByPassengerId(Long id);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalDateException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalPassengerException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ReviewExistsException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -36,6 +37,10 @@ public class ReviewService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + review.getScheduleId() + " does not exist"
                 ));
+
+        if (passengerHasReview(review)) {
+            throw new ReviewExistsException(review.getPassengerId());
+        }
         if (!reviewIsNotBeforeArrival(review)) {
             throw new IllegalDateException(schedule.getArrival());
         } else if (!scheduleHasPassenger(review)) {
@@ -82,5 +87,12 @@ public class ReviewService {
         }
 
         return returnStat;
+    }
+
+    private boolean passengerHasReview(Review review) {
+        if (reviewRepository.existsByPassengerId(review.getPassengerId())) {
+            return true;
+        }
+        return false;
     }
 }
