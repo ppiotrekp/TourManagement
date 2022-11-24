@@ -52,6 +52,11 @@ public class UserController {
         return userService.getUser(id);
     }
 
+    @GetMapping("/users/{id}/history")
+    public List<?> getUserHistory(@PathVariable Long id) {
+        return userService.getUserHistory(id);
+    }
+
     @ResponseStatus(CREATED)
     @PostMapping("/role")
     public UserRole saveRole(@RequestBody UserRole role) {
