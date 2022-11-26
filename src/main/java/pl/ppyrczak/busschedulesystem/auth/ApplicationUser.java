@@ -4,17 +4,42 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.engine.spi.Mapping;
+import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+@NamedNativeQuery(name = "ApplicationUser.getUserHistory",
+query = """
+            select s.departure_from, s.departure_to, 
+            s.departure,  s.arrival, p.number_of_seats,
+            r.rating, r.description, r.created from schedule s
+            join passenger p on s.id = p.schedule_id 
+            join review r on s.id = r.schedule_id 
+            where p.user_id = :id
+""", resultSetMapping = "Mapping.UserHistoryDto")
+
+@SqlResultSetMapping(name = "Mapping.UserHistoryDto",
+                    classes = @ConstructorResult(targetClass = UserHistoryDto.class,
+                    columns = {@ColumnResult(name = "departure_from", type = String.class),
+                            @ColumnResult(name = "departure_to", type = String.class ),
+                            @ColumnResult(name = "departure", type = LocalDateTime.class ),
+                            @ColumnResult(name = "arrival", type = LocalDateTime.class ),
+                            @ColumnResult(name = "number_of_seats", type = Integer.class ),
+                            @ColumnResult(name = "rating", type = Integer.class ),
+                            @ColumnResult(name = "description", type = String.class ),
+                            @ColumnResult(name = "created", type = LocalDateTime.class )}))
 
 @AllArgsConstructor
 @Getter

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.model.Bus;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +26,7 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
 
     @Query("select u from ApplicationUser u")
     List<ApplicationUser> findAllUsers(Pageable pageable);
+
+    @Query(nativeQuery = true)
+    List<UserHistoryDto> getUserHistory(Long id);
 }

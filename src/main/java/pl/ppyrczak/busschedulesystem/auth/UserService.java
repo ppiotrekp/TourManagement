@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.exception.runtime.EmailTakenException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -165,25 +166,26 @@ public class UserService implements UserDetailsService {
         return mappedId;
     }
 
-    public List<?> getUserHistory(Long id) {
-        ApplicationUser user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "User with id " + id + " does not exist"));
-
-        List<Passenger> passengers = passengerRepository.findAllByUserId(user.getId());
-        List<Long> passengerIds = passengers.stream()
-                .filter(passenger -> Objects.equals(passenger.getUserId(), id))
-                .map(Passenger::getId)
-                .toList();
-
-        List<Review> reviews = reviewRepository.findAllByPassengerIdIn(passengerIds);
-        List<Long> scheduleIds = passengers.stream()
-                        .map(Passenger::getScheduleId)
-                        .toList();
-
-        List<Schedule> schedules = scheduleRepository.findAllByIdIn(scheduleIds);
-        schedules.forEach(schedule -> schedule.setPassengers(extractPassengers(passengers, schedule.getId())));
-        schedules.forEach(schedule -> schedule.setReviews(extractReviews(reviews, schedule.getId())));
-        return schedules;
+    public List<UserHistoryDto> getUserHistory(Long id) {
+//        ApplicationUser user = userRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException(
+//                        "User with id " + id + " does not exist"));
+//
+//        List<Passenger> passengers = passengerRepository.findAllByUserId(user.getId());
+//        List<Long> passengerIds = passengers.stream()
+//                .filter(passenger -> Objects.equals(passenger.getUserId(), id))
+//                .map(Passenger::getId)
+//                .toList();
+//
+//        List<Review> reviews = reviewRepository.findAllByPassengerIdIn(passengerIds);
+//        List<Long> scheduleIds = passengers.stream()
+//                        .map(Passenger::getScheduleId)
+//                        .toList();
+//
+//        List<Schedule> schedules = scheduleRepository.findAllByIdIn(scheduleIds);
+//        schedules.forEach(schedule -> schedule.setPassengers(extractPassengers(passengers, schedule.getId())));
+//        schedules.forEach(schedule -> schedule.setReviews(extractReviews(reviews, schedule.getId())));
+//        return schedules;
+        return userRepository.getUserHistory(id);
     }
 }

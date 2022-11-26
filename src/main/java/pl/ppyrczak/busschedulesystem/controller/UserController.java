@@ -14,6 +14,7 @@ import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
@@ -53,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/history")
-    public List<?> getUserHistory(@PathVariable Long id) {
+    public List<UserHistoryDto> getUserHistory(@PathVariable Long id) {
         return userService.getUserHistory(id);
     }
 
