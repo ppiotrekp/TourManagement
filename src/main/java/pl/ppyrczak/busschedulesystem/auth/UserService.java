@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.exception.runtime.EmailTakenException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
-import pl.ppyrczak.busschedulesystem.model.Passenger;
-import pl.ppyrczak.busschedulesystem.model.Review;
-import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
 import pl.ppyrczak.busschedulesystem.repository.*;
@@ -58,7 +55,7 @@ public class UserService implements UserDetailsService {
         return new User(user.getUsername(),
                         user.getPassword(),
                         authorities);
-    } //zmiana na maila
+    }
 
 
     public String signUpUser(ApplicationUser user) {
@@ -100,18 +97,6 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
 
         return users;
-    }
-
-    private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) { //TODO JEDNA WSPOLNA METODA I DOSTOWOSUJE TYPY
-        return passengers.stream()
-                .filter(passenger -> Objects.equals(passenger.getScheduleId(), id))
-                .collect(Collectors.toList());
-    }
-
-    private List<Review> extractReviews(List<Review> reviews, Long id) { //TODO JEDNA WSPOLNA METODA I DOSTOWOSUJE TYPY
-        return reviews.stream()
-                .filter(review -> Objects.equals(review.getScheduleId(), id))
-                .collect(Collectors.toList());
     }
 
     public UserRole saveRole(UserRole role) {
@@ -157,35 +142,7 @@ public class UserService implements UserDetailsService {
         user.setSubscribed(false);
     }
 
-    public Long mapPassengerIdToUserId(Long id) {
-        Passenger passenger = passengerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Passenger with id " + id + " does not exist"
-                ));
-        Long mappedId = passenger.getUserId();
-        return mappedId;
-    }
-
     public List<UserHistoryDto> getUserHistory(Long id) {
-//        ApplicationUser user = userRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException(
-//                        "User with id " + id + " does not exist"));
-//
-//        List<Passenger> passengers = passengerRepository.findAllByUserId(user.getId());
-//        List<Long> passengerIds = passengers.stream()
-//                .filter(passenger -> Objects.equals(passenger.getUserId(), id))
-//                .map(Passenger::getId)
-//                .toList();
-//
-//        List<Review> reviews = reviewRepository.findAllByPassengerIdIn(passengerIds);
-//        List<Long> scheduleIds = passengers.stream()
-//                        .map(Passenger::getScheduleId)
-//                        .toList();
-//
-//        List<Schedule> schedules = scheduleRepository.findAllByIdIn(scheduleIds);
-//        schedules.forEach(schedule -> schedule.setPassengers(extractPassengers(passengers, schedule.getId())));
-//        schedules.forEach(schedule -> schedule.setReviews(extractReviews(reviews, schedule.getId())));
-//        return schedules;
         return userRepository.getUserHistory(id);
     }
 }
