@@ -124,7 +124,7 @@ class ScheduleControllerTest {
         Schedule schedule1 = createSchedule();
         Schedule schedule2 = createSchedule();
 
-        mockMvc.perform(get("/schedules"))
+        mockMvc.perform(get("/schedules?page=0&sort=ASC"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
@@ -167,18 +167,4 @@ class ScheduleControllerTest {
 
         assertEquals(scheduleRepository.findAll().size(), 0);
     }
-
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldGetRidesWithPassengers() throws Exception {
-        Schedule schedule = createSchedule();
-        ApplicationUser user = createUser();
-        Passenger passenger = createPassenger();
-
-        mockMvc.perform(get("/schedules/passengers"))
-                .andDo(print())
-                .andExpect(status().isOk());
-
-    }
-
 }

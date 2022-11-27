@@ -1,13 +1,15 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -17,15 +19,13 @@ import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
 import pl.ppyrczak.busschedulesystem.repository.ReviewRepository;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.data.domain.Sort.by;
 
 @RunWith(MockitoJUnitRunner.class)
 class ReviewServiceTest {
@@ -90,20 +90,21 @@ class ReviewServiceTest {
     }
 
     @Test
-    void shouldGetReviewsWithDetailsForSpecificSchedule() {
+    void shouldGetReviewsForSpecificSchedule() {
         //given
         Review review = new Review(1L, 1L, 1L, 4, "ok", LocalDateTime.now());
         Review review1 = new Review(2L, 2L, 1L, 4, "ok", LocalDateTime.now());
-
         List<Review> reviewList = new ArrayList<>();
         reviewList.add(review);
         reviewList.add(review1);
 
-        when(reviewRepository.findAllByScheduleId(1L)).thenReturn(reviewList);
+        Pageable pageable = PageRequest.of(0, 5, by("created"));
+
+        when(reviewRepository.findAllByScheduleId(review.getScheduleId(), Pageable.ofSize(5))).thenReturn(new ArrayList<>());
         //when
-        List<Review> reviews = underTest.getReviewsWithDetailsForSpecificSchedule(1L);
+        underTest.getReviewsForSpecificSchedule(review.getScheduleId(),0, Sort.Direction.ASC);
         //then
-        Assertions.assertEquals(reviews.size(), 2);
+        verify(reviewRepository).findAllByScheduleId(review.getScheduleId(), pageable);
     }
 
     @Test

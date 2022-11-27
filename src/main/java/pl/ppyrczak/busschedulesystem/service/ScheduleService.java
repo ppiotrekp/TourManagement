@@ -21,11 +21,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static java.time.LocalDateTime.*;
 import static pl.ppyrczak.busschedulesystem.service.util.EmailBuilder.buildEmail;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService implements Subscriber {
+    private static final int PAGE_SIZE = 10;
     private final BusRepository busRepository;
     private final ScheduleRepository scheduleRepository;
     private final PassengerRepository passengerRepository;
@@ -34,11 +36,21 @@ public class ScheduleService implements Subscriber {
     private final EmailSender emailSender;
     private final Constraint constraint;
 
-    public List<Schedule> getSchedules() {
-        return scheduleRepository.findAll();
+    public List<Schedule> getSchedules(int page, Sort.Direction sort) {
+        return scheduleRepository.findAllSchedules(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "departure")));
     }
 
     public Schedule getSchedule(Long id) {
+        return scheduleRepository.findById(id).stream()
+                .filter(schedule -> schedule.getDeparture().isAfter(now())).
+                findFirst().
+                orElseThrow(() -> new ResourceNotFoundException(
+                        "Schedule with id " + id + " does not exist"));
+    }
+
+    public Schedule getScheduleWithPassengersAndReviews(Long id) {
         return scheduleRepository.findById(id).
                 orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + id + " does not exist"));
@@ -52,8 +64,11 @@ public class ScheduleService implements Subscriber {
                 .arrival(schedule.getArrival())
                 .build();
 
-        return scheduleRepository.findAll(Example.of(scheduleToFind));
-    }
+        return scheduleRepository.findAll(Example.of(scheduleToFind))
+                .stream()
+                .filter(schedule1 -> schedule1.getDeparture().isAfter(now()))
+                .collect(Collectors.toList());
+    } // todo nie dziaala
 
     @Transactional
     public Schedule addSchedule(Schedule schedule) {
@@ -76,12 +91,12 @@ public class ScheduleService implements Subscriber {
     public Schedule editSchedule(Schedule scheduleToUpdate, Long id) {
         if (scheduleRepository.findById(id).isPresent()) {
             Schedule originalSchedule = scheduleRepository.getById(id);
-            if (originalSchedule.getArrival().isBefore(LocalDateTime.now())) {
+            if (originalSchedule.getArrival().isBefore(now())) {
                 throw new FinishedTripException();
             }
         }
 
-        if (scheduleToUpdate.getArrival().isBefore(LocalDateTime.now())) {
+        if (scheduleToUpdate.getArrival().isBefore(now())) {
             throw new ArrivalInPastException();
         }
 

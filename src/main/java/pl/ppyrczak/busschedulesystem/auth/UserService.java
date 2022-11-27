@@ -2,6 +2,8 @@ package pl.ppyrczak.busschedulesystem.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,14 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.exception.runtime.EmailTakenException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
-import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
-import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
-import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
-import pl.ppyrczak.busschedulesystem.repository.UserRepository;
+import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import java.time.LocalDateTime;
@@ -30,15 +30,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserService implements UserDetailsService {
 
+    private static final int PAGE_SIZE =5;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
 
     private final RoleRepository roleRepository;
     private final PassengerRepository passengerRepository;
-
-
-
+    private final ScheduleRepository scheduleRepository;
+    private final ReviewRepository reviewRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser user = userRepository.findByUsername(username)
@@ -55,7 +55,7 @@ public class UserService implements UserDetailsService {
         return new User(user.getUsername(),
                         user.getPassword(),
                         authorities);
-    } //zmiana na maila
+    }
 
 
     public String signUpUser(ApplicationUser user) {
@@ -99,12 +99,6 @@ public class UserService implements UserDetailsService {
         return users;
     }
 
-    private List<Passenger> extractPassengers(List<Passenger> passengers, Long id) { //TODO JEDNA WSPOLNA METODA I DOSTOWOSUJE TYPY
-        return passengers.stream()
-                .filter(passenger -> Objects.equals(passenger.getScheduleId(), id))
-                .collect(Collectors.toList()); //TODO NIE DZIALA
-    }
-
     public UserRole saveRole(UserRole role) {
         log.info("saving {} role", role.getName());
         return roleRepository.save(role);
@@ -128,6 +122,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public List<ApplicationUser> getUsers(int page, Sort.Direction sort) {
+        return userRepository.findAllUsers(
+                PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "id")));
+
+    }
+
     public ApplicationUser getUser(Long id) {
         return userRepository.findById(id)
                 .orElseThrow();
@@ -139,5 +140,9 @@ public class UserService implements UserDetailsService {
 
     public void unsubscribe(ApplicationUser user) {
         user.setSubscribed(false);
+    }
+
+    public List<UserHistoryDto> getUserHistory(Long id) {
+        return userRepository.getUserHistory(id);
     }
 }

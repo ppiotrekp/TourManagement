@@ -1,10 +1,13 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalDateException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalPassengerException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.ReviewExistsException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -16,6 +19,7 @@ import java.util.List;
 
 @Service
 public class ReviewService {
+    private static final int PAGE_SIZE = 5;
     private final ReviewRepository reviewRepository;
     private final PassengerRepository passengerRepository;
     private final ScheduleRepository scheduleRepository;
@@ -33,6 +37,10 @@ public class ReviewService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Schedule with id " + review.getScheduleId() + " does not exist"
                 ));
+
+        if (passengerHasReview(review)) {
+            throw new ReviewExistsException(review.getPassengerId());
+        }
         if (!reviewIsNotBeforeArrival(review)) {
             throw new IllegalDateException(schedule.getArrival());
         } else if (!scheduleHasPassenger(review)) {
@@ -49,10 +57,12 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-    public List<Review> getReviewsWithDetailsForSpecificSchedule(Long id) {
-        List<Review> reviews = reviewRepository.
-                findAllByScheduleId(id);
-        return reviews;
+    public List<Review> getReviewsForSpecificSchedule(Long id,
+                                                      int page,
+                                                      Sort.Direction sort) {
+        return reviewRepository.
+                findAllByScheduleId(id,  PageRequest.of(page, PAGE_SIZE,
+                        Sort.by(sort, "created")));
     }
 
     private boolean reviewIsNotBeforeArrival(Review review) {
@@ -77,5 +87,12 @@ public class ReviewService {
         }
 
         return returnStat;
+    }
+
+    private boolean passengerHasReview(Review review) {
+        if (reviewRepository.existsByPassengerId(review.getPassengerId())) {
+            return true;
+        }
+        return false;
     }
 }

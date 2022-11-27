@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.auth.UserService;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
+import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
@@ -36,8 +38,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
-    public List<UserDto> getUsers() {
-        return UserDtoMapper.mapToUserDtos(userService.getUsers());
+    public List<UserDto> getUsers(@RequestParam(required = false) int page, Sort.Direction sort) {
+        int pageNumber = page >= 0 ? page : 0;
+        return UserDtoMapper.mapToUserDtos(userService.getUsers(pageNumber, sort));
     }
 
     @GetMapping("/users/{id}")
@@ -48,6 +51,11 @@ public class UserController {
             throw new UserNotAuthorizedException();
         }
         return userService.getUser(id);
+    }
+
+    @GetMapping("/users/{id}/history")
+    public List<UserHistoryDto> getUserHistory(@PathVariable Long id) {
+        return userService.getUserHistory(id);
     }
 
     @ResponseStatus(CREATED)

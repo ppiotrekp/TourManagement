@@ -8,6 +8,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
 import pl.ppyrczak.busschedulesystem.repository.*;
@@ -21,6 +24,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.*;
+import static org.springframework.data.domain.Sort.by;
 
 @RunWith(MockitoJUnitRunner.class)
 
@@ -80,11 +84,13 @@ class ScheduleServiceTest {
         scheduleList.add(schedule);
         scheduleList.add(schedule1);
 
-        when(scheduleRepository.findAll()).thenReturn(scheduleList);
+        Pageable pageable = PageRequest.of(0, 10, by("departure"));
 
-        List<Schedule> schedules = underTest.getSchedules();
+        when(scheduleRepository.findAllSchedules(Pageable.ofSize(10))).thenReturn(scheduleList);
 
-        assertEquals(schedules.size(), 2);
+        underTest.getSchedules(0, Sort.Direction.ASC);
+
+        verify(scheduleRepository).findAllSchedules(pageable);
     }
 
     @Test
@@ -93,8 +99,8 @@ class ScheduleServiceTest {
                 1L,
                 "Krakow",
                 "Malaga",
-                LocalDateTime.of(2022, 10, 10, 10, 10),
-                LocalDateTime.of(2022, 10, 10, 12, 10),
+                LocalDateTime.of(2024, 10, 10, 10, 10),
+                LocalDateTime.of(2024, 10, 10, 12, 10),
                 100,
                 null, null);
 

@@ -76,20 +76,20 @@ class ReviewRepositoryTest {
         Assertions.assertEquals(reviews.size(), 2);
     }
 
-    @Test
-    void shouldFindAllByScheduleId() {
-        Schedule schedule = createSchedule();
-        Passenger passenger = new Passenger(1L, 1L, schedule.getId(), 1);
-        Passenger passenger1 = new Passenger(2L, 1L, schedule.getId(), 2);
-        passengerRepository.save(passenger);
-        passengerRepository.save(passenger1);
-
-        Review review = new Review(1L, passenger.getId(), schedule.getId(), 4, "Good", LocalDateTime.now());
-        Review review1 = new Review(2L, passenger.getId(), schedule.getId(), 4, "Good", LocalDateTime.now());
-        reviewRepository.save(review);
-        reviewRepository.save(review1);
-
-        List<Review> reviews = reviewRepository.findAllByScheduleId(schedule.getId());
-        Assertions.assertEquals(reviews.size(), 2);
-    }
+//    @Test
+//    void shouldFindAllByScheduleId() {
+//        Schedule schedule = createSchedule();
+//        Passenger passenger = new Passenger(1L, 1L, schedule.getId(), 1);
+//        Passenger passenger1 = new Passenger(2L, 1L, schedule.getId(), 2);
+//        passengerRepository.save(passenger);
+//        passengerRepository.save(passenger1);
+//
+//        Review review = new Review(1L, passenger.getId(), schedule.getId(), 4, "Good", LocalDateTime.now());
+//        Review review1 = new Review(2L, passenger.getId(), schedule.getId(), 4, "Good", LocalDateTime.now());
+//        reviewRepository.save(review);
+//        reviewRepository.save(review1);
+//
+//        List<Review> reviews = reviewRepository.findAllByScheduleId(schedule.getId());
+//        Assertions.assertEquals(reviews.size(), 2);
+//    }
 }

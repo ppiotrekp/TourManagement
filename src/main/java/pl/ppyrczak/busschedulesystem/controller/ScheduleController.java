@@ -2,12 +2,9 @@ package pl.ppyrczak.busschedulesystem.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.controller.dto.BusDto;
-import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
 import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -17,7 +14,6 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,12 +22,14 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public List<ScheduleDto> getSchedulesForUsers() {
-        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules());
+    public List<ScheduleDto> getSchedules(@RequestParam(required = false) int page, Sort.Direction sort) {
+        int pageNumber = page >= 0 ? page : 0;
+        return ScheduleDtoMapper.mapToScheduleDtos(
+                scheduleService.getSchedules(pageNumber, sort));
     }
 
     @PostMapping("/schedulesFilter")
-    public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
+    public List<ScheduleDto> getSchedulesWithParameters(@RequestBody Schedule schedule) {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
     }
 
@@ -43,14 +41,9 @@ public class ScheduleController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/schedules/{id}")
     public Schedule getScheduleForAdmin(@PathVariable Long id) {
-        return scheduleService.getSchedule(id);
+        return scheduleService.getScheduleWithPassengersAndReviews(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/schedules/passengers")
-    public List<Schedule> getSchedulesWithPassengersAndReviews() {
-        return scheduleService.getSchedulesWithPassengersAndReviews();
-    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = CREATED)
