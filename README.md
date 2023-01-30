@@ -1,4 +1,4 @@
-# BusScheduleSystem
+# Trip management
 It's my rest api application to handle bus schedules
 # How to run
 - Shift + F10
