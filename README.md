@@ -1,5 +1,5 @@
 # Trip management
-It's my REST API application to manage tours in many countries. The application is secured by Json Web Token. It enables us to:
+It's my REST API application to manage tours in many countries. The application is secured by Json Web Token and enables us to:
 - Register new users with email activation
 - Add new tours
 - book seats depending on availability
