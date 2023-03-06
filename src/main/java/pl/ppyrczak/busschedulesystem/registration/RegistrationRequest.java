@@ -13,7 +13,6 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 public class RegistrationRequest {
-
     private final String firstName;
     private final String lastName;
     private final String username;
