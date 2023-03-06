@@ -3,7 +3,8 @@ package pl.ppyrczak.busschedulesystem.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.exception.runtime.AllSeatsTakenException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.BusNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -35,8 +36,7 @@ public class PassengerService {
 
     public Passenger getPassenger(Long id) {
         return passengerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Passenger with id " + id + " does not exist"));
+                .orElseThrow(() -> new BusNotFoundException(id));
     }
 
     public Passenger addPassenger(Passenger passenger) {
@@ -53,15 +53,13 @@ public class PassengerService {
 
     public List<Passenger> getPassengersForSpecificSchedule(Long id) {
         Schedule schedule = scheduleRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Schedule with id " + id + " does not exist"));
+                () -> new BusNotFoundException(id));
         return passengerRepository.findByScheduleId(id);
     }
 
     public Long mapPassengerIdToUserId(Long id) {
         Passenger passenger = passengerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Passenger with id " + id + " does not exist"
-                ));
+                .orElseThrow(() -> new BusNotFoundException(id));
         Long mappedId = passenger.getUserId();
         return mappedId;
     }

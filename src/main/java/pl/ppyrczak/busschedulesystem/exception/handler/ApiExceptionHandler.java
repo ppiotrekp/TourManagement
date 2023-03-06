@@ -8,6 +8,7 @@ import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedEx
 import pl.ppyrczak.busschedulesystem.exception.illegalstate.EmailConfirmedException;
 import pl.ppyrczak.busschedulesystem.exception.model.ApiException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.*;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
 
