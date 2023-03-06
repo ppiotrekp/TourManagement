@@ -1,26 +1,17 @@
-package pl.ppyrczak.busschedulesystem.controller;
+package pl.ppyrczak.busschedulesystem.controller.admin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -32,12 +23,9 @@ import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -45,7 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-class ScheduleControllerTest {
+@WithMockUser(roles = {"ADMIN"})
+class PassengerControllerAdminIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -59,11 +48,6 @@ class ScheduleControllerTest {
     private UserRepository userRepository;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @AfterEach
-    public void tearDown() {
-        scheduleRepository.deleteAll();
-    }
 
     private Bus createBus() {
         Bus bus = new Bus();
@@ -108,63 +92,40 @@ class ScheduleControllerTest {
     }
 
     @Test
-    void getScheduleForUsers() throws Exception {
+    void shouldGetPassengers() throws Exception {
+        Passenger passenger = createPassenger();
+        Passenger passenger1 = createPassenger();
 
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(get("/schedules/" + schedule.getId()))
+        mockMvc.perform(get("/passengers"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
+                .andExpect(status().isOk());
+        Assertions.assertThat(passengerRepository.findAll().size()).isEqualTo(2);
     }
 
     @Test
-    void shouldGetSchedules() throws Exception {
-        Schedule schedule = createSchedule();
-        Schedule schedule1 = createSchedule();
-        Schedule schedule2 = createSchedule();
-
-        mockMvc.perform(get("/schedules?page=0&sort=ASC"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-    }
-
-//    @Test
-//    @WithMockUser(roles = "ADMIN")
-//    void shouldAddSchedule() throws Exception {
-//        Schedule schedule = createSchedule();
-//
-//        mockMvc.perform(post("/schedule")
-//                .content(objectMapper.writeValueAsString(schedule))
-//                .contentType(APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.id").exists());
-//    }
-
-    @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldEditSchedule() throws Exception {
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(put("/schedules/" + schedule.getId())
-                .content(objectMapper.writeValueAsString(schedule))
-                .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_JSON))
+    void shouldGetPassenger() throws Exception {
+        Passenger passenger = createPassenger();
+        mockMvc.perform(get("/passengers/" + passenger.getId()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
-    void shouldDeleteSchedule() throws Exception {
-        Schedule schedule = createSchedule();
-
-        mockMvc.perform(delete("/schedules/" + schedule.getId()))
+    void shouldGetRidesWithPassengers() throws Exception {
+        Passenger passenger = createPassenger();
+        mockMvc.perform(get("/schedules/" + passenger.getScheduleId() +"/passengers"))
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
+    }
 
-        assertEquals(scheduleRepository.findAll().size(), 0);
+    @Test
+    void shouldNotAddPassenger() throws Exception {
+        Passenger passenger = createPassenger();
+        mockMvc.perform(post("/passenger")
+                        .content(objectMapper.writeValueAsString(passenger))
+                        .contentType(APPLICATION_JSON)
+                        .accept(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 }

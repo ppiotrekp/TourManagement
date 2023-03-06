@@ -1,7 +1,6 @@
 package pl.ppyrczak.busschedulesystem.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +23,6 @@ import pl.ppyrczak.busschedulesystem.repository.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 @WebAppConfiguration
 @WithMockUser(roles = {"USER"})
-class ReviewControllerUserTest {
+class ReviewControllerUserIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired

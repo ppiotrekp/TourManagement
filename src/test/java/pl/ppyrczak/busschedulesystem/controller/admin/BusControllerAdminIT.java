@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-@WithMockUser(roles = {"USER"})
-class BusControllerUserTest {
+@WithMockUser(roles = {"ADMIN"})
+class BusControllerAdminIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,6 +45,20 @@ class BusControllerUserTest {
     }
 
     @Test
+    void shouldGetBuses() throws Exception {
+        Bus newBus = new Bus();
+        newBus.setBrand("Mercedes");
+        newBus.setModel("V200");
+        newBus.setEquipment("kitchen");
+        newBus.setPassengersLimit(20);
+        busRepository.save(newBus);
+
+        mockMvc.perform(get("/buses?page=1&sort=DESC"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void shouldGetBus() throws Exception {
 
         Bus newBus = new Bus();
@@ -54,10 +68,15 @@ class BusControllerUserTest {
         newBus.setPassengersLimit(20);
         busRepository.save(newBus);
 
-        mockMvc.perform(get("/buses/" + newBus.getId()))
+        MvcResult mvcResult = mockMvc.perform(get("/buses/" + newBus.getId()))
                 .andDo(print())
-                .andExpect(status().isForbidden())
+                .andExpect(status().is(200))
                 .andReturn();
+
+        Bus bus = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Bus.class);
+        assertThat(bus).isNotNull();
+        assertThat(bus.getId()).isEqualTo(newBus.getId());
+        assertThat(bus.getModel()).isEqualTo("V200");
     }
 
     @Test
@@ -69,10 +88,11 @@ class BusControllerUserTest {
         newBus.setPassengersLimit(200);
 
         mockMvc.perform(post("/bus")
-                        .content(objectMapper.writeValueAsString(newBus))
-                        .contentType(APPLICATION_JSON))
+                .content(objectMapper.writeValueAsString(newBus))
+                .contentType(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isForbidden());
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
@@ -85,8 +105,8 @@ class BusControllerUserTest {
         busRepository.save(newBus);
 
         mockMvc.perform(delete("/bus/" + newBus.getId()))
-                .andExpect(status().isForbidden())
+                .andExpect(status().isNoContent())
                 .andDo(print());
-        assertEquals(busRepository.findAll().size(), 1);
+        assertEquals(busRepository.findAll().size(), 0);
     }
 }

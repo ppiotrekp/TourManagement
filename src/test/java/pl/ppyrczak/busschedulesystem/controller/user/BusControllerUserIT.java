@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
 
@@ -29,8 +28,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
 @WebAppConfiguration
-@WithMockUser(roles = {"ADMIN"})
-class BusControllerAdminTest {
+@WithMockUser(roles = {"USER"})
+class BusControllerUserIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -45,20 +44,6 @@ class BusControllerAdminTest {
     }
 
     @Test
-    void shouldGetBuses() throws Exception {
-        Bus newBus = new Bus();
-        newBus.setBrand("Mercedes");
-        newBus.setModel("V200");
-        newBus.setEquipment("kitchen");
-        newBus.setPassengersLimit(20);
-        busRepository.save(newBus);
-
-        mockMvc.perform(get("/buses?page=1&sort=DESC"))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void shouldGetBus() throws Exception {
 
         Bus newBus = new Bus();
@@ -68,15 +53,10 @@ class BusControllerAdminTest {
         newBus.setPassengersLimit(20);
         busRepository.save(newBus);
 
-        MvcResult mvcResult = mockMvc.perform(get("/buses/" + newBus.getId()))
+        mockMvc.perform(get("/buses/" + newBus.getId()))
                 .andDo(print())
-                .andExpect(status().is(200))
+                .andExpect(status().isForbidden())
                 .andReturn();
-
-        Bus bus = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), Bus.class);
-        assertThat(bus).isNotNull();
-        assertThat(bus.getId()).isEqualTo(newBus.getId());
-        assertThat(bus.getModel()).isEqualTo("V200");
     }
 
     @Test
@@ -88,11 +68,10 @@ class BusControllerAdminTest {
         newBus.setPassengersLimit(200);
 
         mockMvc.perform(post("/bus")
-                .content(objectMapper.writeValueAsString(newBus))
-                .contentType(APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(newBus))
+                        .contentType(APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists());
+                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -105,8 +84,8 @@ class BusControllerAdminTest {
         busRepository.save(newBus);
 
         mockMvc.perform(delete("/bus/" + newBus.getId()))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isForbidden())
                 .andDo(print());
-        assertEquals(busRepository.findAll().size(), 0);
+        assertEquals(busRepository.findAll().size(), 1);
     }
 }

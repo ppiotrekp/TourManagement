@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 @WebAppConfiguration
 @WithMockUser(roles = {"USER"})
-class ScheduleControllerUserTest {
+class ScheduleControllerUserIT {
 
     @Autowired
     private MockMvc mockMvc;
