@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.auth;
+package pl.ppyrczak.busschedulesystem.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.exception.runtime.EmailTakenException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;

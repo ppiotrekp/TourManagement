@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.auth;
+package pl.ppyrczak.busschedulesystem.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +8,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
-import pl.ppyrczak.busschedulesystem.repository.PassengerRepository;
-import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
-import pl.ppyrczak.busschedulesystem.repository.UserRepository;
+import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,10 @@ class UserServiceTest {
     private RoleRepository roleRepository;
     @Mock
     private PassengerRepository passengerRepository;
+    @Mock
+    private ScheduleRepository scheduleRepository;
+    @Mock
+    private ReviewRepository reviewRepository;
     private UserService underTest;
 
     private AutoCloseable autoCloseable;
@@ -47,7 +51,9 @@ class UserServiceTest {
                                     passwordEncoder,
                                     confirmationTokenService,
                                     roleRepository,
-                                    passengerRepository);
+                                    passengerRepository,
+                                    scheduleRepository,
+                                    reviewRepository);
     }
 
     @AfterEach

@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.controller.dto;
+package pl.ppyrczak.busschedulesystem.dto;
 
 import lombok.Builder;
 import lombok.Getter;

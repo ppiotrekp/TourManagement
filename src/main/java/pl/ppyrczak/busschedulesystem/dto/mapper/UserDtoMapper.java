@@ -1,9 +1,7 @@
-package pl.ppyrczak.busschedulesystem.controller.dto;
+package pl.ppyrczak.busschedulesystem.dto.mapper;
 
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.auth.UserService;
-import pl.ppyrczak.busschedulesystem.model.Passenger;
-import pl.ppyrczak.busschedulesystem.model.Schedule;
+import pl.ppyrczak.busschedulesystem.dto.UserDto;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 
 import java.util.List;
 import java.util.stream.Collectors;

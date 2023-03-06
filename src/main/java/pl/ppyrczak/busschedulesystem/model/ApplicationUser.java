@@ -1,20 +1,16 @@
-package pl.ppyrczak.busschedulesystem.auth;
+package pl.ppyrczak.busschedulesystem.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.engine.spi.Mapping;
-import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
-import pl.ppyrczak.busschedulesystem.model.Passenger;
+import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,7 +57,7 @@ public class ApplicationUser implements UserDetails {
     private String password;
 
 //    @Pattern(message = "Invalid phone number", regexp = "^([1-9][0-9]{8})$")
-    @NotBlank(message = "You have to pass your phone number")
+//    @NotBlank(message = "You have to pass your phone number")
     private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)
