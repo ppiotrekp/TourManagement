@@ -55,8 +55,12 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/history")
-    public List<UserHistoryDto> getUserHistory(@PathVariable Long id) {
-        return userService.getUserHistory(id);
+    public List<UserHistoryDto> getUserHistory(@PathVariable Long id,
+                                               @RequestParam(required = false) Integer page,
+                                               Sort.Direction sort) {
+        int pageNumber = page != null && page >= 0 ? page : 0;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        return userService.getUserHistory(id, page, sortDirection);
     }
 
     @ResponseStatus(CREATED)

@@ -25,5 +25,5 @@ public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
     @Query("select u from ApplicationUser u")
     List<ApplicationUser> findAllUsers(Pageable pageable);
     @Query(nativeQuery = true)
-    List<UserHistoryDto> getUserHistory(Long id);
+    List<UserHistoryDto> getUserHistory(Long id, Pageable pageable);
 }

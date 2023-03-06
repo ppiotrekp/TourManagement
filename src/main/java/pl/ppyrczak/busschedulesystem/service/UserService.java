@@ -142,8 +142,9 @@ public class UserService implements UserDetailsService {
         user.setSubscribed(false);
     }
 
-    public List<UserHistoryDto> getUserHistory(Long id) {
-        return userRepository.getUserHistory(id);
+    public List<UserHistoryDto> getUserHistory(Long id, int page, Sort.Direction sort ) {
+        return userRepository.getUserHistory(id, PageRequest.of(page, PAGE_SIZE,
+                Sort.by(sort, "id")));
     }
 
     public Long mapUsernameToId(String username) {
