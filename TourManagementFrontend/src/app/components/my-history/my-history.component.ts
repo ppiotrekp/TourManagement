@@ -36,7 +36,7 @@ export class MyHistoryComponent implements OnInit{
   }
 
   public getHistory() {
-    this.historyService.getMyHistory().subscribe(
+    this.historyService.getMyHistory(this.page).subscribe(
       (response: MyHistory[]) => {
         this.myHistories = response;
       },
@@ -44,5 +44,15 @@ export class MyHistoryComponent implements OnInit{
         alert(error.message);
       }
     );
+  }
+
+  nextPage() {
+    this.page++;
+    this.getHistory();
+  }
+
+  previousPage() {
+    this.page--;
+    this.getHistory();
   }
 }

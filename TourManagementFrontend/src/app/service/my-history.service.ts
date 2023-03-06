@@ -20,8 +20,8 @@ export class MyHistoryService {
     console.log(this.header);
   }
 
-  public getMyHistory() {
+  public getMyHistory(page: number) {
     this.setHeader();
-    return this.http.get<MyHistory[]>(`${this.apiUrl}/users/9/history`, {'headers': this.header})
+    return this.http.get<MyHistory[]>(`${this.apiUrl}/users/9/history?page=` + page, {'headers': this.header})
   }
 }
