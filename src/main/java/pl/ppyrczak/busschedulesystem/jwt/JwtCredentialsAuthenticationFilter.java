@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.UserNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
@@ -51,8 +52,8 @@ public class JwtCredentialsAuthenticationFilter extends UsernamePasswordAuthenti
                 new UsernamePasswordAuthenticationToken(username, password);
 
         ApplicationUser user = userRepository.findByUsername(username)
-                .orElseThrow();
-        if (user.getEnabled() == false) {
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (!user.getEnabled()) {
             throw new RuntimeException("UNENABLED!");
         }
 
