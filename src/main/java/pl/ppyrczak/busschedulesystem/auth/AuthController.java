@@ -38,7 +38,7 @@ public class AuthController {
             String token = JWT.create()
                     .withSubject(user.getUsername())
                     .withIssuer("Issuer")
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 1 * 60 * 1000))
+                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                     .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                     .sign(algorithm);
 
