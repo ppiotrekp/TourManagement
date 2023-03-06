@@ -1,0 +1,37 @@
+.content {
+  background-image: url("https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg?w=2000");
+  height: 90vh ;
+}
+
+.content p {
+  color: white;
+}
+
+.footer h2 {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+}
+
+.phone-container {
+  display: block;
+  /*flex-direction: column;*/
+}
+
+.map-container {
+  margin-left: 50%;
+}
+
+a {
+  font-size: 20px;
+}
+
+.nav-item {
+  display: flex;
+}
+
+.nav-link {
+  color:white;
+}
