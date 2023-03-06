@@ -33,14 +33,7 @@ class UserServiceTest {
     private ConfirmationTokenService confirmationTokenService;
     @Mock
     private RoleRepository roleRepository;
-    @Mock
-    private PassengerRepository passengerRepository;
-    @Mock
-    private ScheduleRepository scheduleRepository;
-    @Mock
-    private ReviewRepository reviewRepository;
     private UserService underTest;
-
     private AutoCloseable autoCloseable;
 
     @BeforeEach
@@ -49,30 +42,13 @@ class UserServiceTest {
         underTest = new UserService(userRepository,
                                     passwordEncoder,
                                     confirmationTokenService,
-                                    roleRepository,
-                                    passengerRepository,
-                                    scheduleRepository,
-                                    reviewRepository);
+                                    roleRepository);
     }
 
     @AfterEach
     void tearDown() throws Exception {
         autoCloseable.close();
     }
-
-//    @Test
-//    void loadUserByUsername() {
-//
-//    }
-//
-//    @Test
-//    void signUpUser() {
-//    }
-//
-//    @Test
-//    void enableAppUser() {
-//
-//    }
 
     @Test
     void shouldGetAllUsersInfo() {
@@ -105,23 +81,6 @@ class UserServiceTest {
         underTest.saveRole(role);
         verify(roleRepository).save(role);
     }
-
-//    @Test
-//    void shouldAddRoleToUser() {
-//        ApplicationUser user = new ApplicationUser("Piotr",
-//                "Pyrczak",
-//                "piotr@gmail.com",
-//                "piotr",
-//                null);
-//
-//        UserRole role = new UserRole("ROLE_ADMIN");
-//
-//        userRepository.save(user);
-//        roleRepository.save(role);
-//
-//        underTest.addRoleToUser(user.getUsername(), role.getName());
-//        assertThat(user.getRoles()).contains(role);
-//    }
 
     @Test
     void shouldGetUser() {
