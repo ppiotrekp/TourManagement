@@ -14,13 +14,11 @@ export class LoginService {
   loginUrl = 'http://localhost:8080/login';
   refreshTokenUrl = 'http://localhost:8080/refresh-token'
 
-
   constructor(private httpClient: HttpClient, private storageService: StorageService) { }
 
   login(payload: any) {
     return this.httpClient.post(this.loginUrl, payload);
   }
-
 
   setHeader() {
     this.refreshToken = this.storageService.getEncodedToken().refreshToken;
@@ -34,6 +32,4 @@ export class LoginService {
     console.log(this.header)
     return this.httpClient.post(this.refreshTokenUrl, {'headers': this.header});
   }
-
-
 }
