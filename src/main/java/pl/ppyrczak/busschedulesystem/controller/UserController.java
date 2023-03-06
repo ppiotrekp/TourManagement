@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/role")
+    @PostMapping("/roles")
     public UserRole saveRole(@RequestBody UserRole role) {
         return userService.saveRole(role);
     } //todo stworzyc roleservice

@@ -35,7 +35,7 @@ public class PassengerController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/passenger")
+    @PostMapping("/passengers")
     public Passenger addPassenger(@Valid @RequestBody Passenger passenger,
                                   Authentication authentication) throws UserNotAuthorizedException {
 

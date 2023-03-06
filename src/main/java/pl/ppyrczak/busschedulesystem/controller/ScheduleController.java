@@ -29,7 +29,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedulesFilter")
-    public List<ScheduleDto> getSchedulesWithParameters(@RequestBody Schedule schedule) {
+    public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
     }
 
@@ -47,7 +47,7 @@ public class ScheduleController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = CREATED)
-    @PostMapping("/schedule")
+    @PostMapping("/schedules")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }

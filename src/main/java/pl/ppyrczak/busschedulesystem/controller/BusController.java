@@ -42,14 +42,14 @@ public class BusController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PostMapping("/bus")
+    @PostMapping("/buses")
     public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus bus) {
 //        return busService.addBus(bus);
         return new ResponseEntity<>(busService.addBus(bus), CREATED);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @DeleteMapping("/bus/{id}") // TODO DEZAKTYWACJA
+    @DeleteMapping("/buses/{id}") // TODO DEZAKTYWACJA
     public ResponseEntity<?> deleteBus(@PathVariable Long id) {
         busService.deleteBus(id);
         return ResponseEntity.noContent().build();

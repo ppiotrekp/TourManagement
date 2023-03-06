@@ -34,7 +34,7 @@ public class ReviewController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/review")
+    @PostMapping("/reviews")
     public Review addReview(@Valid @RequestBody Review review,
                             Authentication authentication) throws UserNotAuthorizedException {
 
@@ -45,7 +45,7 @@ public class ReviewController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/review/{id}")
+    @DeleteMapping("/reviews/{id}")
     public void deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
     }
