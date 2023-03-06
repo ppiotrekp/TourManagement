@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -97,7 +97,7 @@ class ReviewControllerUserIT {
         review.setRating(4);
         review.setCreated(now());
 
-        mockMvc.perform(post("/review")
+        mockMvc.perform(post("/reviews")
                         .content(objectMapper.writeValueAsString(review))
                         .contentType(APPLICATION_JSON))
                         .andDo(print())
@@ -144,7 +144,7 @@ class ReviewControllerUserIT {
         review.setRating(4);
         review.setCreated(now());
 
-        mockMvc.perform(post("/review")
+        mockMvc.perform(post("/reviews")
                         .content(objectMapper.writeValueAsString(review))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())

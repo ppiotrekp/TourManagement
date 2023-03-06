@@ -67,7 +67,7 @@ class BusControllerUserIT {
         newBus.setEquipment("toilet");
         newBus.setPassengersLimit(200);
 
-        mockMvc.perform(post("/bus")
+        mockMvc.perform(post("/buses")
                         .content(objectMapper.writeValueAsString(newBus))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
@@ -83,7 +83,7 @@ class BusControllerUserIT {
         newBus.setPassengersLimit(20);
         busRepository.save(newBus);
 
-        mockMvc.perform(delete("/bus/" + newBus.getId()))
+        mockMvc.perform(delete("/buses/" + newBus.getId()))
                 .andExpect(status().isForbidden())
                 .andDo(print());
         assertEquals(busRepository.findAll().size(), 1);

@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -92,7 +92,7 @@ public class PassengerControllerUserIT {
     @WithMockUser(username = "ppyrczak@gmail.com")
     void shouldAddPassenger() throws Exception {
         Passenger passenger = createPassenger();
-        mockMvc.perform(post("/passenger")
+        mockMvc.perform(post("/passengers")
                         .content(objectMapper.writeValueAsString(passenger))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
@@ -104,7 +104,7 @@ public class PassengerControllerUserIT {
     @WithMockUser(username = "ppyrczak1@gmail.com")
     void shouldNotAddPassenger() throws Exception {
         Passenger passenger = createPassenger();
-        mockMvc.perform(post("/passenger")
+        mockMvc.perform(post("/passengers")
                         .content(objectMapper.writeValueAsString(passenger))
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))

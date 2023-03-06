@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -103,7 +103,7 @@ class ScheduleControllerUserIT {
     void shouldNotAddSchedule() throws Exception {
         Schedule schedule = createSchedule();
 
-        mockMvc.perform(post("/schedule")
+        mockMvc.perform(post("/schedules")
                         .content(objectMapper.writeValueAsString(schedule))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
