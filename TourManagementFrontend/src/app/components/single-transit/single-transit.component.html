@@ -1,0 +1,16 @@
+<div class="nav-item ">
+  <a class="nav-link">{{email}}</a>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">do {{transit.arrivalTo}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">z {{transit.departureFrom}}</h6>
+    <h4 class="card-subtitle mb-2 text-muted">{{transit.departure}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">{{transit.arrival}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">{{transit.ticketPrice}}</h4>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p>choose number of seats</p>
+    <a class="card-link" (click)="bookTransit()">Book</a>
+  </div>
+</div>
