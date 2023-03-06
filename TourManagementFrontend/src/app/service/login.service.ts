@@ -17,6 +17,7 @@ export class LoginService {
   constructor(private httpClient: HttpClient, private storageService: StorageService) { }
 
   login(payload: any) {
+    // const headers = new HttpHeaders({ Authorization: 'Basic ' + btoa(payload) });
     return this.httpClient.post(this.loginUrl, payload);
   }
 

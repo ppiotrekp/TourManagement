@@ -10,7 +10,7 @@ import {LoginService} from "../../service/login.service";
 })
 
 export class LoginComponent implements OnInit{
-  email = '';
+  username = '';
   password = '';
   invalidLogin = false;
   isLoggedIn = false;
@@ -25,15 +25,15 @@ export class LoginComponent implements OnInit{
   }
 
   login() {
-    let payload = {email: this.email, password: this.password};
-    this.loginService.login(payload).subscribe((data: any) => {
+    let payload = {username: this.username, password: this.password};
+    this.loginService.login(payload).subscribe((data) => {
         this.storageService.saveJwt(data);
-        this.router.navigate(['/dishes']);
+        // this.router.navigate(['/dishes']);
         this.invalidLogin = false;
         this.isLoggedIn = true;
         console.log(data)
       },
-        (error: any) => {
+        error => {
         this.invalidLogin = true;
         alert("bad credentials")
       })
