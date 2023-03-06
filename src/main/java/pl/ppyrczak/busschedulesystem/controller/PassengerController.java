@@ -48,5 +48,4 @@ public class PassengerController {
     public List<Passenger> getSchedulesWithPassengers(@PathVariable Long id) {
         return passengerService.getPassengersForSpecificSchedule(id);
     }
-
 }
