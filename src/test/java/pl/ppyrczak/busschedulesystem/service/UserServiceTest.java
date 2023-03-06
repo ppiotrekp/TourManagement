@@ -4,23 +4,24 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
-import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.model.UserRole;
+import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
+import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 class UserServiceTest {
@@ -28,21 +29,14 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private PasswordEncoder passwordEncoder;
-    @Mock
-    private ConfirmationTokenService confirmationTokenService;
-    @Mock
     private RoleRepository roleRepository;
+    @InjectMocks
     private UserService underTest;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new UserService(userRepository,
-                                    passwordEncoder,
-                                    confirmationTokenService,
-                                    roleRepository);
     }
 
     @AfterEach

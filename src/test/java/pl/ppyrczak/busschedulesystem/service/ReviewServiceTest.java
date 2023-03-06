@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -38,15 +39,13 @@ class ReviewServiceTest {
     private ScheduleRepository scheduleRepository;
     @Mock
     private BusRepository busRepository;
+    @InjectMocks
     private ReviewService underTest;
     private AutoCloseable autoCloseable;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ReviewService(reviewRepository,
-                                       passengerRepository,
-                                        scheduleRepository);
     }
 
     @AfterEach
