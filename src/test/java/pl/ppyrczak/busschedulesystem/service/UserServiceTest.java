@@ -11,8 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
 import pl.ppyrczak.busschedulesystem.repository.*;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
-import pl.ppyrczak.busschedulesystem.service.UserService;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;

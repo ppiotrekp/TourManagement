@@ -17,7 +17,7 @@ import pl.ppyrczak.busschedulesystem.dto.mapper.UserDtoMapper;
 import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

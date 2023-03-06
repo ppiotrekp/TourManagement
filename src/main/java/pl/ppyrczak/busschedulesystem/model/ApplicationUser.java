@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

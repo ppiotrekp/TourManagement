@@ -19,7 +19,7 @@ import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
 import pl.ppyrczak.busschedulesystem.repository.*;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.*;

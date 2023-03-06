@@ -3,11 +3,6 @@ package pl.ppyrczak.busschedulesystem.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
-
-import javax.persistence.FetchType;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Getter
 @Setter
