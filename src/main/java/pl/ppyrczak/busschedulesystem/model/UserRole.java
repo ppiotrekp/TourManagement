@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.security;
+package pl.ppyrczak.busschedulesystem.model;
 
 import com.google.common.collect.Sets;
 import lombok.Getter;
