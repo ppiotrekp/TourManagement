@@ -40,7 +40,6 @@ public class BusController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/buses")
     public ResponseEntity<Bus> addBus(@Valid @RequestBody Bus bus) {
-//        return busService.addBus(bus);
         return new ResponseEntity<>(busService.addBus(bus), CREATED);
     }
 

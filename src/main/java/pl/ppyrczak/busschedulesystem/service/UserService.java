@@ -37,9 +37,7 @@ public class UserService implements UserDetailsService {
     private final ConfirmationTokenService confirmationTokenService;
 
     private final RoleRepository roleRepository;
-    private final PassengerRepository passengerRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final ReviewRepository reviewRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApplicationUser user = userRepository.findByUsername(username)

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.service.UserService;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -19,7 +18,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 public class PassengerController {
     private final PassengerService passengerService;
-    private final UserService userService;
     private final UserPermission userPermission;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

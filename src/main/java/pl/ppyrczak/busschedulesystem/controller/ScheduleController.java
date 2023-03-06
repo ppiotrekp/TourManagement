@@ -18,7 +18,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
-
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
@@ -43,7 +42,6 @@ public class ScheduleController {
     public Schedule getScheduleForAdmin(@PathVariable Long id) {
         return scheduleService.getScheduleWithPassengersAndReviews(id);
     }
-
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = CREATED)

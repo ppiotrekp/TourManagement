@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class UserDtoMapper {
-
     public static UserDto mapToUserDto(ApplicationUser user) {
         return UserDto.builder()
                 .id(user.getId())
@@ -17,7 +16,6 @@ public class UserDtoMapper {
                 .phoneNumber(user.getPhoneNumber())
                 .enabled(user.getEnabled())
                 .locked(user.getLocked())
-//                .roles(user.getRoles())
                 .build();
     }
 

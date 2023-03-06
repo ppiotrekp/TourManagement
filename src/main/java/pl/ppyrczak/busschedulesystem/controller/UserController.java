@@ -62,7 +62,7 @@ public class UserController {
     @PostMapping("/roles")
     public UserRole saveRole(@RequestBody UserRole role) {
         return userService.saveRole(role);
-    } //todo stworzyc roleservice
+    }
 
     @GetMapping("/api/token/refresh")
     public void refreshToken(HttpServletRequest request,
@@ -96,7 +96,6 @@ public class UserController {
             } catch (Exception e) {
                 response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
-                //response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BusDtoMapper {
-
     public static BusDto mapToBusDto(Bus bus) {
         return BusDto.builder()
                 .id(bus.getId())
@@ -23,5 +22,4 @@ public class BusDtoMapper {
                 .map(bus -> mapToBusDto(bus))
                 .collect(Collectors.toList());
     }
-
 }

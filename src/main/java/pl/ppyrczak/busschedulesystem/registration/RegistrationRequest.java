@@ -19,5 +19,4 @@ public class RegistrationRequest {
     private final String username;
     private final String password;
     private final Set <? extends GrantedAuthority> authorities;
-
 }

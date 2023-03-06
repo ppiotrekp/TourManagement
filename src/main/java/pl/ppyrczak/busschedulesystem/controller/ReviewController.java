@@ -21,8 +21,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-    private final UserService userService;
-    private final PassengerService passengerService;
     private final UserPermission userPermission;
 
     @GetMapping("/schedules/{id}/reviews")

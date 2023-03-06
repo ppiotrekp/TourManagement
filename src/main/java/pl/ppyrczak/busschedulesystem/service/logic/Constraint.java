@@ -5,10 +5,9 @@ import org.springframework.stereotype.Component;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
-import static java.time.temporal.ChronoUnit.HOURS;
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.HOURS;
 
 @Component
 @Slf4j
@@ -17,10 +16,6 @@ public class Constraint {
 
     public Constraint(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
-    }
-
-    private List<Schedule> getSchedules() {
-        return scheduleRepository.findAll();
     }
 
     public boolean isBusAvaliable(Schedule schedule) {

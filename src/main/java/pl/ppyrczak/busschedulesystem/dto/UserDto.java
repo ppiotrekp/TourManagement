@@ -13,7 +13,6 @@ public class UserDto {
     private String lastName;
     private String username;
     private String phoneNumber;
-//    private Collection<UserRole> roles = new ArrayList<>(); //TODO ZROBIC TAK ZEBY ROLE SIE WYSWIETLALY ALE NIE BYLO DUZO ZAPYTAN
-    private Boolean locked = false;
-    private Boolean enabled = false;
+    private Boolean locked;
+    private Boolean enabled;
 }

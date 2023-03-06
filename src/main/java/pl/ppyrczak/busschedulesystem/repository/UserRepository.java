@@ -18,15 +18,12 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<ApplicationUser, Long> {
     Optional<ApplicationUser> findByUsername(String e);
-
     @Modifying
     @Query("UPDATE ApplicationUser a " +
             "SET a.enabled = TRUE WHERE a.username = ?1")
     int enableAppUser(String username);
-
     @Query("select u from ApplicationUser u")
     List<ApplicationUser> findAllUsers(Pageable pageable);
-
     @Query(nativeQuery = true)
     List<UserHistoryDto> getUserHistory(Long id);
 }
