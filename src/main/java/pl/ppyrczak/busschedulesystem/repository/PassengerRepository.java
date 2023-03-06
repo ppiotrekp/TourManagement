@@ -1,6 +1,5 @@
 package pl.ppyrczak.busschedulesystem.repository;
 
-import lombok.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
@@ -14,13 +13,7 @@ public interface PassengerRepository extends JpaRepository<Passenger, Long> {
             "where s.id =:id",
             nativeQuery = true)
     Integer takenSeatsById(Long id);
-
     List<Passenger> findAllByScheduleIdIn(List<Long> ids);
     List<Passenger> findAllByUserIdIn(List<Long> ids);
-
     List<Passenger> findByScheduleId(Long id);
-
-
-    List<Passenger> findAllByUserId(Long id);
-
 }

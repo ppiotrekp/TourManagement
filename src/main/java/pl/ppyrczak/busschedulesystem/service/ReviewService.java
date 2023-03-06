@@ -6,8 +6,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalDateException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.IllegalPassengerException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ReviewExistsException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ReviewNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ScheduleNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
@@ -34,9 +36,7 @@ public class ReviewService {
     public Review addReview(Review review) {
         review.setCreated();
         Schedule schedule = scheduleRepository.findById(review.getScheduleId())
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Schedule with id " + review.getScheduleId() + " does not exist"
-                ));
+                .orElseThrow(() -> new ScheduleNotFoundException(review.getScheduleId()));
 
         if (passengerHasReview(review)) {
             throw new ReviewExistsException(review.getPassengerId());
@@ -52,7 +52,7 @@ public class ReviewService {
 
     public void deleteReview(Long id) {
         if (!reviewRepository.findById(id).isPresent()) {
-            throw new ResourceNotFoundException("Review with id " + id + " does not exist");
+            throw new ReviewNotFoundException(id);
         }
         reviewRepository.deleteById(id);
     }

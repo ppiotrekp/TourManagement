@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 @WebAppConfiguration
 @WithMockUser(roles = {"ADMIN"})
-class BusControllerAdminTest {
+class BusControllerAdminIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -87,7 +87,7 @@ class BusControllerAdminTest {
         newBus.setEquipment("toilet");
         newBus.setPassengersLimit(200);
 
-        mockMvc.perform(post("/bus")
+        mockMvc.perform(post("/buses")
                 .content(objectMapper.writeValueAsString(newBus))
                 .contentType(APPLICATION_JSON))
                 .andDo(print())
@@ -104,7 +104,7 @@ class BusControllerAdminTest {
         newBus.setPassengersLimit(20);
         busRepository.save(newBus);
 
-        mockMvc.perform(delete("/bus/" + newBus.getId()))
+        mockMvc.perform(delete("/buses/" + newBus.getId()))
                 .andExpect(status().isNoContent())
                 .andDo(print());
         assertEquals(busRepository.findAll().size(), 0);

@@ -12,7 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.repository.BusRepository;
 
@@ -30,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 @WebAppConfiguration
 @WithMockUser(roles = {"USER"})
-class BusControllerUserTest {
+class BusControllerUserIT {
 
     @Autowired
     private MockMvc mockMvc;
@@ -68,7 +67,7 @@ class BusControllerUserTest {
         newBus.setEquipment("toilet");
         newBus.setPassengersLimit(200);
 
-        mockMvc.perform(post("/bus")
+        mockMvc.perform(post("/buses")
                         .content(objectMapper.writeValueAsString(newBus))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
@@ -84,7 +83,7 @@ class BusControllerUserTest {
         newBus.setPassengersLimit(20);
         busRepository.save(newBus);
 
-        mockMvc.perform(delete("/bus/" + newBus.getId()))
+        mockMvc.perform(delete("/buses/" + newBus.getId()))
                 .andExpect(status().isForbidden())
                 .andDo(print());
         assertEquals(busRepository.findAll().size(), 1);

@@ -1,5 +1,6 @@
-package pl.ppyrczak.busschedulesystem.controller.dto;
+package pl.ppyrczak.busschedulesystem.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,13 +9,15 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Builder
-public class ScheduleDto {
-    private Long id;
-    private Long busId;
+public class UserHistoryDto {
     private String departureFrom;
     private String departureTo;
     private LocalDateTime departure;
     private LocalDateTime arrival;
-    private int ticketPrice;
+    private int numberOfSeats;
+    private int rating;
+    private String description;
+    private LocalDateTime created;
 }

@@ -1,10 +1,10 @@
 package pl.ppyrczak.busschedulesystem.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -12,9 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
-import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
-import pl.ppyrczak.busschedulesystem.repository.*;
-import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
+import pl.ppyrczak.busschedulesystem.repository.ScheduleRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,8 +20,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.when;
 import static org.springframework.data.domain.Sort.by;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -31,30 +29,13 @@ import static org.springframework.data.domain.Sort.by;
 class ScheduleServiceTest {
     @Mock
     private ScheduleRepository scheduleRepository;
-    @Mock
-    private PassengerRepository passengerRepository;
-    @Mock
-    private ReviewRepository reviewRepository;
-    @Mock
-    private UserRepository userRepository;
-    @Mock
-    private EmailSender emailSender;
-    @Mock
-    private Constraint constraint;
     private AutoCloseable autoCloseable;
-    private BusRepository busRepository;
+    @InjectMocks
     private ScheduleService underTest;
 
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        underTest = new ScheduleService(busRepository,
-                scheduleRepository,
-                passengerRepository,
-                reviewRepository,
-                userRepository,
-                emailSender,
-                constraint);
     }
 
     @AfterEach

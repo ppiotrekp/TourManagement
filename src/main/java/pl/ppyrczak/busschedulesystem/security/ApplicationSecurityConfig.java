@@ -16,10 +16,6 @@ import pl.ppyrczak.busschedulesystem.jwt.JwtCredentialsAuthenticationFilter;
 import pl.ppyrczak.busschedulesystem.jwt.JwtTokenVerifier;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -27,9 +23,7 @@ import static org.springframework.http.HttpMethod.POST;
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final BCryptPasswordEncoder passwordEncoder;
-
     private final UserDetailsService userDetailsService;
-
     private final UserRepository userRepository;
 
     @Override
@@ -55,7 +49,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().anyRequest().authenticated()
                 .and().addFilter(jwtCredentialsAuthenticationFilter)
                 .addFilterBefore(new JwtTokenVerifier(), JwtCredentialsAuthenticationFilter.class);
-
     }
 
     @Override

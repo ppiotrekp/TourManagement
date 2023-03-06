@@ -1,12 +1,12 @@
-package pl.ppyrczak.busschedulesystem.controller.dto;
+package pl.ppyrczak.busschedulesystem.dto.mapper;
 
+import pl.ppyrczak.busschedulesystem.dto.ScheduleDto;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScheduleDtoMapper {
-
     private ScheduleDtoMapper() {}
 
     public static ScheduleDto mapToScheduleDto(Schedule schedule) {

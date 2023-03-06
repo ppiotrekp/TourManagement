@@ -3,9 +3,7 @@ package pl.ppyrczak.busschedulesystem.exception.model;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Getter
 public class ApiException {
@@ -20,6 +18,4 @@ public class ApiException {
         this.httpStatus = httpStatus;
         this.timestamp = timestamp;
     }
-
-
 }

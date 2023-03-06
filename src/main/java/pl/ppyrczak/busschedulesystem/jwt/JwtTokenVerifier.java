@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.ppyrczak.busschedulesystem.auth.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,11 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class JwtTokenVerifier extends OncePerRequestFilter {
-
-
-    public JwtTokenVerifier() {
-
-    }
+    public JwtTokenVerifier() {}
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -62,7 +57,6 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                     log.error("Error logging in: {}", e.getMessage());
                     response.setHeader("error", e.getMessage());
                     response.setStatus(FORBIDDEN.value());
-                    //response.sendError(FORBIDDEN.value());
                     Map<String, String> error = new HashMap<>();
                     error.put("error_message", e.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);

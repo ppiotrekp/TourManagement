@@ -6,7 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.BusNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ScheduleNotFoundException;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.exception.runtime.*;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -16,7 +19,6 @@ import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 import pl.ppyrczak.busschedulesystem.service.subscription.Subscriber;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -46,14 +48,12 @@ public class ScheduleService implements Subscriber {
         return scheduleRepository.findById(id).stream()
                 .filter(schedule -> schedule.getDeparture().isAfter(now())).
                 findFirst().
-                orElseThrow(() -> new ResourceNotFoundException(
-                        "Schedule with id " + id + " does not exist"));
+                orElseThrow(() -> new ScheduleNotFoundException(id));
     }
 
     public Schedule getScheduleWithPassengersAndReviews(Long id) {
         return scheduleRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException(
-                        "Schedule with id " + id + " does not exist"));
+                orElseThrow(() -> new ScheduleNotFoundException(id));
     }
 
     public List<Schedule> getSchedules(Schedule schedule) {
@@ -62,12 +62,11 @@ public class ScheduleService implements Subscriber {
                 .departureTo(schedule.getDepartureTo())
                 .departure(schedule.getDeparture())
                 .arrival(schedule.getArrival())
+                .ticketPrice(schedule.getTicketPrice())
                 .build();
 
         return scheduleRepository.findAll(Example.of(scheduleToFind))
-                .stream()
-                .filter(schedule1 -> schedule1.getDeparture().isAfter(now()))
-                .collect(Collectors.toList());
+                ;
     } // todo nie dziaala
 
     @Transactional
@@ -82,7 +81,7 @@ public class ScheduleService implements Subscriber {
                 .collect(Collectors.toList());
 
         if (busRepository.findById(schedule.getBusId()).isEmpty()) {
-            throw new ResourceNotFoundException("Bus with id " + schedule.getBusId() + " does not exist");
+            throw new BusNotFoundException(schedule.getBusId());
         }
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
@@ -120,7 +119,7 @@ public class ScheduleService implements Subscriber {
 
     public void deleteSchedule(Long id) {
         if (!scheduleRepository.findById(id).isPresent()) {
-            throw new ResourceNotFoundException("Schedule with id " + id + " does not exist");
+            throw new ScheduleNotFoundException(id);
         }
         scheduleRepository.deleteById(id);
     }
@@ -163,5 +162,4 @@ public class ScheduleService implements Subscriber {
                             buildEmail(user.getFirstName(), schedule));
         }
     }
-
 }

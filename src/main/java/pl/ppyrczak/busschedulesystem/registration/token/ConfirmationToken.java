@@ -3,7 +3,7 @@ package pl.ppyrczak.busschedulesystem.registration.token;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

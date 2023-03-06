@@ -1,7 +1,6 @@
 package pl.ppyrczak.busschedulesystem.controller.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -24,7 +23,6 @@ import pl.ppyrczak.busschedulesystem.repository.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration
 @WebAppConfiguration
 @WithMockUser(roles = {"USER"})
-class ReviewControllerUserTest {
+class ReviewControllerUserIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -99,7 +97,7 @@ class ReviewControllerUserTest {
         review.setRating(4);
         review.setCreated(now());
 
-        mockMvc.perform(post("/review")
+        mockMvc.perform(post("/reviews")
                         .content(objectMapper.writeValueAsString(review))
                         .contentType(APPLICATION_JSON))
                         .andDo(print())
@@ -146,7 +144,7 @@ class ReviewControllerUserTest {
         review.setRating(4);
         review.setCreated(now());
 
-        mockMvc.perform(post("/review")
+        mockMvc.perform(post("/reviews")
                         .content(objectMapper.writeValueAsString(review))
                         .contentType(APPLICATION_JSON))
                 .andDo(print())

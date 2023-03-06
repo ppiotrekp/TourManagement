@@ -10,14 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.auth.UserService;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserDto;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserDtoMapper;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.service.UserService;
+import pl.ppyrczak.busschedulesystem.dto.UserDto;
+import pl.ppyrczak.busschedulesystem.dto.mapper.UserDtoMapper;
+import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,10 +59,10 @@ public class UserController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/role")
+    @PostMapping("/roles")
     public UserRole saveRole(@RequestBody UserRole role) {
         return userService.saveRole(role);
-    } //todo stworzyc roleservice
+    }
 
     @GetMapping("/api/token/refresh")
     public void refreshToken(HttpServletRequest request,
@@ -96,7 +96,6 @@ public class UserController {
             } catch (Exception e) {
                 response.setHeader("error", e.getMessage());
                 response.setStatus(FORBIDDEN.value());
-                //response.sendError(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
                 error.put("error_message", e.getMessage());
                 response.setContentType(APPLICATION_JSON_VALUE);

@@ -3,17 +3,18 @@ package pl.ppyrczak.busschedulesystem.registration;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.auth.UserService;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.TokenNotFoundException;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.service.UserService;
 import pl.ppyrczak.busschedulesystem.exception.illegalstate.EmailConfirmedException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.ResourceNotFoundException;
+import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.TokenExpiredException;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
 import pl.ppyrczak.busschedulesystem.registration.token.EmailValidator;
 import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("token not found"));
+                        new TokenNotFoundException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
             throw new EmailConfirmedException();

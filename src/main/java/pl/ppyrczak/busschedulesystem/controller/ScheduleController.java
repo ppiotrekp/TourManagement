@@ -5,8 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
-import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
+import pl.ppyrczak.busschedulesystem.dto.ScheduleDto;
+import pl.ppyrczak.busschedulesystem.dto.mapper.ScheduleDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 
@@ -18,7 +18,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
-
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
@@ -29,7 +28,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/schedulesFilter")
-    public List<ScheduleDto> getSchedulesWithParameters(@RequestBody Schedule schedule) {
+    public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
     }
 
@@ -44,10 +43,9 @@ public class ScheduleController {
         return scheduleService.getScheduleWithPassengersAndReviews(id);
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = CREATED)
-    @PostMapping("/schedule")
+    @PostMapping("/schedules")
     public Schedule addSchedule(@Valid @RequestBody Schedule schedule) {
         return scheduleService.addSchedule(schedule);
     }

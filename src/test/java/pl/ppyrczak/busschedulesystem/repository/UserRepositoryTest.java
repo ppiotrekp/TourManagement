@@ -1,18 +1,14 @@
 package pl.ppyrczak.busschedulesystem.repository;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 
 import java.util.Optional;
 
 @DataJpaTest
 class UserRepositoryTest {
-
-
     @Mock
     private UserRepository userRepository;
 

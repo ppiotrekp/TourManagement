@@ -1,11 +1,10 @@
 package pl.ppyrczak.busschedulesystem.repository;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import pl.ppyrczak.busschedulesystem.security.UserRole;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
 
 import static org.junit.jupiter.api.Assertions.*;
 

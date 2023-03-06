@@ -13,7 +13,6 @@ import javax.validation.Valid;
 @RequestMapping(path = "/registration")
 @AllArgsConstructor
 public class RegistrationController {
-
     private final RegistrationService registrationService;
 
     @Transactional
@@ -21,7 +20,6 @@ public class RegistrationController {
     public ResponseEntity<String> register(@RequestBody RegistrationRequest request) {
         return new ResponseEntity<>(registrationService.register(request), HttpStatus.CREATED);
     }
-
 
     @GetMapping(path = "confirm")
     public String confirm(@RequestParam("token") String token) {

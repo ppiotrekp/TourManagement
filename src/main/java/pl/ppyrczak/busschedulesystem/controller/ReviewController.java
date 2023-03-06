@@ -5,7 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.auth.UserService;
+import pl.ppyrczak.busschedulesystem.service.UserService;
 import pl.ppyrczak.busschedulesystem.controller.util.UserPermission;
 import pl.ppyrczak.busschedulesystem.exception.illegalaccess.UserNotAuthorizedException;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -21,8 +21,6 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
-    private final UserService userService;
-    private final PassengerService passengerService;
     private final UserPermission userPermission;
 
     @GetMapping("/schedules/{id}/reviews")
@@ -34,7 +32,7 @@ public class ReviewController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/review")
+    @PostMapping("/reviews")
     public Review addReview(@Valid @RequestBody Review review,
                             Authentication authentication) throws UserNotAuthorizedException {
 
@@ -45,7 +43,7 @@ public class ReviewController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping("/review/{id}")
+    @DeleteMapping("/reviews/{id}")
     public void deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
     }

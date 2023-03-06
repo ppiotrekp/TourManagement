@@ -1,6 +1,6 @@
 package pl.ppyrczak.busschedulesystem.service.subscription;
 
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 
 import java.util.List;
