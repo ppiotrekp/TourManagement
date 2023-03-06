@@ -21,10 +21,11 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/schedules")
-    public List<ScheduleDto> getSchedules(@RequestParam(required = false) int page, Sort.Direction sort) {
-        int pageNumber = page >= 0 ? page : 0;
+    public List<ScheduleDto> getSchedules(@RequestParam(required = false) Integer page, Sort.Direction sort) {
+        int pageNumber = page != null && page >= 0 ? page : 0;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
         return ScheduleDtoMapper.mapToScheduleDtos(
-                scheduleService.getSchedules(pageNumber, sort));
+                scheduleService.getSchedules(pageNumber, sortDirection));
     }
 
     @PostMapping("/schedulesFilter")
