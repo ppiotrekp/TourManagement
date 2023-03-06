@@ -17,8 +17,8 @@ import java.util.List;
 
 @NamedNativeQuery(name = "ApplicationUser.getUserHistory",
 query = """
-            select s.departure_from, s.departure_to, 
-            s.departure,  s.arrival, p.number_of_seats,
+            select s.departure_from, s.arrival_to, 
+            s.departure,  s.arrival, p.number_of_seats, 
             r.rating, r.description, r.created from schedule s
             join passenger p on s.id = p.schedule_id 
             join review r on s.id = r.schedule_id 
@@ -28,7 +28,7 @@ query = """
 @SqlResultSetMapping(name = "Mapping.UserHistoryDto",
                     classes = @ConstructorResult(targetClass = UserHistoryDto.class,
                     columns = {@ColumnResult(name = "departure_from", type = String.class),
-                            @ColumnResult(name = "departure_to", type = String.class ),
+                            @ColumnResult(name = "arrival_to", type = String.class ),
                             @ColumnResult(name = "departure", type = LocalDateTime.class ),
                             @ColumnResult(name = "arrival", type = LocalDateTime.class ),
                             @ColumnResult(name = "number_of_seats", type = Integer.class ),

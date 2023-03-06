@@ -8,6 +8,7 @@
 
     </div>
     <div class="nav-item ">
+      <a class="nav-link">{{email}}</a>
       <a class="nav-link" href="history">My history</a>
       <a class="nav-link" href="logout">Logout</a>
     </div>
@@ -40,7 +41,7 @@
       <td>{{transit.departure}}</td>
       <td>{{transit.arrival}}</td>
       <td>{{transit.ticketPrice}}</td>
-      <td><button routerLink= "/schedules/{{transit.id}}"><i class="fa-regular fa-square-check"></i></button></td>
+      <td><button routerLink= "/transits/{{transit.id}}"><i class="fa-regular fa-square-check"></i></button></td>
     </tr>
   </ng-container>
   </tbody>

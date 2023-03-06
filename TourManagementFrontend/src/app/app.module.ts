@@ -10,12 +10,15 @@ import {FormsModule} from "@angular/forms";
 import { LoginComponent } from './components/login/login.component';
 import { TransitComponent } from './components/transit/transit.component';
 import { SingleTransitComponent } from './components/single-transit/single-transit.component';
+import { MyHistoryComponent } from './components/my-history/my-history.component';
 
 const appRoute: Routes = [
   {path : '',redirectTo : 'home',pathMatch : 'full'},
   {path: 'home', component:HomeComponent},
   {path: 'login', component: LoginComponent },
   {path: 'transits', component: TransitComponent },
+  {path: 'transits/:id', component: SingleTransitComponent },
+  {path: 'history', component: MyHistoryComponent },
 ]
 
 @NgModule({
@@ -25,7 +28,8 @@ const appRoute: Routes = [
     HomeComponent,
     LoginComponent,
     TransitComponent,
-    SingleTransitComponent
+    SingleTransitComponent,
+    MyHistoryComponent
   ],
   imports: [
     BrowserModule,

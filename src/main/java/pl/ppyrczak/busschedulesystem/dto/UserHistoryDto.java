@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 public class UserHistoryDto {
     private String departureFrom;
-    private String departureTo;
+    private String arrivalTo;
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int numberOfSeats;
