@@ -5,8 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDto;
-import pl.ppyrczak.busschedulesystem.controller.dto.ScheduleDtoMapper;
+import pl.ppyrczak.busschedulesystem.dto.ScheduleDto;
+import pl.ppyrczak.busschedulesystem.dto.mapper.ScheduleDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.service.ScheduleService;
 

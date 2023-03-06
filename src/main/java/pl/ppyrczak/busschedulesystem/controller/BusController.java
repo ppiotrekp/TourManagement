@@ -1,18 +1,14 @@
 package pl.ppyrczak.busschedulesystem.controller;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import pl.ppyrczak.busschedulesystem.controller.dto.BusDto;
-import pl.ppyrczak.busschedulesystem.controller.dto.BusDtoMapper;
+import pl.ppyrczak.busschedulesystem.dto.BusDto;
+import pl.ppyrczak.busschedulesystem.dto.mapper.BusDtoMapper;
 import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.service.BusService;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.util.List;
 

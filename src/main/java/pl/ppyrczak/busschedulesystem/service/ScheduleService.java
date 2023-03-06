@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.exception.runtime.*;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Review;
@@ -16,7 +16,6 @@ import pl.ppyrczak.busschedulesystem.repository.*;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 import pl.ppyrczak.busschedulesystem.service.subscription.Subscriber;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -62,12 +61,11 @@ public class ScheduleService implements Subscriber {
                 .departureTo(schedule.getDepartureTo())
                 .departure(schedule.getDeparture())
                 .arrival(schedule.getArrival())
+                .ticketPrice(schedule.getTicketPrice())
                 .build();
 
         return scheduleRepository.findAll(Example.of(scheduleToFind))
-                .stream()
-                .filter(schedule1 -> schedule1.getDeparture().isAfter(now()))
-                .collect(Collectors.toList());
+                ;
     } // todo nie dziaala
 
     @Transactional

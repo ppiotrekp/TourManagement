@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import javax.servlet.FilterChain;

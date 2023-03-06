@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pl.ppyrczak.busschedulesystem.auth.ApplicationUser;
-import pl.ppyrczak.busschedulesystem.controller.dto.UserHistoryDto;
+import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.dto.UserHistoryDto;
 
 import java.util.List;
 import java.util.Optional;
