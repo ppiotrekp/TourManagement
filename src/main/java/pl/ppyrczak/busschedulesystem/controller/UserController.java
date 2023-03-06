@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -101,10 +102,14 @@ public class UserController {
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), error);
             }
-// todo przeniesc do service
         } else {
             throw new RuntimeException("Refresh token is missing");
         }
+    }
+
+    @GetMapping("/ids/{username}")
+    public Long getIdByUsername(@PathVariable String username) {
+        return userService.mapUsernameToId(username);
     }
 }
 

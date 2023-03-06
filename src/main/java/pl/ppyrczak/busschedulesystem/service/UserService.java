@@ -23,11 +23,9 @@ import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
 import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -129,7 +127,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllUsers(
                 PageRequest.of(page, PAGE_SIZE,
                         Sort.by(sort, "id")));
-
     }
 
     public ApplicationUser getUser(Long id) {
@@ -147,5 +144,14 @@ public class UserService implements UserDetailsService {
 
     public List<UserHistoryDto> getUserHistory(Long id) {
         return userRepository.getUserHistory(id);
+    }
+
+    public Long mapUsernameToId(String username) {
+        List<Long> ids = userRepository.findByUsername(username)
+                .stream()
+                .map(ApplicationUser::getId)
+                .collect(Collectors.toList());
+        Long id = ids.get(0);
+        return id;
     }
 }
