@@ -61,7 +61,7 @@ public class EmailBuilder {
                 "      <td width=\"10\" valign=\"middle\"><br></td>\n" +
                 "      <td style=\"font-family:Helvetica,Arial,sans-serif;font-size:19px;line-height:1.315789474;max-width:560px\">\n" +
                 "        \n" +
-                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> We have a new trip in our offer. This time the destination is " + schedule.getDepartureTo() + ". " +
+                "            <p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\">Hi " + name + ",</p><p style=\"Margin:0 0 20px 0;font-size:19px;line-height:25px;color:#0b0c0c\"> We have a new trip in our offer. This time the destination is " + schedule.getArrivalTo() + ". " +
                 "<p> The departure is from " + schedule.getDepartureFrom() + ". It will take place on " + schedule.getDeparture() + ". " +
                 " <p>See you soon</p>" +
                 "        \n" +
