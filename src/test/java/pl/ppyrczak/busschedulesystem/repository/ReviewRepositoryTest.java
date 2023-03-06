@@ -3,7 +3,6 @@ package pl.ppyrczak.busschedulesystem.repository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import pl.ppyrczak.busschedulesystem.model.Bus;
@@ -14,8 +13,6 @@ import pl.ppyrczak.busschedulesystem.model.Schedule;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ReviewRepositoryTest {
@@ -49,7 +46,7 @@ class ReviewRepositoryTest {
         Schedule schedule = new Schedule();
         schedule.setBusId(createBus().getId());
         schedule.setDepartureFrom("Krakow");
-        schedule.setDepartureTo("Malaga");
+        schedule.setArrivalTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2023, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2023, 10, 10, 12, 10));
         schedule.setTicketPrice(100);

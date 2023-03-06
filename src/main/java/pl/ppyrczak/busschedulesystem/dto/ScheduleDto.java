@@ -13,7 +13,7 @@ public class ScheduleDto {
     private Long id;
     private Long busId;
     private String departureFrom;
-    private String departureTo;
+    private String arrivalTo;
     private LocalDateTime departure;
     private LocalDateTime arrival;
     private int ticketPrice;

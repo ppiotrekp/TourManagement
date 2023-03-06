@@ -71,7 +71,7 @@ class ScheduleControllerUserIT {
         Schedule schedule = new Schedule();
         schedule.setBusId(createBus().getId());
         schedule.setDepartureFrom("Krakow");
-        schedule.setDepartureTo("Malaga");
+        schedule.setArrivalTo("Malaga");
         schedule.setDeparture(LocalDateTime.of(2023, 10, 10, 10, 10));
         schedule.setArrival(LocalDateTime.of(2023, 10, 10, 12, 10));
         schedule.setTicketPrice(100);

@@ -14,7 +14,7 @@ public class ScheduleDtoMapper {
                 .id(schedule.getId())
                 .busId(schedule.getBusId())
                 .departureFrom(schedule.getDepartureFrom())
-                .departureTo(schedule.getDepartureTo())
+                .arrivalTo(schedule.getArrivalTo())
                 .departure(schedule.getDeparture())
                 .arrival(schedule.getArrival())
                 .ticketPrice(schedule.getTicketPrice())

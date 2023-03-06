@@ -7,7 +7,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.ppyrczak.busschedulesystem.exception.runtime.model.BusNotFoundException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.model.ScheduleNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.exception.runtime.*;
@@ -59,7 +58,7 @@ public class ScheduleService implements Subscriber {
     public List<Schedule> getSchedules(Schedule schedule) {
         Schedule scheduleToFind = Schedule.builder()
                 .departureFrom(schedule.getDepartureFrom())
-                .departureTo(schedule.getDepartureTo())
+                .arrivalTo(schedule.getArrivalTo())
                 .departure(schedule.getDeparture())
                 .arrival(schedule.getArrival())
                 .ticketPrice(schedule.getTicketPrice())
@@ -106,7 +105,7 @@ public class ScheduleService implements Subscriber {
                 .map(schedule -> {
                     schedule.setBusId(scheduleToUpdate.getBusId());
                     schedule.setDepartureFrom(scheduleToUpdate.getDepartureFrom());
-                    schedule.setDepartureTo(scheduleToUpdate.getDepartureTo());
+                    schedule.setArrivalTo(scheduleToUpdate.getArrivalTo());
                     schedule.setDeparture(scheduleToUpdate.getDeparture());
                     schedule.setArrival(scheduleToUpdate.getArrival());
                     schedule.setTicketPrice(scheduleToUpdate.getTicketPrice());

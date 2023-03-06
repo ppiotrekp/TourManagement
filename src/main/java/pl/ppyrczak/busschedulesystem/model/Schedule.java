@@ -24,7 +24,7 @@ public class Schedule {
     @NotBlank(message = "set off is mandatory")
     private String departureFrom;
     @NotBlank(message = "destination is mandatory")
-    private String departureTo;
+    private String arrivalTo;
     @NotNull(message = "departure is mandatory")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime departure;
@@ -50,7 +50,7 @@ public class Schedule {
                     List<Review> reviews) {
         this.busId = busId;
         this.departureFrom = departureFrom;
-        this.departureTo = departureTo;
+        this.arrivalTo = departureTo;
         this.departure = departure;
         this.arrival = arrival;
         this.ticketPrice = ticketPrice;
