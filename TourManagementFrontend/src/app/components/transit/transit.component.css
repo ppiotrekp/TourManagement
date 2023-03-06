@@ -1,0 +1,235 @@
+body {
+  /*margin-top: 50px;*/
+  overflow: hidden;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*margin-left: 70px;*/
+}
+
+.amount {
+  display: none;
+
+}
+
+.changeBackground {
+  background-color: blue;
+}
+
+.changeBackgroundOnLowAmount {
+  background-color: coral;
+}
+
+.changeBorderOnTheLeastExpensive {
+  border: 3px solid red;
+}
+
+.changeBorderOnTheMostExpensive {
+  border: 3px solid green;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  margin: 10% auto;
+  width: 60%;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+  animation-name: modalopen;
+  animation-duration: 1s;
+}
+
+.modal-open {
+  margin-left: 0;
+}
+
+.modal-header h2,
+.modal-footer h3 {
+  margin: 0;
+}
+
+.modal-header {
+  background: #428bca;;
+  padding: 15px;
+  color: #fff;
+  text-align: center;
+
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.modal-body {
+  background: #fff;
+  margin: 0;
+}
+
+.modal-footer {
+  background: #428bca;;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.close {
+  float: right;
+  font-size: 30px;
+  color: #fff;
+}
+
+.close:hover {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.main-container {
+  display: flex;
+}
+
+@keyframes modalopen {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+.btn {
+  font-size: 15px;
+  border-radius: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.card-top {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: .25rem;
+}
+
+.item img {
+  width: 64px;
+}
+
+.item {
+  margin: 0px 15px;
+  text-align: center;
+}
+
+.item a:hover {
+  color: blue;
+}
+
+.card {
+  padding: 20px;
+  margin: 50px;
+  width: 300px;
+  margin-left: 70px;
+}
+
+.card img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 15px;
+  transition: 0.3s ease-in-out;
+}
+
+.card img:hover {
+  transition: 0.3s ease-in-out;
+  transform: scale(1.1);
+}
+
+h5 {
+  text-align: center;
+}
+
+#add-btn {
+  margin-left: 47%;
+}
+
+.pages-btn {
+  width: 100%;
+}
+
+#prev-btn {
+  margin-left: 40%;
+}
+
+#next-btn {
+  margin-left: 10%;
+}
+
+.content {
+  background-image: url("https://img.freepik.com/free-photo/restaurant-interior_1127-3394.jpg?w=2000");
+  height: 90vh ;
+}
+
+.content p {
+  color: white;
+}
+
+.footer h2 {
+  text-align: center;
+}
+
+.container {
+  display: flex;
+}
+
+.phone-container {
+  display: block;
+  /*flex-direction: column;*/
+}
+
+.map-container {
+  margin-left: 50%;
+}
+
+a {
+  font-size: 20px;
+}
+
+.nav-item {
+  display: flex;
+}
+
+.nav-link {
+  color:white;
+}
+
+h2 {
+  text-align: center;
+  font-size: 35px;
+  margin-top: 1%;
+}
+
+
+
+
+
+

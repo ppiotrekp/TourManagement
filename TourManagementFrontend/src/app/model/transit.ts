@@ -1,9 +1,9 @@
 export class Transit {
-  id!: bigint
-  busId!: bigint
-  departureFrom!: string
-  arrivalTo!: string
-  departure!: Date
-  arrival!: Date
-  ticketPrice!: number
+  id!: any
+  busId!: any
+  departureFrom!: any
+  arrivalTo!: any
+  departure!: any
+  arrival!: any
+  ticketPrice!: any
 }

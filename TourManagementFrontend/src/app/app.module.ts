@@ -9,6 +9,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { LoginComponent } from './components/login/login.component';
 import { TransitComponent } from './components/transit/transit.component';
+import { SingleTransitComponent } from './components/single-transit/single-transit.component';
 
 const appRoute: Routes = [
   {path : '',redirectTo : 'home',pathMatch : 'full'},
@@ -23,7 +24,8 @@ const appRoute: Routes = [
     BusComponent,
     HomeComponent,
     LoginComponent,
-    TransitComponent
+    TransitComponent,
+    SingleTransitComponent
   ],
   imports: [
     BrowserModule,

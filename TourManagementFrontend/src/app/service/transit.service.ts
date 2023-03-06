@@ -37,6 +37,6 @@ export class TransitService {
 
   public getTransits(page: number) {
     this.setHeader();
-    return this.http.get<Transit[]>(`${this.apiUrl}/schedules/dishes?page=` + page, {'headers': this.header})
+    return this.http.get<Transit[]>(`${this.apiUrl}/schedules?page=` + page, {'headers': this.header})
   }
 }
