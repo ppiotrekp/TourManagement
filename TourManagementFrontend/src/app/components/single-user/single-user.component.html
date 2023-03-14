@@ -1,0 +1,25 @@
+<header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="navbar-brand align-item-center d-flex">
+    </div>
+    <div class="nav-item ">
+      <a class="nav-link">{{email}}</a>
+      <a class="nav-link" href="transits">Transits</a>
+      <a class="nav-link" href="history">My history</a>
+      <a class="nav-link" href="logout">Logout</a>
+    </div>
+
+  </div>
+</header>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title"> Name: {{user.firstName}} {{user.lastName}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Email: {{user.username}}</h6>
+    <h4 class="card-subtitle mb-2 text-muted">Phone: {{user.phoneNumber}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">Locked: {{user.locked}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">Enabled: {{user.enabled}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">Subscribed: {{user.subscribed}}</h4>
+    <h4 class="card-subtitle mb-2 text-muted">Role: {{user.roles}}</h4>
+  </div>
+</div>

@@ -1,10 +1,13 @@
+import {Role} from "./Role";
+
 export class User {
-  id!:string;
+  id!:bigint;
   firstName!:string;
   lastName!:string;
   username!:string;
   phoneNumber!:string;
   enabled!:boolean;
   locked!:boolean;
-  roles:any;
+  subscribed!: boolean;
+  roles!:Role[];
 }

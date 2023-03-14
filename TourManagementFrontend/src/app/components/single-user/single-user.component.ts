@@ -1,26 +1,26 @@
 import {Component, OnInit} from '@angular/core';
-import {MyHistoryService} from "../../service/my-history.service";
+import {User} from "../../model/user";
+import {UserService} from "../../service/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../service/storage.service";
-import {MyHistory} from "../../model/my-history";
 import {HttpErrorResponse} from "@angular/common/http";
-import {UserService} from "../../service/user.service";
-import {User} from "../../model/user";
 
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  selector: 'app-single-user',
+  templateUrl: './single-user.component.html',
+  styleUrls: ['./single-user.component.css']
 })
-export class UserComponent implements OnInit{
+export class SingleUserComponent implements OnInit{
   // @ts-ignore
-  public users: User[];
-  page: number = 0;
+  public user: User;
+  // @ts-ignore
+  public roles: Role[];
+  // @ts-ignore
+  userId: bigint
   isLoggedIn = false;
   // @ts-ignore
   email: string
   showAdminBoard = false;
-  roles: any;
 
   constructor(private userService: UserService,
               private router: Router,
@@ -37,28 +37,22 @@ export class UserComponent implements OnInit{
       // @ts-ignore
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
     }
-    this.getUsers();
+    // @ts-ignore
+    this.getUser(this.route.snapshot.paramMap.get('id'));
   }
 
-  public getUsers() {
-    this.userService.getUsers(this.page).subscribe(
-      (response: User[]) => {
-        this.users = response;
+  public getUser(id: bigint) {
+    this.userService.getUser(id).subscribe(
+      (response: User) => {
+        this.user = response;
+        this.roles = response.roles;
+        // @ts-ignore
+        console.log((this.roles))
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
-  }
-
-  nextPage() {
-    this.page++;
-    this.getUsers();
-  }
-
-  previousPage() {
-    this.page--;
-    this.getUsers();
   }
 
 }

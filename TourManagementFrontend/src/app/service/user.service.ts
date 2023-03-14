@@ -46,4 +46,9 @@ export class UserService {
     this.setHeader();
     return this.http.get<User[]>(`${this.apiUrl}/users?page=` + page, {'headers': this.header})
   }
+
+  public getUser(id: bigint): Observable<User> {
+    this.setHeader();
+    return this.http.get<User>(`${this.apiUrl}/users/${id}`, {'headers': this.header});
+  }
 }
