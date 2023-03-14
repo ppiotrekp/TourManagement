@@ -40,9 +40,9 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
-    public List<UserDto> getUsers(@RequestParam(required = false) int page, Direction sort) {
+    public List<UserDto> getUsers(@RequestParam(required = false) int page) {
         int pageNumber = page >= 0 ? page : 0;
-        return UserDtoMapper.mapToUserDtos(userService.getUsers(pageNumber, sort));
+        return UserDtoMapper.mapToUserDtos(userService.getUsers(pageNumber));
     }
 
     @GetMapping("/users/{id}")

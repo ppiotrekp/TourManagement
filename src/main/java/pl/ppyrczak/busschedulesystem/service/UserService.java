@@ -123,10 +123,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
-    public List<ApplicationUser> getUsers(int page, Sort.Direction sort) {
+    public List<ApplicationUser> getUsers(int page) {
         return userRepository.findAllUsers(
-                PageRequest.of(page, PAGE_SIZE,
-                        Sort.by(sort, "id")));
+                PageRequest.of(page, PAGE_SIZE));
     }
 
     public ApplicationUser getUser(Long id) {
