@@ -19,6 +19,7 @@ export class MyHistoryComponent implements OnInit{
   isLoggedIn = false;
   // @ts-ignore
   email: string
+  showAdminBoard = false;
 
   constructor(private historyService: MyHistoryService,
               private router: Router,
@@ -31,6 +32,9 @@ export class MyHistoryComponent implements OnInit{
     if (this.isLoggedIn) {
       this.email = this.storageService.getDecodedJwt().sub;
       // @ts-ignore
+      this.roles = this.storageService.getDecodedJwt().roles;
+      // @ts-ignore
+      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
     }
     this.getHistory();
   }

@@ -4,10 +4,16 @@
 
 
     </div>
-    <div class="nav-item ">
-      <a class="nav-link">{{email}}</a>
-      <a class="nav-link" href="transits">Transits</a>
-      <a class="nav-link" href="logout">Logout</a>
+    <div class="main-menu">
+      <div class="nav-item ">
+        <a class="nav-link">{{email}}</a>
+      </div>
+      <div class="nav-item ">
+        <a class="nav-link" href="transits">Transits</a>
+      </div>
+      <div class="nav-item" *ngIf="showAdminBoard">
+        <a href="/users" class="nav-link" routerLink="users">Users</a>
+      </div>
     </div>
 
   </div>

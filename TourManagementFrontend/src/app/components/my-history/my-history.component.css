@@ -77,6 +77,30 @@ h2 {
   margin-top: 1%;
 }
 
+.form-control {
+  border-radius: 3px;
+  width: 400px;
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: white;
+  margin-right: 5px;
+}
+
+.main-menu {
+  display: flex;
+}
+
+.marginleft {
+  margin-left: 45%;
+}
+
+.hide-menu{
+
+}
+
+
 
 
 
