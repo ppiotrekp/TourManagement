@@ -1,16 +1,19 @@
 <header>
   <div class="navbar navbar-dark bg-dark shadow-sm">
     <div class="navbar-brand align-item-center d-flex">
-      <i style="font-size: 40px;" class="fas fa-shipping-fast">&nbsp;
-
-      </i>
-      <strong style="font-size: 30px;">Flipkart</strong>
 
     </div>
-    <div class="nav-item ">
-      <a class="nav-link">{{email}}</a>
-      <a class="nav-link" href="history">My history</a>
-      <a class="nav-link" href="logout">Logout</a>
+
+    <div class="main-menu">
+      <div class="nav-item ">
+        <a class="nav-link">{{email}}</a>
+      </div>
+      <div class="nav-item ">
+        <a class="nav-link" href="history">My history</a>
+      </div>
+      <div class="nav-item" *ngIf="showAdminBoard">
+        <a href="/users" class="nav-link" routerLink="users">Users</a>
+      </div>
     </div>
 
   </div>

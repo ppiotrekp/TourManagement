@@ -10,27 +10,6 @@ body {
   /*margin-left: 70px;*/
 }
 
-.amount {
-  display: none;
-
-}
-
-.changeBackground {
-  background-color: blue;
-}
-
-.changeBackgroundOnLowAmount {
-  background-color: coral;
-}
-
-.changeBorderOnTheLeastExpensive {
-  border: 3px solid red;
-}
-
-.changeBorderOnTheMostExpensive {
-  border: 3px solid green;
-}
-
 .modal {
   display: none;
   position: fixed;
@@ -227,6 +206,30 @@ h2 {
   font-size: 35px;
   margin-top: 1%;
 }
+
+.form-control {
+  border-radius: 3px;
+  width: 400px;
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: white;
+  margin-right: 5px;
+}
+
+.main-menu {
+  display: flex;
+}
+
+.marginleft {
+  margin-left: 45%;
+}
+
+.hide-menu{
+
+}
+
 
 
 

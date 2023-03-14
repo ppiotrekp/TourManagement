@@ -22,6 +22,6 @@ export class MyHistoryService {
 
   public getMyHistory(page: number) {
     this.setHeader();
-    return this.http.get<MyHistory[]>(`${this.apiUrl}/users/9/history?page=` + page, {'headers': this.header})
+    return this.http.get<MyHistory[]>(`${this.apiUrl}/users/2/history?page=` + page, {'headers': this.header})
   }
 }

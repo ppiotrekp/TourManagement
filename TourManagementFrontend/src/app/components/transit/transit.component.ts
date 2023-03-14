@@ -17,6 +17,7 @@ export class TransitComponent implements OnInit {
   isLoggedIn = false;
   // @ts-ignore
   email: string
+  showAdminBoard = false;
 
   constructor(private transitService: TransitService,
               private router: Router,
@@ -29,9 +30,12 @@ export class TransitComponent implements OnInit {
     if (this.isLoggedIn) {
       this.email = this.storageService.getDecodedJwt().sub;
       // @ts-ignore
+      this.roles = this.storageService.getDecodedJwt().roles;
+      // @ts-ignore
+      this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
     }
     this.getTransits();
-    console.log("A")
+    console.log(this.showAdminBoard)
   }
 
   nextPage() {
