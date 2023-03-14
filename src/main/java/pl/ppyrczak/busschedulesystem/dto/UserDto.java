@@ -3,6 +3,9 @@ package pl.ppyrczak.busschedulesystem.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import pl.ppyrczak.busschedulesystem.model.UserRole;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -15,4 +18,5 @@ public class UserDto {
     private String phoneNumber;
     private Boolean locked;
     private Boolean enabled;
+    private Collection<UserRole> roles;
 }

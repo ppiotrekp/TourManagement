@@ -16,6 +16,7 @@ public class UserDtoMapper {
                 .phoneNumber(user.getPhoneNumber())
                 .enabled(user.getEnabled())
                 .locked(user.getLocked())
+                .roles(user.getRoles())
                 .build();
     }
 

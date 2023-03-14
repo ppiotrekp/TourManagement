@@ -46,13 +46,13 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ApplicationUser getUsers(@PathVariable Long id,
+    public UserDto getUser(@PathVariable Long id,
                                     HttpServletRequest request,
                                     Authentication authentication) throws UserNotAuthorizedException {
         if (!userPermission.hasPermissionToRetrieveUser(id, request, authentication)) {
             throw new UserNotAuthorizedException();
         }
-        return userService.getUser(id);
+        return UserDtoMapper.mapToUserDto(userService.getUser(id));
     }
 
     @GetMapping("/users/{id}/history")
