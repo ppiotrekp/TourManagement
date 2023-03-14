@@ -1,5 +1,5 @@
-# BusScheduleSystem
-It's my rest api application to handle bus schedules
+# TourManagement
+Rest api application to manage tours
 # How to run
 - Shift + F10
 - mvn spring-boot:run
