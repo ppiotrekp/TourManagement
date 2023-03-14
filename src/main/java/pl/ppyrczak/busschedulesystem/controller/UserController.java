@@ -7,6 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/users")
-    public List<UserDto> getUsers(@RequestParam(required = false) int page, Sort.Direction sort) {
+    public List<UserDto> getUsers(@RequestParam(required = false) int page, Direction sort) {
         int pageNumber = page >= 0 ? page : 0;
         return UserDtoMapper.mapToUserDtos(userService.getUsers(pageNumber, sort));
     }
@@ -57,10 +58,10 @@ public class UserController {
     @GetMapping("/users/{id}/history")
     public List<UserHistoryDto> getUserHistory(@PathVariable Long id,
                                                @RequestParam(required = false) Integer page,
-                                               Sort.Direction sort) {
+                                               Direction sort) {
         int pageNumber = page != null && page >= 0 ? page : 0;
-        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
-        return userService.getUserHistory(id, page, sortDirection);
+        Direction sortDirection = sort != null ? sort : Direction.ASC;
+        return userService.getUserHistory(id, pageNumber, sortDirection);
     }
 
     @ResponseStatus(CREATED)

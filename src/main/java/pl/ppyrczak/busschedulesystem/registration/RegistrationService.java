@@ -29,10 +29,12 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
 
     private final RoleRepository roleRepository;
+
+    @Transactional
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getUsername());
         if (!isValidEmail) {
-            throw new IllegalStateException("email is not valid"); //todo wyjatek obsluzyc
+            throw new IllegalStateException("email is not valid");
         }
 
         String token = userService.signUpUser(new ApplicationUser(
