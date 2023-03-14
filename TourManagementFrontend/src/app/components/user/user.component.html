@@ -1,0 +1,58 @@
+<header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="navbar-brand align-item-center d-flex">
+
+    </div>
+
+    <div class="main-menu">
+      <div class="nav-item ">
+        <a class="nav-link">{{email}}</a>
+      </div>
+      <div class="nav-item ">
+        <a class="nav-link" href="history">My history</a>
+      </div>
+      <div class="nav-item ">
+        <a class="nav-link" href="transits">Transits</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<div class="info">
+  <h2>Available tours</h2>
+</div>
+
+<table class="table table-striped table-dark" style="width: 70%; margin-left: 15%; margin-top: 5%">
+  <thead>
+  <tr>
+    <th scope="col">No</th>
+    <th scope="col">Name</th>
+    <th scope="col">Surname</th>
+    <th scope="col">Email</th>
+    <th scope="col">Phone number</th>
+    <th scope="col">Locked</th>
+    <th scope="col">Enabled</th>
+    <th scope="col">Select</th>
+  </tr>
+  </thead>
+  <tbody>
+  <ng-container *ngFor="let user of users">
+    <tr>
+      <td>{{user.id}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.phoneNumber}}</td>
+      <td>{{user.locked}}</td>
+      <td>{{user.enabled}}</td>
+      <td><button routerLink= "/users/{{user.id}}"><i class="fa-regular fa-square-check"></i></button></td>
+    </tr>
+  </ng-container>
+  </tbody>
+</table>
+
+<div class="pages-btn">
+  <button id="prev-btn" (click)="previousPage()">Previous</button>
+  <button id="next-btn" (click)="nextPage()">Next</button>
+</div>
