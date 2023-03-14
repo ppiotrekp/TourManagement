@@ -69,7 +69,7 @@ export class SingleTransitComponent implements OnInit{
 
   public bookTransit(): void {
     this.transitId = 65
-    this.userId = 9
+    this.userId = 19
     this.numberOfSeats = 2
     console.log(this.transitId)
     console.log(this.userId)
