@@ -28,14 +28,31 @@ a {
   font-size: 20px;
 }
 
-.nav-item {
-  display: flex;
+h2 {
+  text-align: center;
+  font-size: 35px;
+  margin-top: 1%;
+}
+
+.form-control {
+  border-radius: 3px;
+  width: 400px;
+  margin-left: 20px;
 }
 
 .nav-link {
-  color:white;
+  color: white;
+  margin-right: 5px;
 }
 
-h2 {
-  text-align: center;
+.main-menu {
+  display: flex;
+}
+
+.marginleft {
+  margin-left: 45%;
+}
+
+.nav-item {
+  display: flex;
 }

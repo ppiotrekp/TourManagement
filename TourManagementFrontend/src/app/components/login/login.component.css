@@ -1,3 +1,32 @@
 .vh-100 {
   background-image: url('https://media.istockphoto.com/id/1211547141/pl/zdj%C4%99cie/nowoczesny-wystr%C3%B3j-wn%C4%99trz-restauracji.jpg?s=612x612&w=0&k=20&c=UcLMI0bLML866crsSVuvOYqsXDx9WFbhawkgEc7lSLM=');
 }
+
+.form-control {
+  border-radius: 3px;
+  width: 400px;
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: white;
+  margin-right: 5px;
+}
+
+.main-menu {
+  display: flex;
+}
+
+.marginleft {
+  margin-left: 45%;
+}
+
+.nav-item {
+  display: flex;
+}
+
+a {
+  font-size: 20px;
+}
+
+
