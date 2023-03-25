@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.ppyrczak.busschedulesystem.dto.ScheduleDto;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ArrivalBeforeDepartureException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.ArrivalInPastException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.BusNotAvailableException;
@@ -13,6 +14,7 @@ import pl.ppyrczak.busschedulesystem.exception.runtime.FinishedTripException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.model.BusNotFoundException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.model.ScheduleNotFoundException;
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
+import pl.ppyrczak.busschedulesystem.model.Bus;
 import pl.ppyrczak.busschedulesystem.model.Passenger;
 import pl.ppyrczak.busschedulesystem.model.Schedule;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
@@ -42,6 +44,12 @@ public class ScheduleService implements Subscriber {
         return scheduleRepository.findAllSchedules(
                 PageRequest.of(page, PAGE_SIZE,
                         Sort.by(sort, "departure")));
+    }
+
+    public List<Schedule> getSchedulesForBus(Long id, Integer page, Sort.Direction sort) {
+        Bus bus = busRepository.findById(id).orElseThrow(() -> new BusNotFoundException(id));
+        List<Schedule> schedules = scheduleRepository.findAllByBusId(bus.getId(), page, sort);
+        return schedules;
     }
 
     public Schedule getSchedule(Long id) {

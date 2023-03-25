@@ -28,6 +28,14 @@ public class ScheduleController {
                 scheduleService.getSchedules(pageNumber, sortDirection));
     }
 
+    @GetMapping("/buses/{id}/schedules")
+    public List<ScheduleDto> getSchedulesForBus(@RequestParam(required = false) Integer page,
+                                                Sort.Direction sort, @PathVariable Long id) {
+        Integer pageNumber = page != null && page >= 0 ? page : 0;
+        Sort.Direction sortDirection = sort != null ? sort : Sort.Direction.ASC;
+        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedulesForBus(id, pageNumber, sortDirection));
+    }
+
     @PostMapping("/schedulesFilter")
     public List<ScheduleDto> getSchedules(@RequestBody Schedule schedule) {
         return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getSchedules(schedule));
