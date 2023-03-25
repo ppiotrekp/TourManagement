@@ -1,0 +1,29 @@
+.card {
+  margin-top: 5%;
+  margin-left: 40%;
+}
+
+.container {
+  display: flex;
+}
+
+.phone-container {
+  display: block;
+  /*flex-direction: column;*/
+}
+
+.map-container {
+  margin-left: 50%;
+}
+
+a {
+  font-size: 20px;
+}
+
+.nav-item {
+  display: flex;
+}
+
+.nav-link {
+  color:white;
+}

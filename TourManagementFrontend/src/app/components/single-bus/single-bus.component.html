@@ -1,1 +1,30 @@
-<p>single-bus works!</p>
+<header>
+  <div class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="navbar-brand align-item-center d-flex">
+      <i style="font-size: 40px;" class="fas fa-shipping-fast">&nbsp;
+
+      </i>
+      <strong style="font-size: 30px;">Flipkart</strong>
+
+    </div>
+    <div class="nav-item ">
+      <a class="nav-link">{{email}}</a>
+      <a class="nav-link" href="transits">Transits</a>
+            <div class="nav-item" *ngIf="showAdminBoard">
+              <a href="/buses" class="nav-link">Buses</a>
+            </div>
+      <a class="nav-link" href="history">My history</a>
+      <a class="nav-link" href="logout">Logout</a>
+    </div>
+
+  </div>
+</header>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Model: {{bus.brand}} {{bus.model}}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Equipment: {{bus.equipment}}</h6>
+    <h6 class="card-subtitle mb-2 text-muted">Limit: {{bus.passengersLimit}}</h6>
+    <a href="buses/transits" class="card-subtitle mb-2 text-muted">Check transits with this bus</a>
+  </div>
+</div>
