@@ -44,7 +44,7 @@ public class RegistrationService {
                 new ArrayList<>()
         ));
 
-        UserRole role = roleRepository.findById(2L).orElseThrow();
+        UserRole role = roleRepository.findById(1L).orElseThrow();
         System.out.println(role.getName());
         userService.addRoleToUser(request.getUsername(), role.getName());
 
