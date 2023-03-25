@@ -1,0 +1,44 @@
+a {
+  font-size: 20px;
+}
+
+.nav-item {
+  display: flex;
+}
+
+.nav-link {
+  color:white;
+}
+
+h2 {
+  text-align: center;
+  font-size: 35px;
+  margin-top: 1%;
+}
+
+.form-control {
+  border-radius: 3px;
+  width: 400px;
+  margin-left: 20px;
+}
+
+.nav-link {
+  color: white;
+  margin-right: 5px;
+}
+
+.main-menu {
+  display: flex;
+}
+
+.marginleft {
+  margin-left: 45%;
+}
+
+#prev-btn {
+  margin-left: 40%;
+}
+
+#next-btn {
+  margin-left: 10%;
+}
