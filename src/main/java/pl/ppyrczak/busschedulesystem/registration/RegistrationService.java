@@ -7,12 +7,11 @@ import pl.ppyrczak.busschedulesystem.exception.runtime.model.TokenNotFoundExcept
 import pl.ppyrczak.busschedulesystem.model.ApplicationUser;
 import pl.ppyrczak.busschedulesystem.service.UserService;
 import pl.ppyrczak.busschedulesystem.exception.illegalstate.EmailConfirmedException;
-import pl.ppyrczak.busschedulesystem.exception.runtime.model.ResourceNotFoundException;
 import pl.ppyrczak.busschedulesystem.exception.runtime.TokenExpiredException;
 import pl.ppyrczak.busschedulesystem.registration.email.EmailSender;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationToken;
 import pl.ppyrczak.busschedulesystem.registration.token.ConfirmationTokenService;
-import pl.ppyrczak.busschedulesystem.registration.token.EmailValidator;
+import pl.ppyrczak.busschedulesystem.registration.email.EmailValidator;
 import pl.ppyrczak.busschedulesystem.repository.RoleRepository;
 import pl.ppyrczak.busschedulesystem.model.UserRole;
 
@@ -45,7 +44,7 @@ public class RegistrationService {
                 new ArrayList<>()
         ));
 
-        UserRole role = roleRepository.findById(2L).orElseThrow(); //TODO poprawic zeby nie podawac tu konkretnego id tylko nazwe roli
+        UserRole role = roleRepository.findById(2L).orElseThrow();
         System.out.println(role.getName());
         userService.addRoleToUser(request.getUsername(), role.getName());
 
@@ -57,7 +56,6 @@ public class RegistrationService {
         return token;
     }
 
-    @Transactional
     public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)

@@ -38,6 +38,11 @@ public class ScheduleController {
         return ScheduleDtoMapper.mapToScheduleDto(scheduleService.getSchedule(id));
     }
 
+    @GetMapping("/schedules/users/{id}")
+    public List<ScheduleDto> getSchedulesByUser(@PathVariable Long id) {
+        return ScheduleDtoMapper.mapToScheduleDtos(scheduleService.getScheduleByUser(id));
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/schedules/{id}")
     public Schedule getScheduleForAdmin(@PathVariable Long id) {
@@ -63,6 +68,4 @@ public class ScheduleController {
         scheduleService.deleteSchedule(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }

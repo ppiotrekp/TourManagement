@@ -24,6 +24,7 @@ public class BusController {
         this.busService = busService;
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/buses/{id}")
     public BusDto getBus(@PathVariable Long id) {

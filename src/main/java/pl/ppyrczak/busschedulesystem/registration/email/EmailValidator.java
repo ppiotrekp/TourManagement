@@ -1,4 +1,4 @@
-package pl.ppyrczak.busschedulesystem.registration.token;
+package pl.ppyrczak.busschedulesystem.registration.email;
 
 import org.springframework.stereotype.Service;
 
