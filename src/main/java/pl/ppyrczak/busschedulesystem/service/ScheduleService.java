@@ -24,6 +24,7 @@ import pl.ppyrczak.busschedulesystem.repository.UserRepository;
 import pl.ppyrczak.busschedulesystem.service.logic.Constraint;
 import pl.ppyrczak.busschedulesystem.service.subscription.Subscriber;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,18 +80,24 @@ public class ScheduleService implements Subscriber {
 
     @Transactional
     public Schedule addSchedule(Schedule schedule) {
+        if (busRepository.findById(schedule.getBusId()).isEmpty()) {
+            throw new BusNotFoundException(schedule.getBusId());
+        }
+
         if (!constraint.isBusAvaliable(schedule)) {
             throw new BusNotAvailableException();
         }
+
+        if (schedule.getArrival().isBefore(LocalDateTime.now())) {
+            throw new ArrivalInPastException();
+        }
+
         List<ApplicationUser> users = userRepository.findAll();
 
         List<ApplicationUser> subscribers = users.stream()
                 .filter(ApplicationUser::getSubscribed)
                 .collect(Collectors.toList());
 
-        if (busRepository.findById(schedule.getBusId()).isEmpty()) {
-            throw new BusNotFoundException(schedule.getBusId());
-        }
         sendInfoAboutNewTrip(schedule, subscribers);
         return scheduleRepository.save(schedule);
     }
