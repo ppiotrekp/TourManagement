@@ -48,7 +48,8 @@ public class ScheduleService implements Subscriber {
 
     public List<Schedule> getSchedulesForBus(Long id, Integer page, Sort.Direction sort) {
         Bus bus = busRepository.findById(id).orElseThrow(() -> new BusNotFoundException(id));
-        List<Schedule> schedules = scheduleRepository.findAllByBusId(bus.getId(), page, sort);
+        List<Schedule> schedules = scheduleRepository.findAllByBusId(bus.getId(), PageRequest.of(page, PAGE_SIZE,
+                Sort.by(sort, "arrival")));
         return schedules;
     }
 
