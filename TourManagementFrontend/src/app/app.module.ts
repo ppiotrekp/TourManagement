@@ -15,6 +15,7 @@ import { UserComponent } from './components/user/user.component';
 import { SingleUserComponent } from './components/single-user/single-user.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { SingleBusComponent } from './components/single-bus/single-bus.component';
+import { SingleBusTransitsComponent } from './components/single-bus-transits/single-bus-transits.component';
 
 const appRoute: Routes = [
   {path : '',redirectTo : 'home',pathMatch : 'full'},
@@ -27,7 +28,8 @@ const appRoute: Routes = [
   {path: 'users/:id', component: SingleUserComponent },
   {path: 'registration', component: RegistrationComponent },
   {path: 'buses', component: BusComponent },
-  {path: 'buses/:id', component: SingleBusComponent }
+  {path: 'buses/:id', component: SingleBusComponent },
+  {path: 'buses/:id/transits', component: SingleBusTransitsComponent }
 ]
 
 @NgModule({
@@ -42,7 +44,8 @@ const appRoute: Routes = [
     UserComponent,
     SingleUserComponent,
     RegistrationComponent,
-    SingleBusComponent
+    SingleBusComponent,
+    SingleBusTransitsComponent
   ],
   imports: [
     BrowserModule,

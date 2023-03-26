@@ -52,4 +52,10 @@ export class TransitService {
     this.setHeader();
     return this.http.post<Passenger>(`${this.apiUrl}/passengers`, payload, {'headers': this.header})
   }
+
+  public getTransitsForBus(id: bigint, page: number) {
+    this.setHeader();
+    console.log(`${this.apiUrl}/buses/${id}/schedules?page=` + page)
+    return this.http.get<Transit[]>(`${this.apiUrl}/buses/${id}/schedules?page=` + page, {'headers': this.header})
+  }
 }
