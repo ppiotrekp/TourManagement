@@ -46,8 +46,7 @@ export class BusService {
     return this.http.get<Bus>(`${this.apiUrl}/buses/${id}`, {'headers': this.header});
   }
 
-  // public bookTransit(payload: any): Observable<Passenger> {
-  //   this.setHeader();
-  //   return this.http.post<Passenger>(`${this.apiUrl}/passengers`, payload, {'headers': this.header})
-  // }
+  addBus(bus: Bus): Observable<Bus> {
+    return this.http.post<Bus>(`${this.apiUrl}/buses`, bus, {'headers': this.header})
+  }
 }

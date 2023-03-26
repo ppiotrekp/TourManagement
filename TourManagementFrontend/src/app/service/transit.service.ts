@@ -5,6 +5,7 @@ import {LoginService} from "./login.service";
 import {Transit} from "../model/transit";
 import {Observable, Subscription} from "rxjs";
 import {Passenger} from "../model/passenger";
+import {Bus} from "../model/bus";
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +58,9 @@ export class TransitService {
     this.setHeader();
     console.log(`${this.apiUrl}/buses/${id}/schedules?page=` + page)
     return this.http.get<Transit[]>(`${this.apiUrl}/buses/${id}/schedules?page=` + page, {'headers': this.header})
+  }
+
+  addTransit(transit: Transit): Observable<Transit> {
+    return this.http.post<Transit>(`${this.apiUrl}/schedules`, transit, {'headers': this.header})
   }
 }

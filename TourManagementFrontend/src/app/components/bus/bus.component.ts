@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {StorageService} from "../../service/storage.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {BusService} from "../../service/bus.service";
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-bus',
@@ -34,27 +35,57 @@ export class BusComponent implements OnInit{
       // @ts-ignore
       this.showAdminBoard = this.roles.includes('ROLE_ADMIN');
     }
-    this.getTransits();
+    this.getBuses();
     console.log(this.showAdminBoard)
   }
 
   nextPage() {
     this.page++;
-    this.getTransits();
+    this.getBuses();
   }
 
   previousPage() {
     this.page--;
-    this.getTransits();
+    this.getBuses();
   }
 
-  public getTransits() {
+  public getBuses() {
     this.busService.getBuses(this.page).subscribe(
       (response: Bus[]) => {
         this.buses = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
+      }
+    );
+  }
+
+  openModal() {
+    const modalBody = document.querySelector("#my-modal")
+    // @ts-ignore
+    modalBody.style.display = 'block';
+  }
+
+  closeModal() {
+    const modalBody = document.querySelector("#my-modal")
+    // @ts-ignore
+    modalBody.style.display = 'none';
+  }
+
+  public addBus(addForm: NgForm): void {
+    // @ts-ignore
+    let none = document.querySelector("#my-modal").style.display = 'none';
+    this.busService.addBus(addForm.value).subscribe(
+      (response: Bus) => {
+        console.log(response);
+        this.getBuses();
+        addForm.reset();
+        none;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+        addForm.reset();
+        none;
       }
     );
   }
